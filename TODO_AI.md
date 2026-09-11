@@ -5,14 +5,15 @@ Priority: P1 = do next · P2 = soon · P3 = nice to have · IDEA = unscoped
 ## P1 — Must do
 - [ ] Re-fetch https://sillan.ie/ucd/ on/after **Mon 14 Sept 2026** and update the UCD tab (currently the 7–11 Sept provisional schedule). Use Claude-in-Chrome if the content moves into an image.
 - [ ] Find a source for the DCU timetable and populate the DCU tab. Check sillan.ie nav, Facebook (via browser), and DCU's own commuting pages.
-- [ ] Open `src/index.html` in a real desktop browser at ~1200px and at mobile width and screenshot both views (light + dark, all three tabs). Nothing has been visually verified yet — only tag-balance checked.
 
 ## P2 — Should do
+- [ ] Add a visible scroll affordance (fade edge, chevron, or "swipe for more →" hint) to the `.board-wrap` tables on mobile — they scroll horizontally correctly (`overflow-x:auto`, confirmed working) but nothing signals that Runs 4–8 are off-screen. Found during the 2026-09-11 visual QA pass.
 - [ ] Rename legacy chip classes `amber/teal/pink` → semantic `all/mt/fr` across the file (~150 spans). Script it; update `CONTEXT_MAP.md` table afterwards.
 - [ ] Extract timetable data into an inline JSON block and render the `<table class="board">` elements from it with a small render function. Keeps single-file constraint; makes future timetable edits data-only.
 - [ ] Add a print stylesheet (A4 portrait, header condensed, one tab per page).
 - [ ] Resolve the Bank Holiday wording against Sillan's FAQ (Sundays **and** Mondays reduced service). Get owner's decision.
 - [ ] Decide whether to show intermediate Dublin set-down stops from the NTA GTFS data (Blanchardstown, Phibsborough, Parnell Sq…). Currently omitted to match Sillan's own posters.
+- [ ] Add a real `favicon.ico` (or inline SVG favicon) — currently 404s in the console on every load (harmless but sloppy).
 
 ## P3 — Nice to have
 - [ ] Host as a static page (GitHub Pages simplest; owner also has Vercel + Hetzner).
@@ -27,6 +28,8 @@ Priority: P1 = do next · P2 = soon · P3 = nice to have · IDEA = unscoped
 - Multi-operator: same template for other Cavan/Meath → Dublin commuter services.
 
 ## Done
+- [x] 2026-09-11 · Deployed to Cloudflare Workers at https://sillan.brwinnov.app.
+- [x] 2026-09-11 · Real-browser visual QA pass (desktop+mobile, light+dark, all tabs); screenshots in `docs/screenshots/`.
 - [x] 2026-09-11 · Created public GitHub repo `brwinnov/sillan`, pushed initial commit.
 - [x] 2026-09-11 · Reconcile Mon–Thu + Fri posters into one Mon–Fri dataset.
 - [x] 2026-09-11 · Build single-file departure-board infographic.
