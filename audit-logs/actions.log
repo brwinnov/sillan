@@ -1,0 +1,10 @@
+{"ts":"2026-09-11T14:30:00Z","actor":"claude-chat","action":"transcribe","files":["docs/timetable-mon-fri.md"],"note":"Reconciled Mon-Thu and Friday posters into one Mon-Fri dataset"}
+{"ts":"2026-09-11T14:40:00Z","actor":"claude-chat","action":"create","files":["src/index.html"],"note":"Initial departure-board infographic"}
+{"ts":"2026-09-11T14:45:00Z","actor":"claude-chat","action":"edit","files":["src/index.html"],"note":"WhatsApp badge added to header"}
+{"ts":"2026-09-11T14:50:00Z","actor":"claude-chat","action":"edit","files":["src/index.html"],"note":"Run-N headers; Sun-Sat strip; Sat/Sun placeholder; Bank Holiday note"}
+{"ts":"2026-09-11T14:55:00Z","actor":"claude-chat","action":"edit","files":["src/index.html"],"note":"Default/UCD/DCU view toggle with placeholder tabs"}
+{"ts":"2026-09-11T15:00:00Z","actor":"claude-chat","action":"research","files":[],"note":"sillan.ie/ucd read via Claude-in-Chrome; Facebook blocked; image files behind captcha"}
+{"ts":"2026-09-11T15:02:00Z","actor":"claude-chat","action":"edit","files":["src/index.html"],"note":"UCD tab populated (provisional 7-11 Sept data)"}
+{"ts":"2026-09-11T15:06:00Z","actor":"claude-chat","action":"edit","files":["src/index.html"],"note":"Okabe-Ito palette + shape cues; narrower columns; legend made global"}
+{"ts":"2026-09-11T15:10:00Z","actor":"claude-chat","action":"edit","files":["src/index.html"],"note":"Light/dark theme toggle"}
+{"ts":"2026-09-11T15:15:00Z","actor":"claude-chat","action":"scaffold","files":["HANDOVER.md","CONTEXT_MAP.md","TODO_AI.md","PATTERNS.md","CLAUDE.md","README.md","PROJECT_SUMMARY.json",".gitignore"],"note":"Repo scaffold and handover for Claude Code"}

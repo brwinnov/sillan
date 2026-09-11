@@ -1,0 +1,40 @@
+{
+  "name": "sillan",
+  "description": "Single-file HTML infographic presenting Sillan Coaches route 179 (Cootehill/Kingscourt to Dublin/UCD) timetables in a clean, accessible, colour-blind-safe, dark-mode-capable format.",
+  "owner": "Ackros (Barry) / brwinnov",
+  "status": "active",
+  "created": "2026-09-11",
+  "last_updated": "2026-09-11",
+  "deliverable": "src/index.html",
+  "stack": {
+    "runtime": "static HTML/CSS/JS, no build step",
+    "fonts": ["Space Grotesk", "IBM Plex Sans", "IBM Plex Mono"],
+    "dependencies": ["Google Fonts (CDN)"]
+  },
+  "timetables": {
+    "default": { "status": "complete", "effective": "2026-09-07", "source": "Sillan posters (docs/source-data/)" },
+    "ucd": { "status": "provisional", "effective": "2026-09-07 to 2026-09-11", "source": "https://sillan.ie/ucd/", "recheck_after": "2026-09-14" },
+    "dcu": { "status": "placeholder", "source": null },
+    "weekend": { "status": "placeholder", "source": null }
+  },
+  "constraints": [
+    "single self-contained HTML file",
+    "no browser storage APIs",
+    "Ireland English spelling",
+    "no invented timetable data",
+    "colour never the only signal"
+  ],
+  "next_actions": [
+    "push to github.com/brwinnov/sillan",
+    "re-fetch sillan.ie/ucd after 2026-09-14",
+    "source DCU timetable",
+    "visual QA in real browser"
+  ],
+  "docs": {
+    "handover": "HANDOVER.md",
+    "source_of_truth": "CONTEXT_MAP.md",
+    "backlog": "TODO_AI.md",
+    "conventions": "PATTERNS.md",
+    "claude_code": "CLAUDE.md"
+  }
+}

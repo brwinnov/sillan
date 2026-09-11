@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sillan Coaches — Route 179 Timetable</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F5F0;
+    --panel:#FFFFFF;
+    --ink:#17181A;
+    --slate:#63686F;
+    --line:#DFDACE;
+    --rose:#C22E2E;
+    --rose-deep:#8E1F1F;
+    --board:#15171B;
+    /* Colour-blind-safe palette (Okabe–Ito), tuned for a dark chip background */
+    --board-amber:#F0E442;   /* every weekday — yellow */
+    --board-teal:#56B4E9;    /* Mon–Thu only — sky blue */
+    --board-pink:#CC79A7;    /* Fri only — reddish purple */
+    --board-dim:#4A4E56;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .sheet{
+    max-width:960px;
+    margin:0 auto;
+    background:var(--paper);
+    padding:0 0 48px;
+  }
+
+  /* ---------- HEADER ---------- */
+  header{
+    background:var(--rose);
+    background-image:linear-gradient(155deg,var(--rose) 0%,var(--rose-deep) 100%);
+    color:#fff;
+    padding:38px 40px 84px;
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"";
+    position:absolute;
+    right:-60px; top:-60px;
+    width:260px; height:260px;
+    border:2px solid rgba(255,255,255,0.12);
+    border-radius:50%;
+  }
+  header::before{
+    content:"";
+    position:absolute;
+    right:30px; top:60px;
+    width:160px; height:160px;
+    border:2px solid rgba(255,255,255,0.1);
+    border-radius:50%;
+  }
+  .route-num{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:96px;
+    line-height:0.85;
+    letter-spacing:-2px;
+  }
+  .brand-row{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:16px;
+    position:relative;
+    z-index:1;
+  }
+  .brand-name{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:22px;
+    letter-spacing:0.5px;
+    text-align:right;
+  }
+  .brand-tag{
+    font-size:12.5px;
+    color:rgba(255,255,255,0.78);
+    letter-spacing:0.4px;
+    margin-top:2px;
+  }
+  .route-path{
+    margin-top:18px;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:19px;
+    font-weight:500;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    position:relative;
+    z-index:1;
+  }
+  .route-path .via{
+    color:rgba(255,255,255,0.65);
+    font-size:14px;
+    font-weight:400;
+  }
+  .days-badge{
+    display:inline-block;
+    margin-top:14px;
+    padding:5px 14px;
+    background:rgba(255,255,255,0.15);
+    border:1px solid rgba(255,255,255,0.35);
+    border-radius:100px;
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:0.3px;
+    position:relative;
+    z-index:1;
+  }
+
+  .whatsapp-badge{
+    position:absolute;
+    right:40px;
+    bottom:26px;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.3);
+    border-radius:10px;
+    padding:9px 14px;
+    max-width:280px;
+  }
+  .whatsapp-badge svg{
+    flex:none;
+    color:#3FE388;
+  }
+  .whatsapp-badge span{
+    font-size:11.5px;
+    line-height:1.45;
+    color:rgba(255,255,255,0.92);
+  }
+  .whatsapp-badge b{
+    font-weight:700;
+    color:#fff;
+  }
+  @media (max-width:600px){
+    .whatsapp-badge{
+      position:static;
+      margin-top:18px;
+      max-width:none;
+    }
+  }
+
+  /* ---------- VIEW TOGGLE ---------- */
+  .view-toggle{
+    position:absolute;
+    left:40px;
+    bottom:26px;
+    z-index:2;
+    display:inline-flex;
+    gap:3px;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.3);
+    border-radius:9px;
+    padding:3px;
+  }
+  .toggle-btn{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:0.2px;
+    color:rgba(255,255,255,0.85);
+    background:transparent;
+    border:none;
+    border-radius:6px;
+    padding:7px 14px;
+    cursor:pointer;
+    transition:background 0.15s ease, color 0.15s ease;
+  }
+  .toggle-btn:hover{
+    background:rgba(255,255,255,0.1);
+  }
+  .toggle-btn.active{
+    background:#fff;
+    color:var(--rose-deep);
+  }
+  @media (max-width:600px){
+    .view-toggle{
+      position:static;
+      margin-top:14px;
+      display:flex;
+    }
+    .toggle-btn{flex:1;}
+  }
+
+  /* ---------- THEME TOGGLE ---------- */
+  .theme-toggle{
+    position:absolute;
+    top:20px;
+    right:40px;
+    z-index:3;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.3);
+    border-radius:100px;
+    padding:6px 12px 6px 10px;
+    color:#fff;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:12px;
+    font-weight:600;
+    cursor:pointer;
+    transition:background 0.15s ease;
+  }
+  .theme-toggle:hover{ background:rgba(255,255,255,0.2); }
+  .theme-toggle .icon-sun{ display:none; }
+  .theme-toggle .icon-moon{ display:block; }
+  body.dark .theme-toggle .icon-sun{ display:block; }
+  body.dark .theme-toggle .icon-moon{ display:none; }
+  @media (max-width:600px){
+    .theme-toggle{ top:14px; right:20px; }
+    .theme-toggle .theme-label{ display:none; }
+    .theme-toggle{ padding:7px 9px; }
+  }
+
+  /* ---------- DARK MODE ---------- */
+  body.dark{
+    --paper:#111317;
+    --panel:#191C21;
+    --ink:#ECE8E0;
+    --slate:#A6ABB3;
+    --line:#2C3038;
+    --board:#252A32;
+  }
+  body.dark .sheet{ background:var(--paper); }
+  body.dark .tag-all{ background:#3D3810; color:#F0E442; }
+  body.dark .tag-mt{ background:#12324A; color:#8ACBF2; }
+  body.dark .tag-fr{ background:#3E2033; color:#E3A3C9; }
+  body.dark .tag-tbc{ background:#23262C; color:#A6ABB3; border-color:#3A3E46; }
+  body.dark .chip.dash{ color:#3A3E46; }
+  body.dark .m3{ color:#7E838B; }
+  body.dark .note{ background:#2A2416; border-color:#4A3E1E; color:#E6D7A8; }
+  body.dark .note.rose{ background:#301A1A; border-color:#5A2A2A; color:#F0B4B4; }
+  body.dark .day-pill.off{ background:#23262C; color:#A6ABB3; }
+  body.dark .day-pill.tbc{ background:#2A2416; color:#E6C87A; border-color:#5A4A22; }
+  body.dark .summary{ background:#1E2127; }
+  body.dark .summary h3{ color:#fff; }
+  body.dark .summary p{ color:#B8BDC5; }
+  body.dark .summary .col + .col{ border-color:rgba(255,255,255,0.1); }
+  body.dark .no-service{ background:#23262C; border-color:#3A3E46; }
+  body.dark .weekday-divider{ border-color:var(--line); }
+  body.dark .run-head .run-time{ color:var(--ink); }
+
+  /* ---------- WEEK STRIP ---------- */
+  .week-strip{
+    display:flex;
+    gap:8px;
+    padding:22px 40px 0;
+    flex-wrap:wrap;
+  }
+  .day-pill{
+    flex:1;
+    min-width:72px;
+    text-align:center;
+    padding:9px 6px;
+    border-radius:8px;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:0.3px;
+  }
+  .day-pill.on{
+    background:var(--rose);
+    color:#fff;
+  }
+  .day-pill.off{
+    background:#EFEBE2;
+    color:var(--slate);
+    font-weight:600;
+  }
+  .day-pill.tbc{
+    background:#FDF4E9;
+    color:#8A6A18;
+    font-weight:600;
+    border:1px dashed #E3C88C;
+  }
+
+  /* ---------- LEGEND ---------- */
+  .legend{
+    display:flex;
+    gap:22px;
+    flex-wrap:wrap;
+    padding:22px 40px;
+    border-bottom:1px solid var(--line);
+    font-size:13px;
+  }
+  .legend-item{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:var(--slate);
+  }
+  .swatch{
+    display:inline-block;
+    min-width:34px;
+    padding:2px 5px;
+    border-radius:4px;
+    background:var(--board);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:9.5px;
+    font-weight:600;
+    text-align:center;
+    border:1.5px solid transparent;
+  }
+  .swatch.all{ color:var(--board-amber); }
+  .swatch.mt{ color:var(--board-teal); border-radius:100px; }
+  .swatch.fr{ color:var(--board-pink); border:1.5px dashed var(--board-pink); }
+
+  .weekday-divider{
+    margin:28px 40px 0;
+    padding-top:8px;
+    border-top:1px solid var(--line);
+    font-family:'Space Grotesk',sans-serif;
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:0.6px;
+    text-transform:uppercase;
+    color:var(--rose);
+  }
+
+  /* ---------- SECTION HEADS ---------- */
+  .section{
+    padding:34px 40px 6px;
+  }
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    margin-bottom:4px;
+  }
+  .section-head h2{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:24px;
+    font-weight:700;
+    margin:0;
+  }
+  .section-head .dir-icon{
+    width:26px;height:26px;
+    flex:none;
+  }
+  .section-sub{
+    color:var(--slate);
+    font-size:13.5px;
+    margin:0 0 20px;
+  }
+
+  /* ---------- BOARD TABLE ---------- */
+  .board-wrap{
+    overflow-x:auto;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:var(--panel);
+  }
+  table.board{
+    border-collapse:collapse;
+    width:100%;
+    min-width:640px;
+  }
+  table.board th, table.board td{
+    padding:0;
+  }
+  .stop-col-head, .stop-cell{
+    text-align:left;
+    padding:10px 12px;
+    font-size:13.5px;
+    font-weight:600;
+    white-space:nowrap;
+    position:relative;
+  }
+  .stop-col-head{
+    color:var(--slate);
+    font-weight:600;
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:0.6px;
+    padding-bottom:8px;
+    border-bottom:1px solid var(--line);
+  }
+  .stop-cell{
+    border-bottom:1px solid var(--line);
+  }
+  .stop-cell .dot{
+    display:inline-block;
+    width:8px;height:8px;
+    border-radius:50%;
+    background:var(--rose);
+    margin-right:9px;
+    position:relative;
+  }
+  tr:last-child .stop-cell{ border-bottom:none; }
+  tr:last-child .time-cell{ border-bottom:none; }
+
+  .time-cell{
+    text-align:center;
+    padding:7px 3px;
+    border-bottom:1px solid var(--line);
+    border-left:1px solid var(--line);
+  }
+  .run-head{
+    text-align:center;
+    border-bottom:1px solid var(--line);
+    border-left:1px solid var(--line);
+    padding:8px 3px 7px;
+    vertical-align:bottom;
+  }
+  .run-head .run-time{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    font-weight:600;
+    color:var(--ink);
+    display:block;
+  }
+  .run-head .run-tag{
+    display:block;
+    margin-top:5px;
+    font-size:9px;
+    letter-spacing:0.4px;
+    font-weight:600;
+    padding:2px 6px;
+    border-radius:100px;
+    text-transform:uppercase;
+  }
+  .tag-all{ background:#FBF6CF; color:#6E5A00; }
+  .tag-mt{ background:#DCEEFA; color:#1F5F8A; }
+  .tag-fr{ background:#F3DFEB; color:#8A3C6B; }
+  .tag-tbc{ background:#F1EDE4; color:#8A857A; border:1px dashed #C9C2B1; }
+
+  .chip{
+    display:inline-block;
+    min-width:44px;
+    padding:4px 4px;
+    border-radius:5px;
+    background:var(--board);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:0.3px;
+    border:1.5px solid transparent;
+  }
+  /* Every weekday — yellow, plain rounded rectangle */
+  .chip.amber{ color:var(--board-amber); }
+  /* Mon–Thu only — sky blue, pill shape (shape cue, not just colour) */
+  .chip.teal{ color:var(--board-teal); border-radius:100px; }
+  /* Fri only — reddish purple, dashed outline (shape cue, not just colour) */
+  .chip.pink{ color:var(--board-pink); border:1.5px dashed var(--board-pink); }
+  .chip.dash{
+    background:transparent;
+    color:var(--line);
+    font-weight:500;
+    border-color:transparent;
+  }
+  .m3{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--slate);
+    font-weight:500;
+  }
+
+  .no-service{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:16px 18px;
+    background:#EFEBE2;
+    border:1px dashed #C9C2B1;
+    border-radius:10px;
+    color:var(--slate);
+    font-size:14px;
+    font-weight:500;
+    margin-bottom:14px;
+  }
+  .no-service .mark{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:18px;
+    color:var(--rose);
+  }
+
+  /* ---------- NOTES ---------- */
+  .notes{
+    margin:22px 0 4px;
+    display:grid;
+    gap:10px;
+  }
+  .note{
+    display:flex;
+    gap:11px;
+    padding:12px 14px;
+    background:#FDF4E9;
+    border:1px solid #F1DFBE;
+    border-radius:8px;
+    font-size:13px;
+    line-height:1.5;
+    color:#5A4A22;
+  }
+  .note.rose{ background:#FCEAEA; border-color:#F2C9C9; color:#7A2626; }
+  .note b{ font-weight:700; }
+  .note .mark{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:14px;
+    flex:none;
+  }
+
+  /* ---------- SUMMARY STRIP ---------- */
+  .summary{
+    margin:34px 40px 0;
+    background:var(--ink);
+    color:#EFEAE0;
+    border-radius:12px;
+    padding:26px 28px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+  }
+  .summary h3{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:15px;
+    margin:0 0 10px;
+    color:#fff;
+  }
+  .summary p{
+    margin:0;
+    font-size:12.8px;
+    line-height:1.55;
+    color:#C9C4B8;
+  }
+  .summary .col + .col{
+    border-left:1px solid rgba(255,255,255,0.12);
+    padding-left:22px;
+  }
+
+  footer{
+    margin:26px 40px 0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:11.5px;
+    color:var(--slate);
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  @media (max-width:600px){
+    header{padding:28px 20px 24px;}
+    header .whatsapp-badge{position:static;margin-top:18px;max-width:none;}
+    .route-num{font-size:70px;}
+    .section{padding:26px 20px 6px;}
+    .weekday-divider{margin:24px 20px 0;}
+    .week-strip{padding:18px 20px 0;}
+    .summary{margin:28px 20px 0; grid-template-columns:1fr; padding:20px;}
+    .summary .col + .col{border-left:none;border-top:1px solid rgba(255,255,255,0.12);padding-left:0;padding-top:16px;}
+    footer{margin:22px 20px 0;}
+    .legend{padding:18px 20px;}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <div class="brand-row">
+      <div class="route-num">179</div>
+      <div>
+        <div class="brand-name">SILLAN COACHES</div>
+        <div class="brand-tag">Travel in comfort</div>
+      </div>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="Switch to dark mode" aria-pressed="false" title="Toggle dark mode">
+      <svg class="icon-sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
+      <span class="theme-label">Dark</span>
+    </button>
+    <div class="route-path">
+      Cootehill / Kingscourt <span class="via">⇄</span> Dublin
+    </div>
+    <div class="days-badge">Weekly timetable · effective 7 Sept 2026</div>
+    <div class="view-toggle" role="tablist" aria-label="Choose timetable">
+      <button class="toggle-btn active" data-view="default" role="tab" aria-selected="true">Default</button>
+      <button class="toggle-btn" data-view="ucd" role="tab" aria-selected="false">UCD</button>
+      <button class="toggle-btn" data-view="dcu" role="tab" aria-selected="false">DCU</button>
+    </div>
+    <div class="whatsapp-badge">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12.02 2C6.5 2 2.02 6.48 2.02 12c0 1.77.46 3.44 1.27 4.89L2 22l5.25-1.38A9.96 9.96 0 0 0 12.02 22C17.55 22 22 17.52 22 12S17.55 2 12.02 2zm5.86 14.2c-.25.7-1.24 1.29-2.02 1.45-.55.11-1.26.2-3.66-.78-3.07-1.27-5.05-4.39-5.2-4.6-.15-.2-1.24-1.65-1.24-3.15 0-1.5.78-2.23 1.06-2.54.28-.3.6-.38.8-.38h.58c.19 0 .44-.07.68.53.25.6.85 2.08.92 2.23.07.15.12.33.02.53-.1.2-.15.33-.3.5-.15.18-.32.4-.45.53-.15.15-.31.31-.13.61.18.3.8 1.34 1.73 2.18 1.19 1.08 2.2 1.42 2.5 1.58.3.15.48.13.65-.08.18-.2.75-.88.95-1.18.2-.3.4-.25.66-.15.28.1 1.75.85 2.05 1 .3.15.5.23.57.35.08.13.08.73-.17 1.43z"/></svg>
+      <span><b>Join our WhatsApp group</b> for service announcements<br>Subscribe via <b>+353 86 777 9296</b></span>
+    </div>
+  </header>
+
+  <div class="legend">
+    <div class="legend-item"><span class="swatch all">6.30</span> Runs every weekday (Mon–Fri)</div>
+    <div class="legend-item"><span class="swatch mt">6.30</span> Monday–Thursday only</div>
+    <div class="legend-item"><span class="swatch fr">6.30</span> Friday only</div>
+  </div>
+
+  <div id="view-default" class="view">
+
+  <div class="week-strip">
+    <div class="day-pill tbc">Sun</div>
+    <div class="day-pill on">Mon</div>
+    <div class="day-pill on">Tue</div>
+    <div class="day-pill on">Wed</div>
+    <div class="day-pill on">Thu</div>
+    <div class="day-pill on">Fri</div>
+    <div class="day-pill tbc">Sat</div>
+  </div>
+
+  <div class="weekday-divider">Monday – Friday service</div>
+
+  <!-- ================= TO DUBLIN ================= -->
+  <div class="section">
+    <div class="section-head">
+      <h2>To Dublin</h2>
+    </div>
+    <p class="section-sub">8 departures a day · journey time roughly 2 hours from Cootehill</p>
+
+    <div class="board-wrap">
+      <table class="board">
+        <thead>
+          <tr>
+            <th class="stop-col-head">Stop</th>
+            <th class="run-head"><span class="run-time">Run 1</span><span class="run-tag tag-all">Mon–Fri</span></th>
+            <th class="run-head"><span class="run-time">Run 2</span><span class="run-tag tag-all">Mon–Fri</span></th>
+            <th class="run-head"><span class="run-time">Run 3</span><span class="run-tag tag-all">Mon–Fri</span></th>
+            <th class="run-head"><span class="run-time">Run 4</span><span class="run-tag tag-mt">Mon–Thu</span></th>
+            <th class="run-head"><span class="run-time">Run 5</span><span class="run-tag tag-all">Mon–Fri</span></th>
+            <th class="run-head"><span class="run-time">Run 6</span><span class="run-tag tag-all">Mon–Fri</span></th>
+            <th class="run-head"><span class="run-time">Run 7</span><span class="run-tag tag-all">Mon–Fri</span></th>
+            <th class="run-head"><span class="run-time">Run 8</span><span class="run-tag tag-mt">Mon–Thu</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="stop-cell"><span class="dot"></span>Cootehill</td>
+            <td class="time-cell"><span class="chip dash">–</span></td>
+            <td class="time-cell"><span class="chip dash">–</span></td>
+            <td class="time-cell"><span class="chip dash">–</span></td>
+            <td class="time-cell"><span class="chip dash">–</span></td>
+            <td class="time-cell"><span class="chip amber">6.30</span></td>
+            <td class="time-cell"><span class="chip dash">–</span></td>
+            <td class="time-cell"><span class="chip amber">9.00</span></td>
+            <td class="time-cell"><span class="chip dash">–</span></td>
+          </tr>
+          <tr>
+            <td class="stop-cell"><span class="dot"></span>Shercock</td>
+            <td class="time-cell"><span class="chip amber">5.30</span></td>
+            <td class="time-cell"><span class="chip amber">5.45</span></td>
+            <td class="time-cell"><span class="chip amber">6.10</span></td>
+            <td class="time-cell"><span class="chip teal">6.25</span></td>
+            <td class="time-cell"><span class="chip amber">6.45</span></td>
+            <td class="time-cell"><span class="chip amber">6.35</span></td>
+            <td class="time-cell"><span class="chip amber">9.20</span></td>
+            <td class="time-cell"><span class="chip dash">–</span></td>
+          </tr>
+          <tr>
+            <td class="stop-cell"><span class="dot"></span>Kingscourt</td>
+            <td class="time-cell"><span class="chip amber">5.40</span></td>
+            <td class="time-cell"><span class="chip amber">5.55</span></td>
+            <td class="time-cell"><span class="chip amber">6.20</span></td>
+            <td class="time-cell"><span class="chip teal">6.35</span></td>
+            <td class="time-cell"><span class="chip amber">7.00</span></td>
+            <td class="time-cell"><span class="chip amber">6.45</span></td>
+            <td class="time-cell"><span class="chip amber">9.35</span></td>
+            <td class="time-cell"><span class="chip dash">–</span></td>
+          </tr>
+          <tr>
+            <td class="stop-cell"><span class="dot"></span>Nobber</td>
+            <td class="time-cell"><span class="chip amber">5.50</span></td>
+            <td class="time-cell"><span class="chip amber">6.05</span></td>
+            <td class="time-cell"><span class="chip amber">6.30</span></td>
+            <td class="time-cell"><span class="chip teal">6.45</span></td>
+            <td class="time-cell"><span class="chip amber">7.10</span></td>
+            <td class="time-cell"><span class="chip amber">6.55</span></td>
+            <td class="time-cell"><span class="chip amber">9.45</span></td>
+            <td class="time-cell"><span class="chip dash">–</span></td>
+          </tr>
+          <tr>
+            <td class="stop-cell"><span class="dot"></span>Wilkinstown</td>
+            <td class="time-cell"><span class="chip amber">6.00</span></td>
+            <td class="time-cell"><span class="chip amber">6.15</span></td>
+            <td class="time-cell"><span class="chip amber">6.40</span></td>
+            <td class="time-cell"><span class="chip teal">6.55</span></td>
+            <td class="time-cell"><span class="chip amber">7.20</span></td>
+            <td class="time-cell"><span class="chip amber">7.05</span></td>
+            <td class="time-cell"><span class="chip amber">9.55</span></td>
+            <td class="time-cell"><span class="chip dash">–</span></td>
+          </tr>
+          <tr>
+            <td class="stop-cell"><span class="dot"></span>Navan</td>
+            <td class="time-cell"><span class="chip amber">6.10</span></td>
+            <td class="time-cell"><span class="chip amber">6.25</span></td>
+            <td class="time-cell"><span class="chip amber">6.50</span></td>
+            <td class="time-cell"><span class="chip teal">7.05</span></td>
+            <td class="time-cell"><span class="chip amber">7.30</span></td>
+            <td class="time-cell"><span class="chip amber">7.15</span></td>
+            <td class="time-cell"><span class="chip amber">10.10</span></td>
+            <td class="time-cell"><span class="chip teal">9.15</span></td>
+          </tr>
+          <tr>
+            <td class="stop-cell"><span class="dot"></span>Garlow Cross</td>
+            <td class="time-cell"><span class="chip amber">6.20</span></td>
+            <td class="time-cell"><span class="chip amber">6.35</span></td>
+            <td class="time-cell"><span class="chip amber">7.00</span></td>
+            <td class="time-cell"><span class="chip teal">7.15</span></td>
+            <td class="time-cell"><span class="chip amber">7.40</span></td>
+            <td class="time-cell"><span class="chip amber">7.25</span></td>
+            <td class="time-cell"><span class="chip amber">10.20</span></td>
+            <td class="time-cell"><span class="chip teal">9.25</span></td>
+          </tr>
+          <tr>
+            <td class="stop-cell"><span class="dot"></span>Ross Cross</td>
+            <td class="time-cell"><span class="m3">M3</span></td>
+            <td class="time-cell"><span class="chip amber">6.40</span></td>
+            <td class="time-cell"><span class="chip amber">7.05</span></td>
+            <td class="time-cell"><span class="m3">M3</span></td>
+            <td class="time-cell"><span class="chip amber">7.45</span></td>
+            <td class="time-cell"><span class="m3">M3</span></td>
+            <td class="time-cell"><span class="chip amber">10.25</span></td>
+            <td class="time-cell"><span class="chip teal">9.30</span></td>
+          </tr>
+          <tr>
+            <td class="stop-cell"><span class="dot"></span>Dunshaughlin</td>
+            <td class="time-cell"><span class="m3">M3</span></td>
+            <td class="time-cell"><span class="chip amber">6.45</span></td>
+            <td class="time-cell"><span class="chip amber">7.10</span></td>
+            <td class="time-cell"><span class="m3">M3</span></td>
+            <td class="time-cell"><span class="chip amber">7.50</span></td>
+            <td class="time-cell"><span class="m3">M3</span></td>
+            <td class="time-cell"><span class="chip amber">10.30</span></td>
+            <td class="time-cell"><span class="chip teal">9.35</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="notes">
+      <div class="note rose"><span class="mark">!</span><div>The <b>05:30 Shercock</b> departure does <b>not</b> serve UCD — any day of the week.</div></div>
+      <div class="note"><span class="mark">+</span><div><b>Monday–Thursday</b> only: an extra 06:25 Shercock departure, plus a 09:15 service starting from Navan (doesn't call at Cootehill, Shercock, Kingscourt, Nobber, or Wilkinstown).</div></div>
+    </div>
+  </div>
+
+  <!-- ================= FROM DUBLIN ================= -->
+  <div class="section">
+    <div class="section-head">
+      <h2>From Dublin</h2>
+    </div>
+    <p class="section-sub">8 departures a day, calling at UCD, Nassau Street, then Hilton Garden</p>
+
+    <div class="board-wrap">
+      <table class="board">
+        <thead>
+          <tr>
+            <th class="stop-col-head">Stop</th>
+            <th class="run-head"><span class="run-time">Run 1</span><span class="run-tag tag-all">Mon–Fri</span></th>
+            <th class="run-head"><span class="run-time">Run 2</span><span class="run-tag tag-all">Mon–Fri</span></th>
+            <th class="run-head"><span class="run-time">Run 3</span><span class="run-tag tag-all">Mon–Fri</span></th>
+            <th class="run-head"><span class="run-time">Run 4</span><span class="run-tag tag-all">Mon–Fri</span></th>
+            <th class="run-head"><span class="run-time">Run 5</span><span class="run-tag tag-all">Mon–Fri</span></th>
+            <th class="run-head"><span class="run-time">Run 6</span><span class="run-tag tag-mt">Mon–Thu</span></th>
+            <th class="run-head"><span class="run-time">Run 7</span><span class="run-tag tag-fr">Fri</span></th>
+            <th class="run-head"><span class="run-time">Run 8</span><span class="run-tag tag-mt">Mon–Thu</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="stop-cell"><span class="dot"></span>UCD</td>
+            <td class="time-cell"><span class="chip amber">13.00</span></td>
+            <td class="time-cell"><span class="chip amber">15.40</span></td>
+            <td class="time-cell"><span class="chip amber">16.15</span></td>
+            <td class="time-cell"><span class="chip amber">16.50</span></td>
+            <td class="time-cell"><span class="chip amber">17.30</span></td>
+            <td class="time-cell"><span class="chip teal">18.10</span></td>
+            <td class="time-cell"><span class="chip dash">–</span></td>
+            <td class="time-cell"><span class="chip dash">–</span></td>
+          </tr>
+          <tr>
+            <td class="stop-cell"><span class="dot"></span>Nassau Street</td>
+            <td class="time-cell"><span class="chip amber">13.15</span></td>
+            <td class="time-cell"><span class="chip amber">16.00</span></td>
+            <td class="time-cell"><span class="chip amber">16.35</span></td>
+            <td class="time-cell"><span class="chip amber">17.10</span></td>
+            <td class="time-cell"><span class="chip amber">17.50</span></td>
+            <td class="time-cell"><span class="chip teal">18.30</span></td>
+            <td class="time-cell"><span class="chip pink">19.00</span></td>
+            <td class="time-cell"><span class="chip teal">19.15</span></td>
+          </tr>
+          <tr>
+            <td class="stop-cell"><span class="dot"></span>Hilton Garden</td>
+            <td class="time-cell"><span class="chip amber">13.20</span></td>
+            <td class="time-cell"><span class="chip amber">16.05</span></td>
+            <td class="time-cell"><span class="chip amber">16.40</span></td>
+            <td class="time-cell"><span class="chip amber">17.15</span></td>
+            <td class="time-cell"><span class="chip amber">17.55</span></td>
+            <td class="time-cell"><span class="chip teal">18.35</span></td>
+            <td class="time-cell"><span class="chip pink">19.05</span></td>
+            <td class="time-cell"><span class="chip teal">19.20</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="notes">
+      <div class="note rose"><span class="mark">!</span><div>On <b>Fridays, 17:30 is the last UCD departure</b> — there's no later UCD service that day.</div></div>
+    </div>
+  </div>
+
+  <!-- ================= SATURDAY & SUNDAY ================= -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Saturday &amp; Sunday</h2>
+    </div>
+    <p class="section-sub">Not published by Sillan yet — placeholder until confirmed</p>
+    <div class="board-wrap">
+      <table class="board">
+        <thead>
+          <tr>
+            <th class="stop-col-head">Stop</th>
+            <th class="run-head"><span class="run-time">Run 1</span><span class="run-tag tag-tbc">TBC</span></th>
+            <th class="run-head"><span class="run-time">Run 2</span><span class="run-tag tag-tbc">TBC</span></th>
+            <th class="run-head"><span class="run-time">Run 3</span><span class="run-tag tag-tbc">TBC</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="stop-cell"><span class="dot"></span>Cootehill / Shercock ⇄ UCD</td>
+            <td class="time-cell"><span class="chip dash">TBC</span></td>
+            <td class="time-cell"><span class="chip dash">TBC</span></td>
+            <td class="time-cell"><span class="chip dash">TBC</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="notes">
+      <div class="note"><span class="mark">i</span><div>No Saturday/Sunday timetable is currently published on sillan.ie — this section is a placeholder to fill in once confirmed.</div></div>
+      <div class="note"><span class="mark">i</span><div><b>Bank Holidays follow the Sunday timetable</b> — once Sunday times are confirmed above, Bank Holidays run the same.</div></div>
+    </div>
+  </div>
+
+  <div class="summary">
+    <div class="col">
+      <h3>What's the same every day</h3>
+      <p>6 of 8 departures towards Dublin and 5 of 8 departures from Dublin run identically Monday through Friday — the core daytime service doesn't change.</p>
+    </div>
+    <div class="col">
+      <h3>Where Friday differs</h3>
+      <p>Mon–Thu adds an early 06:25 run and a 09:15 Navan-starting run. Friday evening is lighter: last UCD departure is 17:30, with a single 19:00 Nassau Street-only run replacing Mon–Thu's later 18:10 and 19:15 services.</p>
+    </div>
+  </div>
+
+  </div><!-- /view-default -->
+
+  <!-- ================= UCD ================= -->
+  <div id="view-ucd" class="view" hidden>
+    <div class="section">
+      <div class="section-head">
+        <h2>UCD Timetable 2026/27</h2>
+      </div>
+      <p class="section-sub">Source: sillan.ie/ucd</p>
+      <div class="notes">
+        <div class="note rose"><span class="mark">!</span><div><b>Currently shown for 7–11 September 2026 only.</b> Sillan's site states further services will be added from <b>Monday 14 September 2026</b> — check back once term is fully underway.</div></div>
+      </div>
+
+      <p class="section-sub" style="margin-top:18px;">To UCD · 6 departures a day</p>
+      <div class="board-wrap">
+        <table class="board">
+          <thead>
+            <tr>
+              <th class="stop-col-head">Stop</th>
+              <th class="run-head"><span class="run-time">Run 1</span><span class="run-tag tag-all">Mon–Fri</span></th>
+              <th class="run-head"><span class="run-time">Run 2</span><span class="run-tag tag-all">Mon–Fri</span></th>
+              <th class="run-head"><span class="run-time">Run 3</span><span class="run-tag tag-all">Mon–Fri</span></th>
+              <th class="run-head"><span class="run-time">Run 4</span><span class="run-tag tag-all">Mon–Fri</span></th>
+              <th class="run-head"><span class="run-time">Run 5</span><span class="run-tag tag-all">Mon–Fri</span></th>
+              <th class="run-head"><span class="run-time">Run 6</span><span class="run-tag tag-all">Mon–Fri</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="stop-cell"><span class="dot"></span>Cootehill</td>
+              <td class="time-cell"><span class="chip dash">–</span></td>
+              <td class="time-cell"><span class="chip dash">–</span></td>
+              <td class="time-cell"><span class="chip dash">–</span></td>
+              <td class="time-cell"><span class="chip dash">–</span></td>
+              <td class="time-cell"><span class="chip amber">6.30</span></td>
+              <td class="time-cell"><span class="chip amber">9.00</span></td>
+            </tr>
+            <tr>
+              <td class="stop-cell"><span class="dot"></span>Shercock</td>
+              <td class="time-cell"><span class="chip amber">5.45</span></td>
+              <td class="time-cell"><span class="chip amber">6.10</span></td>
+              <td class="time-cell"><span class="chip amber">6.25</span></td>
+              <td class="time-cell"><span class="chip amber">6.35</span></td>
+              <td class="time-cell"><span class="chip amber">6.45</span></td>
+              <td class="time-cell"><span class="chip amber">9.20</span></td>
+            </tr>
+            <tr>
+              <td class="stop-cell"><span class="dot"></span>Kingscourt</td>
+              <td class="time-cell"><span class="chip amber">5.55</span></td>
+              <td class="time-cell"><span class="chip amber">6.20</span></td>
+              <td class="time-cell"><span class="chip amber">6.35</span></td>
+              <td class="time-cell"><span class="chip amber">6.45</span></td>
+              <td class="time-cell"><span class="chip amber">7.00</span></td>
+              <td class="time-cell"><span class="chip amber">9.35</span></td>
+            </tr>
+            <tr>
+              <td class="stop-cell"><span class="dot"></span>Nobber</td>
+              <td class="time-cell"><span class="chip amber">6.05</span></td>
+              <td class="time-cell"><span class="chip amber">6.30</span></td>
+              <td class="time-cell"><span class="chip amber">6.45</span></td>
+              <td class="time-cell"><span class="chip amber">6.55</span></td>
+              <td class="time-cell"><span class="chip amber">7.10</span></td>
+              <td class="time-cell"><span class="chip amber">9.45</span></td>
+            </tr>
+            <tr>
+              <td class="stop-cell"><span class="dot"></span>Wilkinstown</td>
+              <td class="time-cell"><span class="chip amber">6.15</span></td>
+              <td class="time-cell"><span class="chip amber">6.40</span></td>
+              <td class="time-cell"><span class="chip amber">6.55</span></td>
+              <td class="time-cell"><span class="chip amber">7.05</span></td>
+              <td class="time-cell"><span class="chip amber">7.20</span></td>
+              <td class="time-cell"><span class="chip amber">9.55</span></td>
+            </tr>
+            <tr>
+              <td class="stop-cell"><span class="dot"></span>Navan</td>
+              <td class="time-cell"><span class="chip amber">6.25</span></td>
+              <td class="time-cell"><span class="chip amber">6.50</span></td>
+              <td class="time-cell"><span class="chip amber">7.05</span></td>
+              <td class="time-cell"><span class="chip amber">7.15</span></td>
+              <td class="time-cell"><span class="chip amber">7.30</span></td>
+              <td class="time-cell"><span class="chip amber">10.10</span></td>
+            </tr>
+            <tr>
+              <td class="stop-cell"><span class="dot"></span>Garlow Cross</td>
+              <td class="time-cell"><span class="chip amber">6.35</span></td>
+              <td class="time-cell"><span class="chip amber">7.00</span></td>
+              <td class="time-cell"><span class="chip amber">7.15</span></td>
+              <td class="time-cell"><span class="chip amber">7.25</span></td>
+              <td class="time-cell"><span class="chip amber">7.40</span></td>
+              <td class="time-cell"><span class="chip amber">10.20</span></td>
+            </tr>
+            <tr>
+              <td class="stop-cell"><span class="dot"></span>Ross Cross</td>
+              <td class="time-cell"><span class="chip amber">6.40</span></td>
+              <td class="time-cell"><span class="chip amber">7.05</span></td>
+              <td class="time-cell"><span class="m3">M3</span></td>
+              <td class="time-cell"><span class="m3">M3</span></td>
+              <td class="time-cell"><span class="chip amber">7.45</span></td>
+              <td class="time-cell"><span class="chip amber">10.25</span></td>
+            </tr>
+            <tr>
+              <td class="stop-cell"><span class="dot"></span>Dunshaughlin</td>
+              <td class="time-cell"><span class="chip amber">6.45</span></td>
+              <td class="time-cell"><span class="chip amber">7.10</span></td>
+              <td class="time-cell"><span class="m3">M3</span></td>
+              <td class="time-cell"><span class="m3">M3</span></td>
+              <td class="time-cell"><span class="chip amber">7.50</span></td>
+              <td class="time-cell"><span class="chip amber">10.30</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="section-sub" style="margin-top:22px;">Depart UCD · 5 departures a day</p>
+      <div class="board-wrap">
+        <table class="board">
+          <thead>
+            <tr>
+              <th class="stop-col-head">Stop</th>
+              <th class="run-head"><span class="run-time">Run 1</span><span class="run-tag tag-all">Mon–Fri</span></th>
+              <th class="run-head"><span class="run-time">Run 2</span><span class="run-tag tag-all">Mon–Fri</span></th>
+              <th class="run-head"><span class="run-time">Run 3</span><span class="run-tag tag-all">Mon–Fri</span></th>
+              <th class="run-head"><span class="run-time">Run 4</span><span class="run-tag tag-all">Mon–Fri</span></th>
+              <th class="run-head"><span class="run-time">Run 5</span><span class="run-tag tag-mt">Mon–Thu</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="stop-cell"><span class="dot"></span>UCD</td>
+              <td class="time-cell"><span class="chip amber">15.40</span></td>
+              <td class="time-cell"><span class="chip amber">16.15</span></td>
+              <td class="time-cell"><span class="chip amber">16.50</span></td>
+              <td class="time-cell"><span class="chip amber">17.30</span></td>
+              <td class="time-cell"><span class="chip teal">18.10</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="notes">
+        <div class="note rose"><span class="mark">!</span><div>On <b>Fridays, 17:30 is the last UCD departure</b> — the 18:10 run doesn't operate that day.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= DCU (placeholder) ================= -->
+  <div id="view-dcu" class="view" hidden>
+    <div class="section">
+      <div class="section-head">
+        <h2>DCU Timetable</h2>
+      </div>
+      <p class="section-sub">Placeholder — real times to be added</p>
+      <div class="board-wrap">
+        <table class="board">
+          <thead>
+            <tr>
+              <th class="stop-col-head">Stop</th>
+              <th class="run-head"><span class="run-time">Run 1</span><span class="run-tag tag-tbc">TBC</span></th>
+              <th class="run-head"><span class="run-time">Run 2</span><span class="run-tag tag-tbc">TBC</span></th>
+              <th class="run-head"><span class="run-time">Run 3</span><span class="run-tag tag-tbc">TBC</span></th>
+              <th class="run-head"><span class="run-time">Run 4</span><span class="run-tag tag-tbc">TBC</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="stop-cell"><span class="dot"></span>Stop TBC</td>
+              <td class="time-cell"><span class="chip dash">TBC</span></td>
+              <td class="time-cell"><span class="chip dash">TBC</span></td>
+              <td class="time-cell"><span class="chip dash">TBC</span></td>
+              <td class="time-cell"><span class="chip dash">TBC</span></td>
+            </tr>
+            <tr>
+              <td class="stop-cell"><span class="dot"></span>Stop TBC</td>
+              <td class="time-cell"><span class="chip dash">TBC</span></td>
+              <td class="time-cell"><span class="chip dash">TBC</span></td>
+              <td class="time-cell"><span class="chip dash">TBC</span></td>
+              <td class="time-cell"><span class="chip dash">TBC</span></td>
+            </tr>
+            <tr>
+              <td class="stop-cell"><span class="dot"></span>DCU</td>
+              <td class="time-cell"><span class="chip dash">TBC</span></td>
+              <td class="time-cell"><span class="chip dash">TBC</span></td>
+              <td class="time-cell"><span class="chip dash">TBC</span></td>
+              <td class="time-cell"><span class="chip dash">TBC</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="notes">
+        <div class="note"><span class="mark">i</span><div>This is a placeholder layout for the DCU timetable. Send over the stop list and times and this will be filled in to match the default table.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span>Sillan Coaches · Route 179 · Safe, reliable, comfortable</span>
+    <span>Times shown 24-hour · M3 = does not call at this stop</span>
+  </footer>
+
+</div>
+
+<script>
+  // ---- Timetable view toggle ----
+  document.querySelectorAll('.toggle-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var target = btn.getAttribute('data-view');
+
+      document.querySelectorAll('.toggle-btn').forEach(function(b){
+        b.classList.remove('active');
+        b.setAttribute('aria-selected','false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected','true');
+
+      document.querySelectorAll('.view').forEach(function(v){
+        v.hidden = (v.id !== 'view-' + target);
+      });
+    });
+  });
+
+  // ---- Dark mode toggle ----
+  (function(){
+    var btn = document.getElementById('themeToggle');
+    var label = btn.querySelector('.theme-label');
+
+    function applyTheme(dark){
+      document.body.classList.toggle('dark', dark);
+      btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+      btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+      label.textContent = dark ? 'Light' : 'Dark';
+    }
+
+    // Start by following the device's own light/dark setting
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(prefersDark);
+
+    btn.addEventListener('click', function(){
+      applyTheme(!document.body.classList.contains('dark'));
+    });
+  })();
+</script>
+</body>
+</html>
