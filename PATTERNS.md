@@ -35,13 +35,18 @@ toDublin: {
   ]
 }
 ```
-- `columns[i].tag` is one of `all` (every weekday), `mt` (Mon–Thu only), `fr` (Fri only), `tbc`
-  (not yet published). It drives **both** the header's `run-tag` label/colour *and* that
-  column's chip colour+shape — a stop's chip always inherits its column's tag, so they can
-  never disagree (the old hand-written markup could, and had to be kept in sync manually).
+- `columns[i].tag` is one of `all` (every weekday), `mt` (Mon–Thu only), `fr` (Fri only),
+  `sat` (Saturday only), `sun` (Sunday only), or `tbc` (not yet published). It drives
+  **both** the header's `run-tag` label/colour *and* that column's chip colour+shape — a
+  stop's chip always inherits its column's tag, so they can never disagree (the old
+  hand-written markup could, and had to be kept in sync manually).
 - A cell value is a time string (`"6.30"`), `"M3"` (bus skips this stop — rendered as plain
   text, no chip), `"TBC"`, or `null` (service doesn't run in that column → rendered as a
   dashed chip `–`).
+- A stop entry can have an optional `note` (e.g. `'set down only'`, `'R147'`) — rendered as
+  small italic text after the stop name, without affecting the `data-stop` attribute used
+  for `STOP_INFO` lookup (so an annotated stop like `{name:'Cootehill', note:'set down only'}`
+  still links to the same modal as plain `'Cootehill'` elsewhere).
 - Run headers are `Run N` (1-indexed from the column's position) — never a clock time (see
   decisions log).
 - Time values use `H.MM` with a dot (matches Sillan's posters). Notes use `HH:MM`.

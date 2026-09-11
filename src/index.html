@@ -20,6 +20,8 @@
     --board-amber:#F0E442;   /* every weekday — yellow */
     --board-teal:#56B4E9;    /* Mon–Thu only — sky blue */
     --board-pink:#CC79A7;    /* Fri only — reddish purple */
+    --board-orange:#E69F00;  /* Saturday only — orange */
+    --board-vermillion:#D55E00; /* Sunday only — vermillion */
     --board-dim:#4A4E56;
   }
   *{box-sizing:border-box;}
@@ -332,6 +334,8 @@
   body.dark .tag-all{ background:#3D3810; color:#F0E442; }
   body.dark .tag-mt{ background:#12324A; color:#8ACBF2; }
   body.dark .tag-fr{ background:#3E2033; color:#E3A3C9; }
+  body.dark .tag-sat{ background:#3D2C10; color:#F2C078; }
+  body.dark .tag-sun{ background:#3D1C10; color:#F29878; }
   body.dark .tag-tbc{ background:#23262C; color:#A6ABB3; border-color:#3A3E46; }
   body.dark .chip.dash{ color:#3A3E46; }
   body.dark .m3{ color:#7E838B; }
@@ -411,6 +415,8 @@
   .swatch.all{ color:var(--board-amber); }
   .swatch.mt{ color:var(--board-teal); border-radius:100px; }
   .swatch.fr{ color:var(--board-pink); border:1.5px dashed var(--board-pink); }
+  .swatch.sat{ color:var(--board-orange); border:3px double var(--board-orange); }
+  .swatch.sun{ color:var(--board-vermillion); border:1.5px dotted var(--board-vermillion); }
 
   .weekday-divider{
     margin:28px 40px 0;
@@ -555,6 +561,8 @@
   .tag-all{ background:#FBF6CF; color:#6E5A00; }
   .tag-mt{ background:#DCEEFA; color:#1F5F8A; }
   .tag-fr{ background:#F3DFEB; color:#8A3C6B; }
+  .tag-sat{ background:#FBE8CC; color:#8A5A00; }
+  .tag-sun{ background:#FADACC; color:#8A3200; }
   .tag-tbc{ background:#F1EDE4; color:#8A857A; border:1px dashed #C9C2B1; }
 
   .chip{
@@ -575,6 +583,10 @@
   .chip.mt{ color:var(--board-teal); border-radius:100px; }
   /* Fri only — reddish purple, dashed outline (shape cue, not just colour) */
   .chip.fr{ color:var(--board-pink); border:1.5px dashed var(--board-pink); }
+  /* Saturday only — orange, double border (shape cue, not just colour) */
+  .chip.sat{ color:var(--board-orange); border:3px double var(--board-orange); }
+  /* Sunday only — vermillion, dotted outline (shape cue, not just colour) */
+  .chip.sun{ color:var(--board-vermillion); border:1.5px dotted var(--board-vermillion); }
   .chip.dash{
     background:transparent;
     color:var(--line);
@@ -701,6 +713,7 @@
   }
   .stop-name-link:hover{ color:var(--rose); text-decoration-color:var(--rose); }
   body.dark .stop-name-link:hover{ color:#F0B4B4; text-decoration-color:#F0B4B4; }
+  .stop-note{ font-size:11px; font-weight:500; color:var(--slate); font-style:italic; }
 
   @media (max-width:600px){
     header{padding:28px 20px 24px;}
@@ -754,6 +767,8 @@
     <div class="legend-item"><span class="swatch all">6.30</span> Runs every weekday (Mon–Fri)</div>
     <div class="legend-item"><span class="swatch mt">6.30</span> Monday–Thursday only</div>
     <div class="legend-item"><span class="swatch fr">6.30</span> Friday only</div>
+    <div class="legend-item"><span class="swatch sat">9.00</span> Saturday only</div>
+    <div class="legend-item"><span class="swatch sun">18.20</span> Sunday only</div>
   </div>
 
   <div id="view-default" class="view">
@@ -807,12 +822,20 @@
     <div class="section-head">
       <h2>Saturday &amp; Sunday</h2>
     </div>
-    <p class="section-sub">Not published by Sillan yet — placeholder until confirmed</p>
-    <div class="board-wrap" id="tbl-satSun"></div>
+    <p class="section-sub">Per NTA data — not yet confirmed by Sillan</p>
     <div class="notes">
-      <div class="note"><span class="mark">i</span><div>No Saturday/Sunday timetable is currently published on sillan.ie — this section is a placeholder to fill in once confirmed.</div></div>
-      <div class="note"><span class="mark">?</span><div><b>Unconfirmed recollection, not current data:</b> Sunday evening previously had a Kingscourt departure around 19:00, arriving Dublin approximately 20:30. Needs verifying against Sillan before it can be added as a real timetable entry.</div></div>
-      <div class="note"><span class="mark">i</span><div><b>Bank Holidays follow the Sunday timetable</b> — once Sunday times are confirmed above, Bank Holidays run the same.</div></div>
+      <div class="note rose"><span class="mark">!</span><div><b>Provisional.</b> These times come from the National Transport Authority's registered GTFS timetable, not from sillan.ie (which only publishes Mon–Thu and Friday posters). Treat as "per NTA data" until Sillan confirms. Neither day serves UCD; Saturday's Dublin service continues past Dunshaughlin to Blanchardstown/Phibsborough and terminates at the National Gallery, Sunday's terminates at Parnell Square East — see the notes below the tables.</div></div>
+    </div>
+
+    <p class="section-sub" style="margin-top:18px;">To Dublin</p>
+    <div class="board-wrap" id="tbl-satSunToDublin"></div>
+
+    <p class="section-sub" style="margin-top:22px;">From Dublin — weekend return trips start from Cumberland Street N, not UCD/Nassau Street/Hilton Garden</p>
+    <div class="board-wrap" id="tbl-satSunFromDublin"></div>
+
+    <div class="notes">
+      <div class="note"><span class="mark">i</span><div>Only the stops shared with the weekday table are shown here. The full trips also call at several Navan sub-stops and, on the Dublin end, Blanchardstown N3, Connolly Hospital, Ashtown Roundabout, Rosecourt, Phibsborough Church, and Mater Hospital (set down only) — see <code>docs/timetable-sat-sun.md</code>.</div></div>
+      <div class="note"><span class="mark">i</span><div><b>Bank Holidays:</b> Sillan's FAQ says reduced service on Bank Holiday Sundays and Mondays, but the NTA data has no Bank Holiday exceptions registered for this route. Unresolved.</div></div>
     </div>
   </div>
 
@@ -913,7 +936,7 @@
   // "fr" = Fri only, "tbc" = not yet published) that drives both the header
   // tag and the chip's colour+shape. Cell values: a time string, "M3" (bus
   // skips this stop), "TBC", or null (service doesn't run this column).
-  var TAG_LABEL = { all:'Mon–Fri', mt:'Mon–Thu', fr:'Fri', tbc:'TBC' };
+  var TAG_LABEL = { all:'Mon–Fri', mt:'Mon–Thu', fr:'Fri', sat:'Sat', sun:'Sun', tbc:'TBC' };
 
   // ---- Stop locations ----
   // Only stops listed here get a clickable "where is this stop" modal.
@@ -1017,10 +1040,42 @@
         {name:'Hilton Garden',  cells:['13.20','16.05','16.40','17.15','17.55','18.35','19.05','19.20']}
       ]
     },
-    satSun: {
-      columns: [{tag:'tbc'},{tag:'tbc'},{tag:'tbc'}],
+    // Sat/Sun data: per NTA GTFS feed (Small Operators, published 10 Sept 2026),
+    // NOT published anywhere on sillan.ie — provisional until Sillan confirms.
+    // See docs/timetable-sat-sun.md for the full per-stop trip detail (Navan
+    // sub-stops, Dublin set-down stops) — only the stops shared with the
+    // weekday table are shown here to fit the existing layout.
+    satSunToDublin: {
+      columns: [{tag:'sat'},{tag:'sun'}],
       stops: [
-        {name:'Cootehill / Shercock ⇄ UCD', cells:['TBC','TBC','TBC']}
+        {name:'Cootehill',      cells:['9.00','18.20']},
+        {name:'Shercock',       cells:['9.20','18.45']},
+        {name:'Kingscourt',     cells:['9.35','19.00']},
+        {name:'Nobber',         cells:['9.45','19.10']},
+        {name:'Wilkinstown',    cells:['9.55','19.20']},
+        {name:'Navan',          cells:['10.10','19.35'], note:'R147'},
+        {name:'Garlow Cross',   cells:['10.15','19.40']},
+        {name:'Ross Cross',     cells:['10.20','19.45']},
+        {name:'Dunshaughlin',   cells:['10.30','19.50']},
+        {name:'Parnell Square East', cells:['11.05','20.25'], note:'set down only'},
+        {name:'National Gallery',    cells:['11.10',null],    note:'set down only'},
+        {name:'UCD',            cells:[null,null]}
+      ]
+    },
+    satSunFromDublin: {
+      columns: [{tag:'sat'},{tag:'sun'}],
+      stops: [
+        {name:'UCD',                  cells:[null,null]},
+        {name:'Cumberland Street N',  cells:['18.00','20.30'], note:'pick up only'},
+        {name:'Dunshaughlin',         cells:['18.35','21.05']},
+        {name:'Ross Cross',           cells:['18.40','21.10']},
+        {name:'Garlow Cross',         cells:['18.45','21.15']},
+        {name:'Navan',                cells:['18.50','21.20'], note:'Flower Hill'},
+        {name:'Wilkinstown',          cells:['19.05','21.35']},
+        {name:'Nobber',               cells:['19.15','21.45']},
+        {name:'Kingscourt',           cells:['19.25','21.55']},
+        {name:'Shercock',             cells:['19.35','22.05']},
+        {name:'Cootehill',            cells:['19.50','22.20'], note:'set down only'}
       ]
     },
     ucdToUCD: {
@@ -1076,6 +1131,7 @@
       var stopLabel = STOP_INFO[stop.name]
         ? '<button class="stop-name-link" data-stop="' + stop.name + '">' + stop.name + '</button>'
         : stop.name;
+      if (stop.note) stopLabel += ' <span class="stop-note">(' + stop.note + ')</span>';
       return '<tr><td class="stop-cell"><span class="dot"></span>' + stopLabel + '</td>' + cells + '</tr>';
     }).join('');
 

@@ -1,0 +1,111 @@
+{
+  "source": "NTA GTFS Small Operators 2026-09-10",
+  "provisional": true,
+  "days": {
+    "saturday": [
+      {
+        "direction": "to_dublin",
+        "headsign": "National Gallery",
+        "trip_id": "5640_9",
+        "stops": [
+          { "time": "09:00", "name": "Cootehill", "tfi_stop_no": "15094", "note": "Pick up only" },
+          { "time": "09:20", "name": "Shercock", "tfi_stop_no": "110111", "note": "" },
+          { "time": "09:35", "name": "Kingscourt", "tfi_stop_no": "137861", "note": "" },
+          { "time": "09:45", "name": "Nobber", "tfi_stop_no": "137881", "note": "" },
+          { "time": "09:55", "name": "Wilkinstown", "tfi_stop_no": "137901", "note": "" },
+          { "time": "09:58", "name": "Kilberry", "tfi_stop_no": "137911", "note": "" },
+          { "time": "10:00", "name": "Proudstown", "tfi_stop_no": "15087", "note": "" },
+          { "time": "10:01", "name": "St Oliver's School", "tfi_stop_no": "15088", "note": "" },
+          { "time": "10:10", "name": "Navan R147", "tfi_stop_no": "105581", "note": "" },
+          { "time": "10:11", "name": "Ardboyne Hotel", "tfi_stop_no": "101801", "note": "" },
+          { "time": "10:12", "name": "Kilcarn", "tfi_stop_no": "101811", "note": "" },
+          { "time": "10:15", "name": "Garlow Cross", "tfi_stop_no": "101821", "note": "" },
+          { "time": "10:20", "name": "Ross Cross", "tfi_stop_no": "101861", "note": "" },
+          { "time": "10:30", "name": "Dunshaughlin", "tfi_stop_no": "15090", "note": "" },
+          { "time": "10:53", "name": "Blanchardstown N3", "tfi_stop_no": "104561", "note": "Set down only" },
+          { "time": "10:55", "name": "Connolly Hospital", "tfi_stop_no": "7297", "note": "Set down only" },
+          { "time": "10:57", "name": "Ashtown Roundabout", "tfi_stop_no": "1696", "note": "Set down only" },
+          { "time": "10:58", "name": "Rosecourt", "tfi_stop_no": "1804", "note": "Set down only" },
+          { "time": "10:59", "name": "Phibsborough Church", "tfi_stop_no": "80", "note": "Set down only" },
+          { "time": "11:00", "name": "Mater Hospital", "tfi_stop_no": "817", "note": "Set down only" },
+          { "time": "11:05", "name": "Parnell Square East", "tfi_stop_no": "265", "note": "Set down only" },
+          { "time": "11:10", "name": "National Gallery", "tfi_stop_no": "7585", "note": "Set down only" }
+        ]
+      },
+      {
+        "direction": "from_dublin",
+        "headsign": "Cootehill",
+        "trip_id": "5640_19",
+        "stops": [
+          { "time": "18:00", "name": "Cumberland Street N", "tfi_stop_no": "13618", "note": "Pick up only" },
+          { "time": "18:35", "name": "Dunshaughlin", "tfi_stop_no": "133381", "note": "" },
+          { "time": "18:40", "name": "Ross Cross", "tfi_stop_no": "101861", "note": "" },
+          { "time": "18:45", "name": "Garlow Cross", "tfi_stop_no": "101361", "note": "" },
+          { "time": "18:47", "name": "Kilcarn", "tfi_stop_no": "135711", "note": "" },
+          { "time": "18:48", "name": "Ardboyne Hotel", "tfi_stop_no": "136961", "note": "" },
+          { "time": "18:50", "name": "Flower Hill", "tfi_stop_no": "15091", "note": "" },
+          { "time": "18:51", "name": "St Oliver's School", "tfi_stop_no": "15092", "note": "" },
+          { "time": "18:52", "name": "Clonmagaddan", "tfi_stop_no": "15093", "note": "" },
+          { "time": "18:55", "name": "Kilberry", "tfi_stop_no": "132191", "note": "" },
+          { "time": "19:05", "name": "Wilkinstown", "tfi_stop_no": "132121", "note": "" },
+          { "time": "19:15", "name": "Nobber", "tfi_stop_no": "131731", "note": "" },
+          { "time": "19:25", "name": "Kingscourt", "tfi_stop_no": "131423", "note": "" },
+          { "time": "19:35", "name": "Shercock", "tfi_stop_no": "107531", "note": "" },
+          { "time": "19:50", "name": "Cootehill", "tfi_stop_no": "15094", "note": "Set down only" }
+        ]
+      }
+    ],
+    "sunday": [
+      {
+        "direction": "to_dublin",
+        "headsign": "Parnell Square East",
+        "trip_id": "5640_11",
+        "stops": [
+          { "time": "18:20", "name": "Cootehill", "tfi_stop_no": "15094", "note": "Pick up only" },
+          { "time": "18:45", "name": "Shercock", "tfi_stop_no": "110111", "note": "" },
+          { "time": "19:00", "name": "Kingscourt", "tfi_stop_no": "137861", "note": "" },
+          { "time": "19:10", "name": "Nobber", "tfi_stop_no": "137881", "note": "" },
+          { "time": "19:20", "name": "Wilkinstown", "tfi_stop_no": "137901", "note": "" },
+          { "time": "19:23", "name": "Kilberry", "tfi_stop_no": "137911", "note": "" },
+          { "time": "19:25", "name": "Proudstown", "tfi_stop_no": "15087", "note": "" },
+          { "time": "19:26", "name": "St Oliver's School", "tfi_stop_no": "15088", "note": "" },
+          { "time": "19:35", "name": "Navan R147", "tfi_stop_no": "105581", "note": "" },
+          { "time": "19:36", "name": "Ardboyne Hotel", "tfi_stop_no": "101801", "note": "" },
+          { "time": "19:37", "name": "Kilcarn", "tfi_stop_no": "101811", "note": "" },
+          { "time": "19:40", "name": "Garlow Cross", "tfi_stop_no": "101821", "note": "" },
+          { "time": "19:45", "name": "Ross Cross", "tfi_stop_no": "101861", "note": "" },
+          { "time": "19:50", "name": "Dunshaughlin", "tfi_stop_no": "15090", "note": "" },
+          { "time": "20:13", "name": "Blanchardstown N3", "tfi_stop_no": "104561", "note": "Set down only" },
+          { "time": "20:15", "name": "Connolly Hospital", "tfi_stop_no": "7297", "note": "Set down only" },
+          { "time": "20:17", "name": "Ashtown Roundabout", "tfi_stop_no": "1696", "note": "Set down only" },
+          { "time": "20:18", "name": "Rosecourt", "tfi_stop_no": "1804", "note": "Set down only" },
+          { "time": "20:19", "name": "Phibsborough Church", "tfi_stop_no": "80", "note": "Set down only" },
+          { "time": "20:20", "name": "Mater Hospital", "tfi_stop_no": "817", "note": "Set down only" },
+          { "time": "20:25", "name": "Parnell Square East", "tfi_stop_no": "265", "note": "Set down only" }
+        ]
+      },
+      {
+        "direction": "from_dublin",
+        "headsign": "Cootehill",
+        "trip_id": "5640_22",
+        "stops": [
+          { "time": "20:30", "name": "Cumberland Street N", "tfi_stop_no": "13618", "note": "Pick up only" },
+          { "time": "21:05", "name": "Dunshaughlin", "tfi_stop_no": "133381", "note": "" },
+          { "time": "21:10", "name": "Ross Cross", "tfi_stop_no": "101861", "note": "" },
+          { "time": "21:15", "name": "Garlow Cross", "tfi_stop_no": "101361", "note": "" },
+          { "time": "21:17", "name": "Kilcarn", "tfi_stop_no": "135711", "note": "" },
+          { "time": "21:18", "name": "Ardboyne Hotel", "tfi_stop_no": "136961", "note": "" },
+          { "time": "21:20", "name": "Flower Hill", "tfi_stop_no": "15091", "note": "" },
+          { "time": "21:21", "name": "St Oliver's School", "tfi_stop_no": "15092", "note": "" },
+          { "time": "21:22", "name": "Clonmagaddan", "tfi_stop_no": "15093", "note": "" },
+          { "time": "21:25", "name": "Kilberry", "tfi_stop_no": "132191", "note": "" },
+          { "time": "21:35", "name": "Wilkinstown", "tfi_stop_no": "132121", "note": "" },
+          { "time": "21:45", "name": "Nobber", "tfi_stop_no": "131731", "note": "" },
+          { "time": "21:55", "name": "Kingscourt", "tfi_stop_no": "131423", "note": "" },
+          { "time": "22:05", "name": "Shercock", "tfi_stop_no": "107531", "note": "" },
+          { "time": "22:20", "name": "Cootehill", "tfi_stop_no": "15094", "note": "Set down only" }
+        ]
+      }
+    ]
+  }
+}

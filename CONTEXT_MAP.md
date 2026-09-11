@@ -33,7 +33,7 @@ Per-stop location data (for the "where is this stop" tap modal) lives in
 | Default | **Complete** | Two Sillan posters (in `docs/source-data/`), effective 7 Sept 2026 | Mon–Thu + Friday reconciled into one Mon–Fri table with day-type tags |
 | UCD | **Provisional** | https://sillan.ie/ucd/ read 2026-09-11 | Explicitly dated 7–11 Sept 2026; more services from 14 Sept. Must be re-fetched. |
 | DCU | **Placeholder** | none | No source found |
-| Sat / Sun | **Placeholder** | none | Nothing published by Sillan |
+| Sat / Sun | **Provisional** | NTA GTFS feed (Small Operators), published 10 Sept 2026 — see `docs/timetable-sat-sun.md` | Not published anywhere on sillan.ie; per-NTA-data only, not Sillan-confirmed. Neither day serves UCD. |
 
 ## Run categories (colour + shape, never colour alone)
 
@@ -42,6 +42,8 @@ Per-stop location data (for the "where is this stop" tap modal) lives in
 | Every weekday Mon–Fri | `all` | `.chip.all` | Yellow `#F0E442` | rounded rectangle | `.tag-all` |
 | Mon–Thu only | `mt` | `.chip.mt` | Sky blue `#56B4E9` | pill (radius 100px) | `.tag-mt` |
 | Fri only | `fr` | `.chip.fr` | Reddish purple `#CC79A7` | dashed outline | `.tag-fr` |
+| Saturday only | `sat` | `.chip.sat` | Orange `#E69F00` | double border | `.tag-sat` |
+| Sunday only | `sun` | `.chip.sun` | Vermillion `#D55E00` | dotted outline | `.tag-sun` |
 | Placeholder / no data | `tbc` | `.chip.dash` | line grey | no fill | `.tag-tbc` |
 
 Class names are semantic (renamed from the legacy `amber/teal/pink` on 2026-09-11, alongside
@@ -57,11 +59,17 @@ Full tables in `docs/timetable-mon-fri.md`. Summary:
 - Depart UCD: 15:40, 16:15, 16:50, 17:30, 18:10. Last Friday UCD departure 17:30.
 - Page note verbatim: *"Further services will be added on Monday 14th September 2026."*
 
+## Sat/Sun timetable (per NTA GTFS, provisional — see docs/timetable-sat-sun.md)
+- One round trip each day. Saturday: 09:00 Cootehill → National Gallery (arr. 11:10); 18:00 Cumberland Street N → Cootehill (arr. 19:50). Sunday: 18:20 Cootehill → Parnell Square East (arr. 20:25); 20:30 Cumberland Street N → Cootehill (arr. 22:20). No Sunday morning service.
+- Neither day serves UCD. Weekend Dublin-end stops (Blanchardstown, Connolly Hospital, Ashtown, Rosecourt, Phibsborough, Mater Hospital, then National Gallery/Parnell Sq East) are all set-down only outbound; return starts pick-up-only from Cumberland Street N, not UCD/Nassau Street/Hilton Garden.
+- GTFS feed version `1CFFD1CF-FCF8-4BE8-8379-7269746D5553`, valid to 10 Sept 2027; calendars for these specific trips run to 10/11 Oct 2026 and may change after.
+- **The earlier "unconfirmed recollection" (Kingscourt ~19:00 → Dublin ~20:30) is superseded** — the NTA data's Sunday To-Dublin trip has Kingscourt at 19:00 arriving Parnell Sq East 20:25, a close match. The recollection was likely accurate, but this doesn't make the NTA data any more *Sillan-confirmed* — the whole section is still provisional pending that.
+
 ## Known discrepancies / open questions
-1. Bank Holidays: owner wants "same as Sundays"; Sillan FAQ says reduced service on Bank Holiday **Sundays and Mondays**. Infographic currently follows the owner's wording.
+1. Bank Holidays: owner wants "same as Sundays"; Sillan FAQ says reduced service on Bank Holiday **Sundays and Mondays**; the NTA feed has no Bank Holiday calendar exceptions registered for this route at all. Unresolved.
 2. bustimes.org (NTA GTFS) lists a 15:20 Shercock departure not on any Sillan poster. Unverified.
 3. bustimes.org lists intermediate Dublin set-down stops (Blanchardstown, Phibsborough, Parnell Sq, etc.) that Sillan's own posters omit. Not shown in the infographic — decide whether to add.
-4. Owner recalls a Sunday evening Kingscourt departure around 19:00, arriving Dublin ~20:30 — this is an unconfirmed personal recollection, not sourced from Sillan, so it's shown only as a caveat note in the Sat/Sun placeholder section, not as a real timetable entry. Needs verifying before promotion to real data.
+4. ~~Owner recalls a Sunday evening Kingscourt departure~~ — **resolved 2026-09-11**: superseded by real NTA GTFS data showing a near-identical Sunday Kingscourt 19:00 departure. See "Sat/Sun timetable" section above.
 
 ## Sources — how each behaves under automation
 | Source | web_fetch | curl (sandbox) | Claude-in-Chrome |
@@ -70,7 +78,8 @@ Full tables in `docs/timetable-mon-fri.md`. Summary:
 | sillan.ie image files (.jpeg) | ❌ "Image content not supported" | ❌ captcha challenge page | ✅ |
 | facebook.com/SillanCoaches | ❌ ROBOTS_DISALLOWED | untested | ✅ (only viable route) |
 | bustimes.org | ✅ but `?date=` ignored (client-side JS) | ✅ same limitation | ✅ |
-| NTA GTFS (transportforireland.ie) | untested | untested | — |
+| NTA GTFS (transportforireland.ie) | untested by Claude — owner extracted Sat/Sun data via their own `docs/source-data/extract-gtfs-179.py` script, 2026-09-11 | untested | — |
+| TFI live-departures (journeyplanner-production.transportforireland.ie) | ✅ confirmed working by loading `?stopId=` URLs directly, 2026-09-11 | untested | — |
 
 ## Decisions log
 - 2026-09-11 · Column headers labelled "Run N" rather than origin clock time — the latter duplicated the first stop's cell and confused the owner.
@@ -88,3 +97,4 @@ Full tables in `docs/timetable-mon-fri.md`. Summary:
 - 2026-09-11 · Added a per-stop "where is this stop" modal (tap the stop name → description + Google Maps link, plus a live-TFI-departures link where a TFI stop number is known). Data lives in `STOP_INFO` (see `PATTERNS.md`) and `docs/stop-locations.md`. The TFI live-departures URL pattern (`journeyplanner-production.transportforireland.ie/departures/liveDepartures?stopId=`) was verified by loading it directly (not from docs) — confirmed stop 137861 correctly shows Kingscourt's live buses.
 - 2026-09-11 · Stop-location descriptions never show Plus Codes on the page — they're reference-only for building `mapsUrl` (owner correction; an earlier version displayed them). Description text is minimal (venue name + TFI stop # if known) rather than technical location metadata.
 - 2026-09-11 · All 9 "To Dublin" / "To UCD" stops now have location data: Navan is confirmed as Navan Shopping Centre (TFI 189521; earlier uncertainty resolved); Garlow Cross has a Maps link and TFI stop 101821 (official Route 179 stop — no "nearby" hedge in its description); Ross Cross has TFI stop 101861 but no venue description yet. Shercock's TFI stop was corrected to 110111. Only UCD, Nassau Street, Hilton Garden (the "From Dublin" return stops) still need data — see `docs/stop-locations.md`.
+- 2026-09-11 · Populated the Saturday/Sunday section with real (provisional) data from the NTA GTFS feed, replacing the single-row TBC placeholder with two real To-Dublin/From-Dublin tables — same layout pattern as the weekday section. Added two new run categories (`sat`/`sun`, orange/vermillion, double-border/dotted shapes) since these are single specific days, not day-ranges. Added a `note` field to the stop-row data model (e.g. "set down only", "pick up only", "R147") that displays without breaking the `STOP_INFO`/`data-stop` linkage. Full per-stop trip detail (Navan sub-stops, Dublin set-down stops) lives in `docs/timetable-sat-sun.md` and `docs/source-data/179-sat-sun-gtfs.json` — only stops shared with the weekday table are shown in the infographic itself.
