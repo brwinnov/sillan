@@ -148,15 +148,15 @@ handles that kind of route detail for the weekday table).
 | Dunshaughlin | 10.30 | 19.50 |
 | Parnell Square East *(set down only)* | 11.05 | 20.25 |
 | National Gallery *(set down only)* | 11.10 | — |
-| UCD | — | — |
 
-Saturday terminates at National Gallery; Sunday terminates at Parnell Square East. **Neither weekend trip serves UCD.**
+Saturday terminates at National Gallery; Sunday terminates at Parnell Square East. **Neither
+weekend trip serves UCD.** (The infographic omits the UCD row entirely since it's blank in
+both columns — kept here only as a reminder that it was checked, not missed.)
 
 ### From Dublin
 
 | Stop | Sat | Sun |
 |---|---|---|
-| UCD | — | — |
 | Cumberland Street N *(pick up only)* | 18.00 | 20.30 |
 | Dunshaughlin | 18.35 | 21.05 |
 | Ross Cross | 18.40 | 21.10 |
