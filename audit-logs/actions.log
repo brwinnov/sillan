@@ -32,3 +32,5 @@
 {"ts":"2026-09-11T19:37:00Z","actor":"claude-code","action":"deploy","files":["src/index.html"],"note":"Deployed via npx wrangler deploy; verified live (HTTP 200) at sillan.brwinnov.app"}
 {"ts":"2026-09-11T19:42:00Z","actor":"claude-code","action":"edit","files":["src/index.html"],"note":"Added bold disclaimer to bottom of About/help modal per owner request: stop location info is best-approx/nearest TFI stop, may need to be on opposite side of road. Verified via local wrangler dev, then deployed."}
 {"ts":"2026-09-11T19:43:00Z","actor":"claude-code","action":"deploy","files":["src/index.html"],"note":"Deployed via npx wrangler deploy; verified live (HTTP 200) at sillan.brwinnov.app"}
+{"ts":"2026-09-11T19:47:00Z","actor":"claude-code","action":"edit","files":["src/index.html"],"note":"Cootehill description now mentions 'nearby TFI stop 15094' in the text itself, matching the pattern used for other stops. Verified via local wrangler dev, then deployed."}
+{"ts":"2026-09-11T19:48:00Z","actor":"claude-code","action":"deploy","files":["src/index.html"],"note":"Deployed via npx wrangler deploy; verified live (HTTP 200) at sillan.brwinnov.app"}
