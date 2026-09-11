@@ -658,6 +658,18 @@
     flex-wrap:wrap;
     gap:8px;
   }
+  .footer-link{
+    background:none;
+    border:none;
+    padding:0;
+    font-family:inherit;
+    font-size:11.5px;
+    color:var(--slate);
+    text-decoration:underline;
+    text-decoration-color:var(--line);
+    cursor:pointer;
+  }
+  .footer-link:hover{ color:var(--ink); }
 
   @media (max-width:600px){
     header{padding:28px 20px 24px;}
@@ -825,6 +837,7 @@
 
   <footer>
     <span>Sillan Coaches · Route 179 · Safe, reliable, comfortable</span>
+    <button class="footer-link" id="privacyToggle" aria-haspopup="dialog" aria-controls="privacyOverlay">Privacy</button>
     <span>Times shown 24-hour · M3 = does not call at this stop</span>
   </footer>
 
@@ -837,6 +850,17 @@
     <p>This is an <b>unofficial</b> companion page for Sillan Coaches' Route 179 timetable (Cootehill / Kingscourt ⇄ Dublin / UCD). It isn't affiliated with or endorsed by Sillan Coaches — always check <a href="https://sillan.ie" target="_blank" rel="noopener">sillan.ie</a> or call <b>+353 42 9669130</b> to confirm times before travelling.</p>
     <p>Times are transcribed from Sillan's published posters and website. Sections marked <b>TBC</b> or <b>Provisional</b> (UCD, DCU, Saturday/Sunday) aren't confirmed — see the colour and shape legend for which days each run operates.</p>
     <p>More information will be added here over time.</p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="privacyOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="privacyTitle">
+  <div class="modal">
+    <button class="modal-close" id="privacyClose" aria-label="Close">&times;</button>
+    <h2 id="privacyTitle">Privacy &amp; cookies</h2>
+    <p>This page currently sets <b>no cookies</b> and collects <b>no personal data</b>. It's a static page with no sign-up, tracking, or analytics.</p>
+    <p>The only external resource it loads is <a href="https://fonts.google.com/" target="_blank" rel="noopener">Google Fonts</a>, used to display the page's typefaces.</p>
+    <p>If advertising is added to this page in future, this policy will be updated to explain what's used and a cookie-consent control will appear so you can choose whether to allow it.</p>
+    <p>Questions? Contact the page's maintainer via the <a href="https://github.com/brwinnov/sillan" target="_blank" rel="noopener">GitHub repository</a> this project is published from.</p>
   </div>
 </div>
 
@@ -990,11 +1014,11 @@
     });
   });
 
-  // ---- Help modal ----
-  (function(){
-    var overlay = document.getElementById('helpOverlay');
-    var openBtn = document.getElementById('helpToggle');
-    var closeBtn = document.getElementById('helpClose');
+  // ---- Modals (help, privacy) ----
+  function initModal(overlayId, openBtnId, closeBtnId){
+    var overlay = document.getElementById(overlayId);
+    var openBtn = document.getElementById(openBtnId);
+    var closeBtn = document.getElementById(closeBtnId);
 
     function open(){ overlay.hidden = false; }
     function close(){ overlay.hidden = true; }
@@ -1007,7 +1031,9 @@
     document.addEventListener('keydown', function(e){
       if (e.key === 'Escape' && !overlay.hidden) close();
     });
-  })();
+  }
+  initModal('helpOverlay', 'helpToggle', 'helpClose');
+  initModal('privacyOverlay', 'privacyToggle', 'privacyClose');
 
   // ---- Dark mode toggle ----
   (function(){

@@ -8,6 +8,15 @@ Last updated: 2026-09-11
 - WhatsApp announcements group: +353 86 777 9296
 - Facebook: facebook.com/SillanCoaches (not fetchable by automation)
 
+## Owner's relationship to Sillan (context, not for the page itself)
+The owner (Barry) was the original consultant who created Sillan's brand and website, then
+stepped back from that concierge work for five years. He's now restarting freelance
+design/hosting services and may re-approach Sillan professionally. This project is
+deliberately kept **independent and unofficial** — it promotes Sillan's service but isn't
+tied to or presented as Sillan's own output, and Sillan hasn't been told about it. This
+positioning is intentional (owner's explicit call, 2026-09-11), not an oversight — keep the
+"unofficial" framing in the help modal accurate if this project's status ever changes.
+
 ## Route 179
 Cootehill → Shercock → Kingscourt → Nobber → Wilkinstown → Navan → Garlow Cross → Ross Cross → Dunshaughlin → (M3) → Dublin → UCD, and return.
 
@@ -72,3 +81,4 @@ Full tables in `docs/timetable-mon-fri.md`. Summary:
 - 2026-09-11 · Extracted all 6 timetables from hand-written `<table>` markup into an inline `TIMETABLES` JS data object rendered by `renderBoard()` (see `PATTERNS.md`). Folded the planned chip-class semantic rename (`amber/teal/pink` → `all/mt/fr`) into this same rewrite rather than doing it as a separate mechanical pass, since the render function generates class names directly from the column's `tag`. Also added the mobile scroll-fade affordance as part of `renderBoard()`, wired to re-check on tab switch (`refreshBoardScrollStates()`) since a hidden tab's tables report 0 width at initial render. Verified pixel-identical output against the pre-refactor screenshots via local `wrangler dev` before deploying to production.
 - 2026-09-11 · Added a "?" help/info button to the header (next to the theme toggle) opening a modal that states the page is unofficial, not affiliated with Sillan Coaches, and tells users to confirm times on sillan.ie or by phone before travelling. Deliberately left generic/expandable — "more information will be added here over time" — since the owner plans to add more content later rather than finalising scope now.
 - 2026-09-11 · Disabled (commented out, not deleted) the Sun–Sat `.week-strip` day-pill row below the legend — owner found it purpose-unclear and it was redundant with the "Monday – Friday service" heading immediately below it. It was never interactive (plain `<div>`s, no click handlers) despite reading like buttons. Re-enable by uncommenting in `src/index.html` if wanted back.
+- 2026-09-11 · Explored monetizing via Google AdSense, deferred: owner doesn't yet have AdSense-for-content approval (only Google Ads "Promote" for YouTube). Decided to build only what's useful now — a "Privacy" footer link opening a modal stating the page currently sets no cookies/collects no data — rather than a full cookie-consent banner for cookies that don't exist yet (YAGNI). The real consent flow, ad slot, and the localStorage-vs-cookie persistence question (relevant now the file is live on Cloudflare, not just previewed in Claude.ai) are deferred until AdSense approval actually comes through. Owner wants this pattern portable across other GitHub projects too, not Sillan-specific. See TODO_AI.md IDEA section.
