@@ -61,7 +61,7 @@ rendering each `stop-cell`). Stops without an entry render as plain text, unchan
 
 ```js
 STOP_INFO['Kingscourt'] = {
-  description: 'Gartlans Pub — TFI stop 137861 (Plus Code W54V+QX, Kingscourt, Co. Cavan).',
+  description: 'Gartlans Pub — TFI stop 137861.',
   mapsUrl: mapsSearchUrl('W54V+QX Kingscourt, County Cavan'), // or a maps.app.goo.gl link directly
   tfiUrl: tfiLiveUrl('137861')   // optional — omit if no TFI stop number is known
 }
@@ -72,7 +72,9 @@ STOP_INFO['Kingscourt'] = {
   buttons are rendered dynamically by `renderBoard()`, so there's nothing to bind
   individual click handlers to until they exist).
 - `mapsSearchUrl(query)` builds a `google.com/maps/search` URL from a Plus Code + locality
-  string; a `maps.app.goo.gl` share link can be used directly instead.
+  string; a `maps.app.goo.gl` share link can be used directly instead. **Never put the Plus
+  Code itself in `description`** — it's reference-only for building `mapsUrl`, not
+  user-facing text (owner correction, 2026-09-11).
 - `tfiLiveUrl(stopId)` links to Transport for Ireland's live-departures deep link
   (`journeyplanner-production.transportforireland.ie/departures/liveDepartures?stopId=`) —
   confirmed working by loading it directly, not from documentation. Only add a `tfiUrl` for

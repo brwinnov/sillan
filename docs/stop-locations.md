@@ -7,12 +7,17 @@ manually gathered, not from an official Sillan/TFI stop-location dataset.
 Format per stop: description, Plus Code / Google Maps link, TFI stop number
 (Transport for Ireland's official bus stop reference) if known.
 
+**Plus Codes are reference-only, never shown on the page** — used solely to build
+each stop's `mapsUrl`. The rendered modal only shows the description text and
+the TFI stop number (when known); it never prints a Plus Code. (Owner
+correction, 2026-09-11 — an earlier version of this feature displayed them.)
+
 ## Have data (clickable in the page)
 
-| Stop | Description | Location | TFI stop # |
+| Stop | Description | Location (reference only, not shown on page) | TFI stop # |
 |---|---|---|---|
-| Cootehill | White Horse Hotel | Plus Code 3WG9+2W, Cootehill, Co. Cavan | — |
-| Shercock | Fair Hill House / Carrick Road junction | https://maps.app.goo.gl/L7eQxv9MyoZKQNJX9 | — |
+| Cootehill | White Horse Hotel | Plus Code 3WG9+2W, Cootehill, Co. Cavan | 15094 |
+| Shercock | Fair Hill House / Carrick Road junction | https://maps.app.goo.gl/L7eQxv9MyoZKQNJX9 | 107531 |
 | Kingscourt | **Gartlans Pub** (the official TFI/Sillan site reportedly lists "Blakes Pub" — owner believes this is stale) | Plus Code W54V+QX, Kingscourt, Co. Cavan | 137861 |
 | Nobber | Church entrance | https://maps.app.goo.gl/fKUSvV2aA4bzqPMn7 | — |
 | Wilkinstown | T-junction | Plus Code P7MQ+RF, Wilkinstown, Co. Meath | 137901 |
