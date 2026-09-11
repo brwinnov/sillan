@@ -23,7 +23,7 @@ correction, 2026-09-11 — an earlier version of this feature displayed them.)
 | Wilkinstown | T-junction | Plus Code P7MQ+RF, Wilkinstown, Co. Meath | 137901 |
 | Dunshaughlin | Foleys EBS | Plus Code GF56+V4, Dunshaughlin, Co. Meath | 15090 |
 | Navan | Navan Shopping Centre. Route also passes TaraGlen, Topaz Petrol Station, RoundO Pub, AIB Kennedy Road, ArdBoyne, Old Bridge — these are **not** separate timetable stops, just route colour, confirmed by owner not to require splitting "Navan" into multiple rows. No Plus Code/Maps link supplied — `mapsUrl` uses a plain text search ("Navan Shopping Centre, County Meath") rather than a Plus Code. | 189521 |
-| Garlow Cross | No official TFI bus stop for this location (owner-confirmed). Maps link supplied directly. | — |
+| Garlow Cross | Maps link supplied directly. | 101821 |
 | Ross Cross | No description/venue given yet, just the TFI number. `mapsUrl` uses a plain text search ("Ross Cross, County Meath"). | 101861 |
 
 ## Still needed
