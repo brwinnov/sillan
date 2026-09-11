@@ -7,9 +7,6 @@ Priority: P1 = do next · P2 = soon · P3 = nice to have · IDEA = unscoped
 - [ ] Find a source for the DCU timetable and populate the DCU tab. Check sillan.ie nav, Facebook (via browser), and DCU's own commuting pages.
 
 ## P2 — Should do
-- [ ] Add a visible scroll affordance (fade edge, chevron, or "swipe for more →" hint) to the `.board-wrap` tables on mobile — they scroll horizontally correctly (`overflow-x:auto`, confirmed working) but nothing signals that Runs 4–8 are off-screen. Found during the 2026-09-11 visual QA pass.
-- [ ] Rename legacy chip classes `amber/teal/pink` → semantic `all/mt/fr` across the file (~150 spans). Script it; update `CONTEXT_MAP.md` table afterwards.
-- [ ] Extract timetable data into an inline JSON block and render the `<table class="board">` elements from it with a small render function. Keeps single-file constraint; makes future timetable edits data-only.
 - [ ] Add a print stylesheet (A4 portrait, header condensed, one tab per page).
 - [ ] Resolve the Bank Holiday wording against Sillan's FAQ (Sundays **and** Mondays reduced service). Get owner's decision.
 - [ ] Decide whether to show intermediate Dublin set-down stops from the NTA GTFS data (Blanchardstown, Phibsborough, Parnell Sq…). Currently omitted to match Sillan's own posters.
@@ -28,6 +25,9 @@ Priority: P1 = do next · P2 = soon · P3 = nice to have · IDEA = unscoped
 - Multi-operator: same template for other Cavan/Meath → Dublin commuter services.
 
 ## Done
+- [x] 2026-09-11 · Extracted all 6 timetables into inline JS data (`TIMETABLES` object) rendered by a small `renderBoard()` function — no more hand-written `<table>` markup per view. File shrank 1107→922 lines despite adding the render engine.
+- [x] 2026-09-11 · Renamed chip classes `amber/teal/pink` → semantic `all/mt/fr` (folded into the JSON-extraction rewrite rather than done as a separate pass, since the render function generates the class names directly).
+- [x] 2026-09-11 · Added mobile scroll affordance: a fade + chevron on `.board-wrap`'s right edge that hides once scrolled to the end or when the table already fits (`no-overflow`/`at-end` classes, `refreshBoardScrollStates()` re-checks on tab switch since hidden tabs report 0 width). Verified in local `wrangler dev` before deploying.
 - [x] 2026-09-11 · Deployed to Cloudflare Workers at https://sillan.brwinnov.app.
 - [x] 2026-09-11 · Real-browser visual QA pass (desktop+mobile, light+dark, all tabs); screenshots in `docs/screenshots/`.
 - [x] 2026-09-11 · Created public GitHub repo `brwinnov/sillan`, pushed initial commit.

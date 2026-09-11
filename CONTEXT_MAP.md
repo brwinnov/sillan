@@ -25,14 +25,15 @@ Return stops on the Default timetable: UCD → Nassau Street → Hilton Garden.
 
 ## Run categories (colour + shape, never colour alone)
 
-| Category | CSS class | Colour (Okabe–Ito) | Shape | Header tag |
-|---|---|---|---|---|
-| Every weekday Mon–Fri | `.chip.amber` | Yellow `#F0E442` | rounded rectangle | `.tag-all` |
-| Mon–Thu only | `.chip.teal` | Sky blue `#56B4E9` | pill (radius 100px) | `.tag-mt` |
-| Fri only | `.chip.pink` | Reddish purple `#CC79A7` | dashed outline | `.tag-fr` |
-| Placeholder / no data | `.chip.dash` | line grey | no fill | `.tag-tbc` |
+| Category | Data tag (`columns[i].tag`) | CSS class | Colour (Okabe–Ito) | Shape | Header tag |
+|---|---|---|---|---|---|
+| Every weekday Mon–Fri | `all` | `.chip.all` | Yellow `#F0E442` | rounded rectangle | `.tag-all` |
+| Mon–Thu only | `mt` | `.chip.mt` | Sky blue `#56B4E9` | pill (radius 100px) | `.tag-mt` |
+| Fri only | `fr` | `.chip.fr` | Reddish purple `#CC79A7` | dashed outline | `.tag-fr` |
+| Placeholder / no data | `tbc` | `.chip.dash` | line grey | no fill | `.tag-tbc` |
 
-Class names are legacy (from the first palette). Semantic rename is on the backlog.
+Class names are semantic (renamed from the legacy `amber/teal/pink` on 2026-09-11, alongside
+the JSON data-extraction refactor — see `PATTERNS.md` for the `TIMETABLES` data shape).
 
 ## Default timetable — reconciled Mon–Fri data
 Full tables in `docs/timetable-mon-fri.md`. Summary:
@@ -67,3 +68,4 @@ Full tables in `docs/timetable-mon-fri.md`. Summary:
 - 2026-09-11 · Single-file HTML, no build step — keeps it trivially shareable and previewable.
 - 2026-09-11 · Deployed to Cloudflare Workers (assets-only, `wrangler.jsonc` at repo root, `assets.directory: ./src`) with a Custom Domain binding, live at https://sillan.brwinnov.app on the owner's existing `brwinnov.app` zone. Repo is public on GitHub (`brwinnov/sillan`) but Cloudflare deploy is a separate step — pushing to GitHub does not auto-deploy; re-run `npx wrangler deploy` after edits to `src/index.html`.
 - 2026-09-11 · First real-browser visual QA pass done (Playwright, against the live Cloudflare URL) — desktop (1280px) and mobile (390px) × light/dark × all three tabs. Screenshots saved to `docs/screenshots/`. Confirmed: Okabe–Ito palette + shape cues (rounded rect / pill / dashed outline) render as visually distinct in both themes; dark mode has good contrast throughout; UCD/DCU placeholder banners display correctly. Found: mobile tables scroll horizontally correctly (`.board-wrap`, `overflow-x:auto`) but have no visible scroll affordance — added to `TODO_AI.md` P2. Also found `favicon.ico` 404s (harmless, added to backlog).
+- 2026-09-11 · Extracted all 6 timetables from hand-written `<table>` markup into an inline `TIMETABLES` JS data object rendered by `renderBoard()` (see `PATTERNS.md`). Folded the planned chip-class semantic rename (`amber/teal/pink` → `all/mt/fr`) into this same rewrite rather than doing it as a separate mechanical pass, since the render function generates class names directly from the column's `tag`. Also added the mobile scroll-fade affordance as part of `renderBoard()`, wired to re-check on tab switch (`refreshBoardScrollStates()`) since a hidden tab's tables report 0 width at initial render. Verified pixel-identical output against the pre-refactor screenshots via local `wrangler dev` before deploying to production.
