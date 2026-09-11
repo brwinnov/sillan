@@ -198,12 +198,34 @@
     .toggle-btn{flex:1;}
   }
 
-  /* ---------- THEME TOGGLE ---------- */
-  .theme-toggle{
+  /* ---------- HEADER ACTIONS (help + theme toggle) ---------- */
+  .header-actions{
     position:absolute;
     top:20px;
     right:40px;
     z-index:3;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .help-toggle{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:30px;
+    height:30px;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.3);
+    border-radius:100px;
+    color:#fff;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    transition:background 0.15s ease;
+  }
+  .help-toggle:hover{ background:rgba(255,255,255,0.2); }
+  .theme-toggle{
     display:inline-flex;
     align-items:center;
     gap:7px;
@@ -224,10 +246,64 @@
   body.dark .theme-toggle .icon-sun{ display:block; }
   body.dark .theme-toggle .icon-moon{ display:none; }
   @media (max-width:600px){
-    .theme-toggle{ top:14px; right:20px; }
+    .header-actions{ top:14px; right:20px; }
     .theme-toggle .theme-label{ display:none; }
     .theme-toggle{ padding:7px 9px; }
   }
+
+  /* ---------- HELP MODAL ---------- */
+  .modal-overlay{
+    position:fixed;
+    inset:0;
+    z-index:10;
+    background:rgba(0,0,0,0.5);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+  .modal-overlay[hidden]{ display:none; }
+  .modal{
+    background:var(--panel);
+    color:var(--ink);
+    border-radius:14px;
+    padding:28px 26px;
+    max-width:440px;
+    width:100%;
+    max-height:85vh;
+    overflow-y:auto;
+    position:relative;
+    box-shadow:0 20px 60px rgba(0,0,0,0.35);
+  }
+  .modal h2{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:19px;
+    margin:0 0 14px;
+  }
+  .modal p{
+    font-size:13.5px;
+    line-height:1.6;
+    color:var(--slate);
+    margin:0 0 12px;
+  }
+  .modal p:last-child{ margin-bottom:0; }
+  .modal a{ color:var(--rose); font-weight:600; }
+  body.dark .modal a{ color:#F0B4B4; }
+  .modal-close{
+    position:absolute;
+    top:16px;
+    right:16px;
+    width:28px;
+    height:28px;
+    border-radius:100px;
+    border:1px solid var(--line);
+    background:transparent;
+    color:var(--slate);
+    font-size:16px;
+    line-height:1;
+    cursor:pointer;
+  }
+  .modal-close:hover{ background:var(--paper); }
 
   /* ---------- DARK MODE ---------- */
   body.dark{
@@ -608,11 +684,14 @@
         <div class="brand-tag">Travel in comfort</div>
       </div>
     </div>
-    <button class="theme-toggle" id="themeToggle" aria-label="Switch to dark mode" aria-pressed="false" title="Toggle dark mode">
-      <svg class="icon-sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-      <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
-      <span class="theme-label">Dark</span>
-    </button>
+    <div class="header-actions">
+      <button class="help-toggle" id="helpToggle" aria-haspopup="dialog" aria-controls="helpOverlay" title="About & help">?</button>
+      <button class="theme-toggle" id="themeToggle" aria-label="Switch to dark mode" aria-pressed="false" title="Toggle dark mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
+        <span class="theme-label">Dark</span>
+      </button>
+    </div>
     <div class="route-path">
       Cootehill / Kingscourt <span class="via">⇄</span> Dublin
     </div>
@@ -686,6 +765,7 @@
     <div class="board-wrap" id="tbl-satSun"></div>
     <div class="notes">
       <div class="note"><span class="mark">i</span><div>No Saturday/Sunday timetable is currently published on sillan.ie — this section is a placeholder to fill in once confirmed.</div></div>
+      <div class="note"><span class="mark">?</span><div><b>Unconfirmed recollection, not current data:</b> Sunday evening previously had a Kingscourt departure around 19:00, arriving Dublin approximately 20:30. Needs verifying against Sillan before it can be added as a real timetable entry.</div></div>
       <div class="note"><span class="mark">i</span><div><b>Bank Holidays follow the Sunday timetable</b> — once Sunday times are confirmed above, Bank Holidays run the same.</div></div>
     </div>
   </div>
@@ -745,6 +825,16 @@
     <span>Times shown 24-hour · M3 = does not call at this stop</span>
   </footer>
 
+</div>
+
+<div class="modal-overlay" id="helpOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+  <div class="modal">
+    <button class="modal-close" id="helpClose" aria-label="Close">&times;</button>
+    <h2 id="helpTitle">About this page</h2>
+    <p>This is an <b>unofficial</b> companion page for Sillan Coaches' Route 179 timetable (Cootehill / Kingscourt ⇄ Dublin / UCD). It isn't affiliated with or endorsed by Sillan Coaches — always check <a href="https://sillan.ie" target="_blank" rel="noopener">sillan.ie</a> or call <b>+353 42 9669130</b> to confirm times before travelling.</p>
+    <p>Times are transcribed from Sillan's published posters and website. Sections marked <b>TBC</b> or <b>Provisional</b> (UCD, DCU, Saturday/Sunday) aren't confirmed — see the colour and shape legend for which days each run operates.</p>
+    <p>More information will be added here over time.</p>
+  </div>
 </div>
 
 <script>
@@ -896,6 +986,25 @@
       refreshBoardScrollStates();
     });
   });
+
+  // ---- Help modal ----
+  (function(){
+    var overlay = document.getElementById('helpOverlay');
+    var openBtn = document.getElementById('helpToggle');
+    var closeBtn = document.getElementById('helpClose');
+
+    function open(){ overlay.hidden = false; }
+    function close(){ overlay.hidden = true; }
+
+    openBtn.addEventListener('click', open);
+    closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', function(e){
+      if (e.target === overlay) close();
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && !overlay.hidden) close();
+    });
+  })();
 
   // ---- Dark mode toggle ----
   (function(){

@@ -7,6 +7,8 @@ Priority: P1 = do next · P2 = soon · P3 = nice to have · IDEA = unscoped
 - [ ] Find a source for the DCU timetable and populate the DCU tab. Check sillan.ie nav, Facebook (via browser), and DCU's own commuting pages.
 
 ## P2 — Should do
+- [ ] Verify the recalled Sunday evening Kingscourt ~19:00 → Dublin ~20:30 run against a real Sillan source (site/Facebook/phone) before promoting it from the caveat note into a real timetable entry.
+- [ ] Expand the "About this page" help modal content — currently a starting point (unofficial disclaimer + data-source note); owner plans to add more over time.
 - [ ] Add a print stylesheet (A4 portrait, header condensed, one tab per page).
 - [ ] Resolve the Bank Holiday wording against Sillan's FAQ (Sundays **and** Mondays reduced service). Get owner's decision.
 - [ ] Decide whether to show intermediate Dublin set-down stops from the NTA GTFS data (Blanchardstown, Phibsborough, Parnell Sq…). Currently omitted to match Sillan's own posters.
@@ -25,6 +27,8 @@ Priority: P1 = do next · P2 = soon · P3 = nice to have · IDEA = unscoped
 - Multi-operator: same template for other Cavan/Meath → Dublin commuter services.
 
 ## Done
+- [x] 2026-09-11 · Added "?" help/info modal to header (unofficial-page disclaimer, data-source note, room to expand).
+- [x] 2026-09-11 · Added unconfirmed-recollection caveat note for a possible Sunday evening Kingscourt→Dublin run (not promoted to real data — see CONTEXT_MAP open questions).
 - [x] 2026-09-11 · Extracted all 6 timetables into inline JS data (`TIMETABLES` object) rendered by a small `renderBoard()` function — no more hand-written `<table>` markup per view. File shrank 1107→922 lines despite adding the render engine.
 - [x] 2026-09-11 · Renamed chip classes `amber/teal/pink` → semantic `all/mt/fr` (folded into the JSON-extraction rewrite rather than done as a separate pass, since the render function generates the class names directly).
 - [x] 2026-09-11 · Added mobile scroll affordance: a fade + chevron on `.board-wrap`'s right edge that hides once scrolled to the end or when the table already fits (`no-overflow`/`at-end` classes, `refreshBoardScrollStates()` re-checks on tab switch since hidden tabs report 0 width). Verified in local `wrangler dev` before deploying.
