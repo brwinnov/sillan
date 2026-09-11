@@ -17,14 +17,30 @@ correction, 2026-09-11 — an earlier version of this feature displayed them.)
 | Stop | Description | Location (reference only, not shown on page) | TFI stop # |
 |---|---|---|---|
 | Cootehill | White Horse Hotel | Plus Code 3WG9+2W, Cootehill, Co. Cavan | 15094 |
-| Shercock | Fair Hill House / Carrick Road junction | https://maps.app.goo.gl/L7eQxv9MyoZKQNJX9 | 107531 |
+| Shercock | Fair Hill House / Carrick Road junction | https://maps.app.goo.gl/L7eQxv9MyoZKQNJX9 | 110111 |
 | Kingscourt | **Gartlans Pub** (the official TFI/Sillan site reportedly lists "Blakes Pub" — owner believes this is stale) | Plus Code W54V+QX, Kingscourt, Co. Cavan | 137861 |
 | Nobber | Church entrance | https://maps.app.goo.gl/fKUSvV2aA4bzqPMn7 | — |
 | Wilkinstown | T-junction | Plus Code P7MQ+RF, Wilkinstown, Co. Meath | 137901 |
 | Dunshaughlin | Foleys EBS | Plus Code GF56+V4, Dunshaughlin, Co. Meath | 15090 |
-| Navan | Navan Shopping Centre. Route also passes TaraGlen, Topaz Petrol Station, RoundO Pub, AIB Kennedy Road, ArdBoyne, Old Bridge — these are **not** separate timetable stops, just route colour, confirmed by owner not to require splitting "Navan" into multiple rows. No Plus Code/Maps link supplied — `mapsUrl` uses a plain text search ("Navan Shopping Centre, County Meath") rather than a Plus Code. | 189521 |
+| Navan | Navan Shopping Centre. Route also passes TaraGlen, Topaz Petrol Station, RoundO Pub, AIB Kennedy Road, ArdBoyne, Old Bridge — these are **not** separate timetable stops, just route colour, confirmed by owner not to require splitting "Navan" into multiple rows. No Plus Code/Maps link supplied — `mapsUrl` uses a plain text search ("Navan Shopping Centre, County Meath") rather than a Plus Code. Has an `extra` field (see below) listing additional TFI stops along the route through Navan, grouped by direction. | 189521 |
 | Garlow Cross | Maps link supplied directly. | 101821 |
 | Ross Cross | No description/venue given yet, just the TFI number. `mapsUrl` uses a plain text search ("Ross Cross, County Meath"). | 101861 |
+
+## Navan's extra TFI stops (route detail, not separate timetable rows)
+
+Navan's `STOP_INFO` entry has an `extra: {toDublin: [...], fromDublin: [...]}` field
+that renders as two extra grouped lists at the bottom of its modal — direction-specific
+landmarks along the route through Navan, each linking to its own live TFI departures
+where a TFI number is known:
+
+**To Dublin:** Simons Town (15087), Circle K (15088), N51 to Shopping Centre (189521),
+"Kennedy Rd AIB → Watergate Street → Dublin Rd" (plain text, no TFI number),
+Ardboyne Hotel - Dublin Road (101801), Kilcarn Bridge (101811)
+
+**From Dublin:** FlowerHill (15091), Circle K (15092), Simons Town (15093)
+
+This pattern (`extra` field, `renderExtraGroup()` in `src/index.html`) exists for any
+stop that needs sub-location detail beyond a single description — not Navan-specific.
 
 ## Still needed
 

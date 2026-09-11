@@ -81,6 +81,11 @@ STOP_INFO['Kingscourt'] = {
   stops with a real, verified TFI stop number.
 - Full location data source (what's known, what's still needed) lives in
   `docs/stop-locations.md` — update it whenever `STOP_INFO` changes.
+- Optional `extra: {toDublin: [...], fromDublin: [...]}` field for a stop that covers
+  several sub-locations along the route (e.g. Navan). Each item is either
+  `{name, tfi}` (rendered as a link to that TFI stop's live departures) or `{note}`
+  (plain text, no link, for route-path detail with no TFI number). Rendered by
+  `renderExtraGroup()` as two grouped lists appended below the main description/links.
 
 ## Notes
 - `.note` (amber) for informational; `.note.rose` for warnings/exceptions. First child is a `.mark` glyph: `i`, `!`, `+`, `–`.

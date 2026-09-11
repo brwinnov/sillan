@@ -289,6 +289,20 @@
   .modal p:last-child{ margin-bottom:0; }
   .modal a{ color:var(--rose); font-weight:600; }
   body.dark .modal a{ color:#F0B4B4; }
+  .modal .extra-group{ margin-top:14px; padding-top:12px; border-top:1px solid var(--line); }
+  .modal .extra-group h3{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:13px;
+    margin:0 0 6px;
+    color:var(--ink);
+  }
+  .modal .extra-group ul{
+    margin:0;
+    padding:0 0 0 18px;
+    font-size:13px;
+    line-height:1.6;
+    color:var(--slate);
+  }
   .modal-close{
     position:absolute;
     top:16px;
@@ -889,6 +903,7 @@
     <p id="stopDescription"></p>
     <p><a id="stopMapsLink" href="#" target="_blank" rel="noopener">Open in Google Maps →</a></p>
     <p id="stopTfiRow" hidden><a id="stopTfiLink" href="#" target="_blank" rel="noopener">Live TFI departures for this stop →</a></p>
+    <div id="stopExtra" hidden></div>
   </div>
 </div>
 
@@ -944,7 +959,22 @@
     'Navan': {
       description: 'Navan Shopping Centre — TFI stop 189521.',
       mapsUrl: mapsSearchUrl('Navan Shopping Centre, County Meath'),
-      tfiUrl: tfiLiveUrl('189521')
+      tfiUrl: tfiLiveUrl('189521'),
+      extra: {
+        toDublin: [
+          {name:'Simons Town', tfi:'15087'},
+          {name:'Circle K', tfi:'15088'},
+          {name:'N51 to Shopping Centre', tfi:'189521'},
+          {note:'Kennedy Rd AIB → Watergate Street → Dublin Rd'},
+          {name:'Ardboyne Hotel - Dublin Road', tfi:'101801'},
+          {name:'Kilcarn Bridge', tfi:'101811'}
+        ],
+        fromDublin: [
+          {name:'FlowerHill', tfi:'15091'},
+          {name:'Circle K', tfi:'15092'},
+          {name:'Simons Town', tfi:'15093'}
+        ]
+      }
     },
     'Garlow Cross': {
       description: 'Garlow Cross — TFI stop 101821.',
@@ -1135,6 +1165,19 @@
     var mapsLinkEl = document.getElementById('stopMapsLink');
     var tfiRowEl = document.getElementById('stopTfiRow');
     var tfiLinkEl = document.getElementById('stopTfiLink');
+    var extraEl = document.getElementById('stopExtra');
+
+    function renderExtraGroup(label, items){
+      if (!items || !items.length) return '';
+      var rows = items.map(function(item){
+        if (item.tfi){
+          return '<li>' + item.name + ' — <a href="' + tfiLiveUrl(item.tfi) +
+                 '" target="_blank" rel="noopener">TFI stop ' + item.tfi + ' →</a></li>';
+        }
+        return '<li>' + item.note + '</li>';
+      }).join('');
+      return '<div class="extra-group"><h3>' + label + '</h3><ul>' + rows + '</ul></div>';
+    }
 
     function open(stopName){
       var info = STOP_INFO[stopName];
@@ -1144,6 +1187,13 @@
       mapsLinkEl.href = info.mapsUrl;
       tfiRowEl.hidden = !info.tfiUrl;
       if (info.tfiUrl) tfiLinkEl.href = info.tfiUrl;
+
+      var extraHtml = info.extra
+        ? renderExtraGroup('To Dublin', info.extra.toDublin) + renderExtraGroup('From Dublin', info.extra.fromDublin)
+        : '';
+      extraEl.innerHTML = extraHtml;
+      extraEl.hidden = !extraHtml;
+
       overlay.hidden = false;
     }
     function close(){ overlay.hidden = true; }
