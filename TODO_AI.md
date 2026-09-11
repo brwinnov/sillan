@@ -7,7 +7,7 @@ Priority: P1 = do next · P2 = soon · P3 = nice to have · IDEA = unscoped
 - [ ] Find a source for the DCU timetable and populate the DCU tab. Check sillan.ie nav, Facebook (via browser), and DCU's own commuting pages.
 
 ## P2 — Should do
-- [ ] Gather remaining stop location data (description + Plus Code/Maps link + TFI stop # if known) for: Navan (confirm it's really Navan Shopping Centre), Garlow Cross, Ross Cross, UCD, Nassau Street, Hilton Garden. See `docs/stop-locations.md`.
+- [ ] Gather remaining stop location data (description + Plus Code/Maps link + TFI stop # if known) for the return-journey stops: UCD, Nassau Street, Hilton Garden. See `docs/stop-locations.md`.
 - [ ] Verify the recalled Sunday evening Kingscourt ~19:00 → Dublin ~20:30 run against a real Sillan source (site/Facebook/phone) before promoting it from the caveat note into a real timetable entry.
 - [ ] Expand the "About this page" help modal content — currently a starting point (unofficial disclaimer + data-source note); owner plans to add more over time.
 - [ ] Add a print stylesheet (A4 portrait, header condensed, one tab per page).

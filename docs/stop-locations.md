@@ -22,14 +22,14 @@ correction, 2026-09-11 — an earlier version of this feature displayed them.)
 | Nobber | Church entrance | https://maps.app.goo.gl/fKUSvV2aA4bzqPMn7 | — |
 | Wilkinstown | T-junction | Plus Code P7MQ+RF, Wilkinstown, Co. Meath | 137901 |
 | Dunshaughlin | Foleys EBS | Plus Code GF56+V4, Dunshaughlin, Co. Meath | 15090 |
+| Navan | Navan Shopping Centre. Route also passes TaraGlen, Topaz Petrol Station, RoundO Pub, AIB Kennedy Road, ArdBoyne, Old Bridge — these are **not** separate timetable stops, just route colour, confirmed by owner not to require splitting "Navan" into multiple rows. No Plus Code/Maps link supplied — `mapsUrl` uses a plain text search ("Navan Shopping Centre, County Meath") rather than a Plus Code. | 189521 |
+| Garlow Cross | No official TFI bus stop for this location (owner-confirmed). Maps link supplied directly. | — |
+| Ross Cross | No description/venue given yet, just the TFI number. `mapsUrl` uses a plain text search ("Ross Cross, County Meath"). | 101861 |
 
 ## Still needed
 
 | Stop | Notes |
 |---|---|
-| Navan | Official stop is **Navan Shopping Centre** (owner: "I believe" — not 100% certain). Route also passes TaraGlen, Topaz Petrol Station, RoundO Pub, AIB Kennedy Road, ArdBoyne, Old Bridge — these are **not** separate timetable stops, just route colour, and were confirmed by owner not to require splitting "Navan" into multiple rows. Need a Plus Code / Maps link for the Shopping Centre itself. |
-| Garlow Cross | No description or location yet. |
-| Ross Cross | No description or location yet. |
 | UCD | No description or location yet (return-journey table). |
 | Nassau Street | No description or location yet. |
 | Hilton Garden | No description or location yet. |
