@@ -671,6 +671,23 @@
   }
   .footer-link:hover{ color:var(--ink); }
 
+  .stop-name-link{
+    background:none;
+    border:none;
+    padding:0;
+    margin:0;
+    font:inherit;
+    font-weight:inherit;
+    color:inherit;
+    cursor:pointer;
+    text-decoration:underline;
+    text-decoration-style:dotted;
+    text-decoration-color:var(--slate);
+    text-underline-offset:2px;
+  }
+  .stop-name-link:hover{ color:var(--rose); text-decoration-color:var(--rose); }
+  body.dark .stop-name-link:hover{ color:#F0B4B4; text-decoration-color:#F0B4B4; }
+
   @media (max-width:600px){
     header{padding:28px 20px 24px;}
     header .whatsapp-badge{position:static;margin-top:18px;max-width:none;}
@@ -864,6 +881,16 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="stopOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="stopTitle">
+  <div class="modal">
+    <button class="modal-close" id="stopClose" aria-label="Close">&times;</button>
+    <h2 id="stopTitle"></h2>
+    <p id="stopDescription"></p>
+    <p><a id="stopMapsLink" href="#" target="_blank" rel="noopener">Open in Google Maps →</a></p>
+    <p id="stopTfiRow" hidden><a id="stopTfiLink" href="#" target="_blank" rel="noopener">Live TFI departures for this stop →</a></p>
+  </div>
+</div>
+
 <script>
   // ---- Timetable data ----
   // Each column has a category ("all" = every weekday, "mt" = Mon-Thu only,
@@ -871,6 +898,47 @@
   // tag and the chip's colour+shape. Cell values: a time string, "M3" (bus
   // skips this stop), "TBC", or null (service doesn't run this column).
   var TAG_LABEL = { all:'Mon–Fri', mt:'Mon–Thu', fr:'Fri', tbc:'TBC' };
+
+  // ---- Stop locations ----
+  // Only stops listed here get a clickable "where is this stop" modal.
+  // Google Maps understands a Plus Code + locality as a plain search query.
+  function mapsSearchUrl(query){
+    return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
+  }
+  // Transport for Ireland's live-departures deep link — confirmed working
+  // 2026-09-11 by loading it directly and seeing the matching stop/route data.
+  function tfiLiveUrl(stopId){
+    return 'https://journeyplanner-production.transportforireland.ie/departures/liveDepartures?stopId=' + stopId;
+  }
+  var STOP_INFO = {
+    'Cootehill': {
+      description: 'White Horse Hotel — Plus Code 3WG9+2W, Cootehill, Co. Cavan.',
+      mapsUrl: mapsSearchUrl('3WG9+2W Cootehill, County Cavan')
+    },
+    'Shercock': {
+      description: 'Fair Hill House / Carrick Road junction.',
+      mapsUrl: 'https://maps.app.goo.gl/L7eQxv9MyoZKQNJX9'
+    },
+    'Kingscourt': {
+      description: 'Gartlans Pub — TFI stop 137861 (Plus Code W54V+QX, Kingscourt, Co. Cavan).',
+      mapsUrl: mapsSearchUrl('W54V+QX Kingscourt, County Cavan'),
+      tfiUrl: tfiLiveUrl('137861')
+    },
+    'Nobber': {
+      description: 'Church entrance.',
+      mapsUrl: 'https://maps.app.goo.gl/fKUSvV2aA4bzqPMn7'
+    },
+    'Wilkinstown': {
+      description: 'T-junction — TFI stop 137901 (Plus Code P7MQ+RF, Wilkinstown, Co. Meath).',
+      mapsUrl: mapsSearchUrl('P7MQ+RF Wilkinstown, County Meath'),
+      tfiUrl: tfiLiveUrl('137901')
+    },
+    'Dunshaughlin': {
+      description: 'Foleys EBS — TFI stop 15090 (Plus Code GF56+V4, Dunshaughlin, Co. Meath).',
+      mapsUrl: mapsSearchUrl('GF56+V4 Dunshaughlin, County Meath'),
+      tfiUrl: tfiLiveUrl('15090')
+    }
+  };
 
   var TIMETABLES = {
     toDublin: {
@@ -957,7 +1025,10 @@
       var cells = stop.cells.map(function(value, i){
         return '<td class="time-cell">' + renderCell(value, data.columns[i].tag) + '</td>';
       }).join('');
-      return '<tr><td class="stop-cell"><span class="dot"></span>' + stop.name + '</td>' + cells + '</tr>';
+      var stopLabel = STOP_INFO[stop.name]
+        ? '<button class="stop-name-link" data-stop="' + stop.name + '">' + stop.name + '</button>'
+        : stop.name;
+      return '<tr><td class="stop-cell"><span class="dot"></span>' + stopLabel + '</td>' + cells + '</tr>';
     }).join('');
 
     mount.innerHTML =
@@ -1034,6 +1105,41 @@
   }
   initModal('helpOverlay', 'helpToggle', 'helpClose');
   initModal('privacyOverlay', 'privacyToggle', 'privacyClose');
+
+  // ---- Stop location modal ----
+  // Stop names are rendered dynamically by renderBoard(), so this listens
+  // for clicks on .stop-name-link anywhere rather than binding one-by-one.
+  (function(){
+    var overlay = document.getElementById('stopOverlay');
+    var closeBtn = document.getElementById('stopClose');
+    var titleEl = document.getElementById('stopTitle');
+    var descEl = document.getElementById('stopDescription');
+    var mapsLinkEl = document.getElementById('stopMapsLink');
+    var tfiRowEl = document.getElementById('stopTfiRow');
+    var tfiLinkEl = document.getElementById('stopTfiLink');
+
+    function open(stopName){
+      var info = STOP_INFO[stopName];
+      if (!info) return;
+      titleEl.textContent = stopName;
+      descEl.textContent = info.description;
+      mapsLinkEl.href = info.mapsUrl;
+      tfiRowEl.hidden = !info.tfiUrl;
+      if (info.tfiUrl) tfiLinkEl.href = info.tfiUrl;
+      overlay.hidden = false;
+    }
+    function close(){ overlay.hidden = true; }
+
+    document.addEventListener('click', function(e){
+      var link = e.target.closest ? e.target.closest('.stop-name-link') : null;
+      if (link){ open(link.getAttribute('data-stop')); return; }
+      if (e.target === overlay) close();
+    });
+    closeBtn.addEventListener('click', close);
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && !overlay.hidden) close();
+    });
+  })();
 
   // ---- Dark mode toggle ----
   (function(){

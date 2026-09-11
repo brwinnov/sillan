@@ -7,6 +7,7 @@ Priority: P1 = do next · P2 = soon · P3 = nice to have · IDEA = unscoped
 - [ ] Find a source for the DCU timetable and populate the DCU tab. Check sillan.ie nav, Facebook (via browser), and DCU's own commuting pages.
 
 ## P2 — Should do
+- [ ] Gather remaining stop location data (description + Plus Code/Maps link + TFI stop # if known) for: Navan (confirm it's really Navan Shopping Centre), Garlow Cross, Ross Cross, UCD, Nassau Street, Hilton Garden. See `docs/stop-locations.md`.
 - [ ] Verify the recalled Sunday evening Kingscourt ~19:00 → Dublin ~20:30 run against a real Sillan source (site/Facebook/phone) before promoting it from the caveat note into a real timetable entry.
 - [ ] Expand the "About this page" help modal content — currently a starting point (unofficial disclaimer + data-source note); owner plans to add more over time.
 - [ ] Add a print stylesheet (A4 portrait, header condensed, one tab per page).
@@ -28,6 +29,7 @@ Priority: P1 = do next · P2 = soon · P3 = nice to have · IDEA = unscoped
 - **Monetization (Google AdSense) — deferred pending account approval.** Owner does not yet have AdSense-for-content approval (only used Google Ads "Promote" on YouTube, a different product). Plan: owner applies separately at adsense.google.com using this and other GitHub-hosted projects as properties (owner wants ads across multiple repos, not just this one — so build the eventual consent/ad pattern to be portable, not Sillan-specific). Once approved: (1) decide cookie-consent persistence — the project's "no localStorage" rule exists for Claude.ai artifact preview, but the live Cloudflare-hosted site could use a first-party cookie instead; needs a real decision then, not speculatively now: (2) build an actual accept/reject consent banner gating the AdSense script; (3) add the ad slot at the bottom of the page; (4) expand the Privacy modal (`#privacyOverlay`) to describe what AdSense actually sets. Explicitly stays an *independent, unofficial* page that promotes Sillan's service — owner (the original Sillan brand/site consultant, now restarting freelance work) deliberately does not want this tied to or presented as official Sillan output.
 
 ## Done
+- [x] 2026-09-11 · Added tap-to-open "where is this stop" modal (description, Google Maps link, live-TFI-departures link where known) for 6 stops so far (Cootehill, Shercock, Kingscourt, Nobber, Wilkinstown, Dunshaughlin). Data in `STOP_INFO` (`src/index.html`) and `docs/stop-locations.md`.
 - [x] 2026-09-11 · Added a "Privacy" link in the footer opening a `#privacyOverlay` modal (reused the help modal's open/close JS via a shared `initModal()` helper). States plainly that the page sets no cookies/collects no data today, names Google Fonts as the only external resource, and says a cookie-consent control will appear if/when advertising is added.
 - [x] 2026-09-11 · Disabled the week-strip day-pill row (owner request; see prior entry).
 - [x] 2026-09-11 · Added "?" help/info modal to header (unofficial-page disclaimer, data-source note, room to expand).

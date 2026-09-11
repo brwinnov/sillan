@@ -54,6 +54,32 @@ toDublin: {
   or when the table already fits) is wired automatically by `renderBoard()` for every table;
   don't add it manually.
 
+## Stop location modals (since 2026-09-11)
+A stop is clickable ("where is this stop?") only if it has an entry in the `STOP_INFO`
+object (keyed by stop name, shared across every table — `renderBoard()` checks it when
+rendering each `stop-cell`). Stops without an entry render as plain text, unchanged:
+
+```js
+STOP_INFO['Kingscourt'] = {
+  description: 'Gartlans Pub — TFI stop 137861 (Plus Code W54V+QX, Kingscourt, Co. Cavan).',
+  mapsUrl: mapsSearchUrl('W54V+QX Kingscourt, County Cavan'), // or a maps.app.goo.gl link directly
+  tfiUrl: tfiLiveUrl('137861')   // optional — omit if no TFI stop number is known
+}
+```
+
+- One shared modal (`#stopOverlay`), not one per stop — clicking a `.stop-name-link`
+  button fills in the title/description/links dynamically via event delegation (stop
+  buttons are rendered dynamically by `renderBoard()`, so there's nothing to bind
+  individual click handlers to until they exist).
+- `mapsSearchUrl(query)` builds a `google.com/maps/search` URL from a Plus Code + locality
+  string; a `maps.app.goo.gl` share link can be used directly instead.
+- `tfiLiveUrl(stopId)` links to Transport for Ireland's live-departures deep link
+  (`journeyplanner-production.transportforireland.ie/departures/liveDepartures?stopId=`) —
+  confirmed working by loading it directly, not from documentation. Only add a `tfiUrl` for
+  stops with a real, verified TFI stop number.
+- Full location data source (what's known, what's still needed) lives in
+  `docs/stop-locations.md` — update it whenever `STOP_INFO` changes.
+
 ## Notes
 - `.note` (amber) for informational; `.note.rose` for warnings/exceptions. First child is a `.mark` glyph: `i`, `!`, `+`, `–`.
 

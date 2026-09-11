@@ -23,6 +23,9 @@ Cootehill → Shercock → Kingscourt → Nobber → Wilkinstown → Navan → G
 Return stops on the Default timetable: UCD → Nassau Street → Hilton Garden.
 "M3" in a cell = bus uses the motorway and does not call at that stop.
 
+Per-stop location data (for the "where is this stop" tap modal) lives in
+`docs/stop-locations.md` — source of truth for what's known vs still needed.
+
 ## Timetable variants in `src/index.html`
 
 | Tab | Status | Source | Notes |
@@ -82,3 +85,4 @@ Full tables in `docs/timetable-mon-fri.md`. Summary:
 - 2026-09-11 · Added a "?" help/info button to the header (next to the theme toggle) opening a modal that states the page is unofficial, not affiliated with Sillan Coaches, and tells users to confirm times on sillan.ie or by phone before travelling. Deliberately left generic/expandable — "more information will be added here over time" — since the owner plans to add more content later rather than finalising scope now.
 - 2026-09-11 · Disabled (commented out, not deleted) the Sun–Sat `.week-strip` day-pill row below the legend — owner found it purpose-unclear and it was redundant with the "Monday – Friday service" heading immediately below it. It was never interactive (plain `<div>`s, no click handlers) despite reading like buttons. Re-enable by uncommenting in `src/index.html` if wanted back.
 - 2026-09-11 · Explored monetizing via Google AdSense, deferred: owner doesn't yet have AdSense-for-content approval (only Google Ads "Promote" for YouTube). Decided to build only what's useful now — a "Privacy" footer link opening a modal stating the page currently sets no cookies/collects no data — rather than a full cookie-consent banner for cookies that don't exist yet (YAGNI). The real consent flow, ad slot, and the localStorage-vs-cookie persistence question (relevant now the file is live on Cloudflare, not just previewed in Claude.ai) are deferred until AdSense approval actually comes through. Owner wants this pattern portable across other GitHub projects too, not Sillan-specific. See TODO_AI.md IDEA section.
+- 2026-09-11 · Added a per-stop "where is this stop" modal (tap the stop name → description + Google Maps link, plus a live-TFI-departures link where a TFI stop number is known). Data lives in `STOP_INFO` (see `PATTERNS.md`) and `docs/stop-locations.md`; only 6 of ~14 stops have data so far (owner is gathering the rest manually — Plus Codes, Google Maps share links, TFI stop numbers). Navan's exact stop needs confirming (owner believes it's Navan Shopping Centre, not fully certain); Garlow Cross, Ross Cross, UCD, Nassau Street, Hilton Garden still need data entirely. The TFI live-departures URL pattern (`journeyplanner-production.transportforireland.ie/departures/liveDepartures?stopId=`) was verified by loading it directly (not from docs) — confirmed stop 137861 correctly shows Kingscourt's live buses.
