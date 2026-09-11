@@ -26,3 +26,6 @@ dist/
 
 # Local-only working files (not for publishing)
 /_localonly/
+
+# Wrangler local state
+/.wrangler/

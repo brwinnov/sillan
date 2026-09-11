@@ -3,7 +3,6 @@
 Priority: P1 = do next · P2 = soon · P3 = nice to have · IDEA = unscoped
 
 ## P1 — Must do
-- [ ] Create GitHub repo `brwinnov/sillan`, push this scaffold as the initial commit.
 - [ ] Re-fetch https://sillan.ie/ucd/ on/after **Mon 14 Sept 2026** and update the UCD tab (currently the 7–11 Sept provisional schedule). Use Claude-in-Chrome if the content moves into an image.
 - [ ] Find a source for the DCU timetable and populate the DCU tab. Check sillan.ie nav, Facebook (via browser), and DCU's own commuting pages.
 - [ ] Open `src/index.html` in a real desktop browser at ~1200px and at mobile width and screenshot both views (light + dark, all three tabs). Nothing has been visually verified yet — only tag-balance checked.
@@ -28,6 +27,7 @@ Priority: P1 = do next · P2 = soon · P3 = nice to have · IDEA = unscoped
 - Multi-operator: same template for other Cavan/Meath → Dublin commuter services.
 
 ## Done
+- [x] 2026-09-11 · Created public GitHub repo `brwinnov/sillan`, pushed initial commit.
 - [x] 2026-09-11 · Reconcile Mon–Thu + Fri posters into one Mon–Fri dataset.
 - [x] 2026-09-11 · Build single-file departure-board infographic.
 - [x] 2026-09-11 · WhatsApp badge, view toggle (Default/UCD/DCU), theme toggle.

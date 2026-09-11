@@ -65,3 +65,4 @@ Full tables in `docs/timetable-mon-fri.md`. Summary:
 - 2026-09-11 · Okabe–Ito palette + shape cues for accessibility.
 - 2026-09-11 · Dark mode follows `prefers-color-scheme`, no persistence (no browser storage allowed).
 - 2026-09-11 · Single-file HTML, no build step — keeps it trivially shareable and previewable.
+- 2026-09-11 · Deployed to Cloudflare Workers (assets-only, `wrangler.jsonc` at repo root, `assets.directory: ./src`) with a Custom Domain binding, live at https://sillan.brwinnov.app on the owner's existing `brwinnov.app` zone. Repo is public on GitHub (`brwinnov/sillan`) but Cloudflare deploy is a separate step — pushing to GitHub does not auto-deploy; re-run `npx wrangler deploy` after edits to `src/index.html`.

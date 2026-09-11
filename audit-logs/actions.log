@@ -8,3 +8,7 @@
 {"ts":"2026-09-11T15:06:00Z","actor":"claude-chat","action":"edit","files":["src/index.html"],"note":"Okabe-Ito palette + shape cues; narrower columns; legend made global"}
 {"ts":"2026-09-11T15:10:00Z","actor":"claude-chat","action":"edit","files":["src/index.html"],"note":"Light/dark theme toggle"}
 {"ts":"2026-09-11T15:15:00Z","actor":"claude-chat","action":"scaffold","files":["HANDOVER.md","CONTEXT_MAP.md","TODO_AI.md","PATTERNS.md","CLAUDE.md","README.md","PROJECT_SUMMARY.json",".gitignore"],"note":"Repo scaffold and handover for Claude Code"}
+{"ts":"2026-09-11T16:25:00Z","actor":"claude-code","action":"edit","files":[".gitignore"],"note":"Excluded /_localonly/ (scaffold zip files) from version control"}
+{"ts":"2026-09-11T16:26:00Z","actor":"claude-code","action":"git-init-and-push","files":[],"note":"Initialized git repo, created public GitHub repo brwinnov/sillan via gh, pushed initial commit (16 files) to master"}
+{"ts":"2026-09-11T16:32:00Z","actor":"claude-code","action":"create","files":["wrangler.jsonc"],"note":"Added assets-only Workers config (assets.directory=./src) with custom_domain route for sillan.brwinnov.app"}
+{"ts":"2026-09-11T16:35:00Z","actor":"claude-code","action":"deploy","files":["src/index.html"],"note":"Deployed Worker 'sillan-timetable' via npx wrangler deploy; custom domain sillan.brwinnov.app provisioned on existing brwinnov.app zone; verified live (HTTP 200) and confirmed no impact on existing Workers briefing-hub/steamyard-mcp"}

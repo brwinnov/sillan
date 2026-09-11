@@ -1,0 +1,11 @@
+{
+  "name": "sillan-timetable",
+  "compatibility_date": "2026-09-11",
+  "assets": {
+    "directory": "./src",
+    "not_found_handling": "none"
+  },
+  "routes": [
+    { "pattern": "sillan.brwinnov.app", "custom_domain": true }
+  ]
+}
