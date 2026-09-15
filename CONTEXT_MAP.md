@@ -1,6 +1,6 @@
 # CONTEXT_MAP.md — Sillan (single source of truth)
 
-Last updated: 2026-09-15
+Last updated: 2026-09-15 (UCD re-fetch)
 
 ## Operator
 - **Sillan Tours Ltd** (trading as Sillan Coaches), Kingscourt Road, Shercock, Co. Cavan
@@ -31,7 +31,7 @@ Per-stop location data (for the "where is this stop" tap modal) lives in
 | Tab | Status | Source | Notes |
 |---|---|---|---|
 | Default | **Complete** | Two Sillan posters (in `docs/source-data/`), effective 7 Sept 2026 | Mon–Thu + Friday reconciled into one Mon–Fri table with day-type tags |
-| UCD | **Provisional** | https://sillan.ie/ucd/ read 2026-09-11 | Explicitly dated 7–11 Sept 2026; more services from 14 Sept. Must be re-fetched. |
+| UCD | **Complete** | https://sillan.ie/ucd/, re-fetched 2026-09-15 (owner supplied an updated poster image) | Now includes the 7th "To UCD" run (09:15 Navan-starting, Mon–Thu only) and the previously-missing 13:00 "Depart UCD" run — the site's promised 14 Sept additions are live. |
 | DCU | **Placeholder** | none | No source found |
 | Sat / Sun | **Provisional** | NTA GTFS feed (Small Operators), published 10 Sept 2026 — see `docs/timetable-sat-sun.md` | Not published anywhere on sillan.ie; per-NTA-data only, not Sillan-confirmed. Neither day serves UCD. |
 
@@ -54,10 +54,10 @@ Full tables in `docs/timetable-mon-fri.md`. Summary:
 - **To Dublin:** 8 runs. Six run every weekday; the 06:25 Shercock run and the 09:15 Navan-starting run are Mon–Thu only. The 05:30 Shercock run does not serve UCD on any day.
 - **From Dublin:** 8 runs. Five run every weekday; 18:10 and 19:15 are Mon–Thu only; 19:00 is Fri only. Last UCD departure on Fridays is 17:30.
 
-## UCD 2026/27 (as read 2026-09-11 — provisional)
-- To UCD: 6 runs, all Mon–Fri. Shercock departures 05:45, 06:10, 06:25, 06:35, 06:45, 09:20. Cootehill starts only the 06:30 (→ Shercock 06:45) and 09:00 (→ Shercock 09:20) runs.
-- Depart UCD: 15:40, 16:15, 16:50, 17:30, 18:10. Last Friday UCD departure 17:30.
-- Page note verbatim: *"Further services will be added on Monday 14th September 2026."*
+## UCD 2026/27 (re-fetched 2026-09-15 — complete)
+- To UCD: 7 runs. Six run Mon–Fri: Shercock departures 05:45, 06:10, 06:25, 06:35, 06:45, 09:20; Cootehill starts only the 06:30 (→ Shercock 06:45) and 09:00 (→ Shercock 09:20) runs. A 7th run, Mon–Thu only, starts from Navan at 09:15 (→ Garlow Cross 09:25 → Ross Cross 09:30 → Dunshaughlin 09:35) — the same run already shown as the Default tab's 8th "To Dublin" column, now confirmed to also serve UCD.
+- Depart UCD: 13:00, 15:40, 16:15, 16:50, 17:30 (all Mon–Fri), 18:10 (Mon–Thu only). Last Friday UCD departure 17:30. **Correction:** the previous version of this table was missing the 13:00 run entirely (present in the Default tab's "From Dublin" data all along, just never carried over to the UCD-specific table) — caught when the owner supplied an updated sillan.ie/ucd poster image for comparison.
+- The site's earlier note ("Further services will be added on Monday 14th September 2026") has now been fulfilled — this is treated as the current, complete schedule, not provisional.
 
 ## Sat/Sun timetable (per NTA GTFS, provisional — see docs/timetable-sat-sun.md)
 - One round trip each day. Saturday: 09:00 Cootehill → National Gallery (arr. 11:10); 18:00 Cumberland Street N → Cootehill (arr. 19:50). Sunday: 18:20 Cootehill → Parnell Square East (arr. 20:25); 20:30 Cumberland Street N → Cootehill (arr. 22:20). No Sunday morning service.
@@ -112,4 +112,5 @@ Full tables in `docs/timetable-mon-fri.md`. Summary:
 - 2026-09-11 · Stop-location descriptions never show Plus Codes on the page — they're reference-only for building `mapsUrl` (owner correction; an earlier version displayed them). Description text is minimal (venue name + TFI stop # if known) rather than technical location metadata.
 - 2026-09-11 · All 9 "To Dublin" / "To UCD" stops now have location data: Navan is confirmed as Navan Shopping Centre (TFI 189521; earlier uncertainty resolved); Garlow Cross has a Maps link and TFI stop 101821 (official Route 179 stop — no "nearby" hedge in its description); Ross Cross has TFI stop 101861 but no venue description yet. Shercock's TFI stop was corrected to 110111. Only UCD, Nassau Street, Hilton Garden (the "From Dublin" return stops) still need data — see `docs/stop-locations.md`.
 - 2026-09-11 · Populated the Saturday/Sunday section with real (provisional) data from the NTA GTFS feed, replacing the single-row TBC placeholder with two real To-Dublin/From-Dublin tables — same layout pattern as the weekday section. Added two new run categories (`sat`/`sun`, orange/vermillion, double-border/dotted shapes) since these are single specific days, not day-ranges. Added a `note` field to the stop-row data model (e.g. "set down only", "pick up only", "R147") that displays without breaking the `STOP_INFO`/`data-stop` linkage. Full per-stop trip detail (Navan sub-stops, Dublin set-down stops) lives in `docs/timetable-sat-sun.md` and `docs/source-data/179-sat-sun-gtfs.json` — only stops shared with the weekday table are shown in the infographic itself.
+- 2026-09-15 · Re-fetched the UCD timetable (owner supplied an updated sillan.ie/ucd poster image) and moved its status from Provisional to Complete: added the promised 7th "To UCD" run (09:15 Navan-starting, Mon–Thu only — reuses the same data already in the Default tab's 8th column) and fixed a pre-existing gap where "Depart UCD" was missing its 13:00 run (it was already correctly present in the Default tab's "From Dublin" table, just never carried over). Removed the "shown for 7–11 Sept only" caveat banner and the UCD mention from the help modal's Provisional-sections list, since it's now current data like the Default tab.
 - 2026-09-15 · Added a collapsible "Service announcements" bar at the top of the page using Facebook's Page Plugin (see "Service announcements" section above for the full reasoning and rejected alternatives). Styled it with `var(--board)`/`var(--board-amber)` rather than the reference POC's own standalone colour tokens, so the bar's shade genuinely tracks the light/dark toggle through the same variable the rest of the page already redefines under `body.dark` — no bespoke dark-mode override needed. Kept the POC's lazy-load pattern (iframe `src` set only on first `<details>` expand) unchanged.

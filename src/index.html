@@ -971,15 +971,12 @@
       <div class="section-head">
         <h2>UCD Timetable 2026/27</h2>
       </div>
-      <p class="section-sub">Source: sillan.ie/ucd</p>
-      <div class="notes">
-        <div class="note rose"><span class="mark">!</span><div><b>Currently shown for 7–11 September 2026 only.</b> Sillan's site states further services will be added from <b>Monday 14 September 2026</b> — check back once term is fully underway.</div></div>
-      </div>
+      <p class="section-sub">Source: sillan.ie/ucd, re-fetched 15 Sept 2026 — full term schedule now live</p>
 
-      <p class="section-sub" style="margin-top:18px;">To UCD · 6 departures a day</p>
+      <p class="section-sub" style="margin-top:18px;">To UCD · 7 departures a day</p>
       <div class="board-wrap" id="tbl-ucdToUCD"></div>
 
-      <p class="section-sub" style="margin-top:22px;">Depart UCD · 5 departures a day</p>
+      <p class="section-sub" style="margin-top:22px;">Depart UCD · 6 departures a day</p>
       <div class="board-wrap" id="tbl-ucdDepartUCD"></div>
 
       <div class="notes">
@@ -1015,7 +1012,7 @@
     <button class="modal-close" id="helpClose" aria-label="Close">&times;</button>
     <h2 id="helpTitle">About this page</h2>
     <p>This is an <b>unofficial</b> companion page for Sillan Coaches' Route 179 timetable (Cootehill / Kingscourt ⇄ Dublin / UCD). It isn't affiliated with or endorsed by Sillan Coaches — always check <a href="https://sillan.ie" target="_blank" rel="noopener">sillan.ie</a> or call <b>+353 42 9669130</b> to confirm times before travelling.</p>
-    <p>Times are transcribed from Sillan's published posters and website. Sections marked <b>TBC</b> or <b>Provisional</b> (UCD, DCU, Saturday/Sunday) aren't confirmed — see the colour and shape legend for which days each run operates.</p>
+    <p>Times are transcribed from Sillan's published posters and website. Sections marked <b>TBC</b> or <b>Provisional</b> (DCU, Saturday/Sunday) aren't confirmed — see the colour and shape legend for which days each run operates.</p>
     <p>More information will be added here over time.</p>
     <p><b>All stop extra info is best-approx. location or nearest TFI bus stop. You may need to be on the opposite side of the road from it.</b></p>
   </div>
@@ -1190,23 +1187,23 @@
       ]
     },
     ucdToUCD: {
-      columns: [{tag:'all'},{tag:'all'},{tag:'all'},{tag:'all'},{tag:'all'},{tag:'all'}],
+      columns: [{tag:'all'},{tag:'all'},{tag:'all'},{tag:'all'},{tag:'all'},{tag:'all'},{tag:'mt'}],
       stops: [
-        {name:'Cootehill',    cells:[null,null,null,null,'6.30','9.00']},
-        {name:'Shercock',     cells:['5.45','6.10','6.25','6.35','6.45','9.20']},
-        {name:'Kingscourt',   cells:['5.55','6.20','6.35','6.45','7.00','9.35']},
-        {name:'Nobber',       cells:['6.05','6.30','6.45','6.55','7.10','9.45']},
-        {name:'Wilkinstown',  cells:['6.15','6.40','6.55','7.05','7.20','9.55']},
-        {name:'Navan',        cells:['6.25','6.50','7.05','7.15','7.30','10.10']},
-        {name:'Garlow Cross', cells:['6.35','7.00','7.15','7.25','7.40','10.20']},
-        {name:'Ross Cross',   cells:['6.40','7.05','M3','M3','7.45','10.25']},
-        {name:'Dunshaughlin', cells:['6.45','7.10','M3','M3','7.50','10.30']}
+        {name:'Cootehill',    cells:[null,null,null,null,'6.30','9.00',null]},
+        {name:'Shercock',     cells:['5.45','6.10','6.25','6.35','6.45','9.20',null]},
+        {name:'Kingscourt',   cells:['5.55','6.20','6.35','6.45','7.00','9.35',null]},
+        {name:'Nobber',       cells:['6.05','6.30','6.45','6.55','7.10','9.45',null]},
+        {name:'Wilkinstown',  cells:['6.15','6.40','6.55','7.05','7.20','9.55',null]},
+        {name:'Navan',        cells:['6.25','6.50','7.05','7.15','7.30','10.10','9.15']},
+        {name:'Garlow Cross', cells:['6.35','7.00','7.15','7.25','7.40','10.20','9.25']},
+        {name:'Ross Cross',   cells:['6.40','7.05','M3','M3','7.45','10.25','9.30']},
+        {name:'Dunshaughlin', cells:['6.45','7.10','M3','M3','7.50','10.30','9.35']}
       ]
     },
     ucdDepartUCD: {
-      columns: [{tag:'all'},{tag:'all'},{tag:'all'},{tag:'all'},{tag:'mt'}],
+      columns: [{tag:'all'},{tag:'all'},{tag:'all'},{tag:'all'},{tag:'all'},{tag:'mt'}],
       stops: [
-        {name:'UCD', cells:['15.40','16.15','16.50','17.30','18.10']}
+        {name:'UCD', cells:['13.00','15.40','16.15','16.50','17.30','18.10']}
       ]
     },
     dcuPlaceholder: {
