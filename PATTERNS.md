@@ -3,11 +3,12 @@
 ## File structure (top to bottom)
 1. `<head>` — Google Fonts link, single `<style>` block
 2. `<div class="sheet">` — page wrapper, max-width 960px
-3. `<header>` — red gradient band: route number, brand, route path, date badge, theme toggle (top-right), view toggle (lower-left), WhatsApp badge (lower-right)
-4. `.legend` — global, outside the view blocks so it shows on every tab
-5. `#view-default`, `#view-ucd`, `#view-dcu` — one `<div class="view">` each; only one un-`hidden` at a time
-6. `<footer>`
-7. Single `<script>` block — timetable data + render function, then view toggle, then theme toggle
+3. `<details class="announce">` — collapsible service-announcements bar, first element inside `.sheet`, above `<header>` (see "Announcements bar" below)
+4. `<header>` — red gradient band: route number, brand, route path, date badge, theme toggle (top-right), view toggle (lower-left), WhatsApp badge (lower-right)
+5. `.legend` — global, outside the view blocks so it shows on every tab
+6. `#view-default`, `#view-ucd`, `#view-dcu` — one `<div class="view">` each; only one un-`hidden` at a time
+7. `<footer>`
+8. Single `<script>` block — timetable data + render function, then view toggle, then theme toggle, then the announcements-bar lazy-load, then modals, then dark mode
 
 ## CSS
 - All colours via CSS custom properties on `:root`; dark mode overrides them on `body.dark`. Add new colours as variables, not literals.
@@ -91,6 +92,20 @@ STOP_INFO['Kingscourt'] = {
   `{name, tfi}` (rendered as a link to that TFI stop's live departures) or `{note}`
   (plain text, no link, for route-path detail with no TFI number). Rendered by
   `renderExtraGroup()` as two grouped lists appended below the main description/links.
+
+## Announcements bar (since 2026-09-15)
+A native `<details class="announce">`/`<summary>` pair — no JS needed for the expand/collapse
+itself, only for the lazy Facebook load:
+- Colours use `var(--board)` / `var(--board-amber)`, the same tokens the timetable chips use.
+  `--board` is already redefined under `body.dark`, so the bar's shade tracks the theme toggle
+  automatically — no bespoke dark-mode CSS block required.
+- The Facebook Page Plugin `<iframe>` has `data-src`, not `src`. A `toggle` event listener on
+  the `<details>` sets `src` from `data-src` the first time it's opened, so the page makes no
+  Facebook network request until a visitor actually expands the bar.
+- The plugin is a same-origin-opaque iframe — nothing inside it (post count, latest post text)
+  can be read from the host page, so a "new post" badge isn't possible without Facebook API
+  access. See `CONTEXT_MAP.md`'s "Service announcements" section for what a real badge would
+  require and why it isn't implemented.
 
 ## Notes
 - `.note` (amber) for informational; `.note.rose` for warnings/exceptions. First child is a `.mark` glyph: `i`, `!`, `+`, `–`.

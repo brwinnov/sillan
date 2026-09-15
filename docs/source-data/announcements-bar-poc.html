@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Service announcements bar — proof of concept</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --paper:#F7F5F0; --ink:#17181A; --slate:#63686F; --line:#DFDACE; --rose:#C22E2E; --rose-deep:#8E1F1F; --amber:#F0E442; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'IBM Plex Sans',sans-serif}
+  .sheet{max-width:960px;margin:0 auto}
+
+  /* ---- Announcements bar ---- */
+  .announce{
+    background:#15171B;
+    color:#fff;
+    border-bottom:3px solid var(--amber);
+  }
+  .announce-head{
+    display:flex;align-items:center;gap:12px;
+    padding:12px 20px;
+    cursor:pointer;
+    user-select:none;
+    width:100%;background:none;border:none;color:inherit;text-align:left;font:inherit;
+  }
+  .announce-head:focus-visible{outline:2px solid var(--amber);outline-offset:-2px}
+  .announce-dot{width:10px;height:10px;border-radius:50%;background:var(--amber);flex:none;animation:pulse 2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .announce-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;letter-spacing:.3px}
+  .announce-sub{font-size:12.5px;color:rgba(255,255,255,.7);margin-left:4px}
+  .announce-chev{margin-left:auto;transition:transform .2s ease;flex:none}
+  .announce[open] .announce-chev{transform:rotate(180deg)}
+  .announce-body{
+    display:none;
+    padding:0 20px 16px;
+  }
+  .announce[open] .announce-body{display:block}
+  .fb-wrap{
+    background:#fff;border-radius:8px;overflow:hidden;
+    /* Page Plugin renders at the iframe's own size; this box just clips it */
+    max-width:500px;
+  }
+  .fb-wrap iframe{display:block;border:none;width:100%;height:520px}
+  .fb-fallback{
+    font-size:13px;color:rgba(255,255,255,.75);margin:10px 0 0;line-height:1.5
+  }
+  .fb-fallback a{color:var(--amber)}
+  .whatsapp{
+    margin-top:12px;display:inline-flex;align-items:center;gap:8px;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);
+    border-radius:8px;padding:8px 12px;font-size:12.5px;color:#fff;text-decoration:none
+  }
+  .whatsapp svg{color:#3FE388}
+
+  /* Stand-in for the rest of the page */
+  header{background:linear-gradient(155deg,var(--rose),var(--rose-deep));color:#fff;padding:30px 20px}
+  header b{font-family:'Space Grotesk',sans-serif;font-size:48px;line-height:1}
+  .placeholder{padding:30px 20px;color:var(--slate);font-size:14px}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- ============ ANNOUNCEMENTS BAR ============ -->
+  <details class="announce" id="announce">
+    <summary class="announce-head">
+      <span class="announce-dot" aria-hidden="true"></span>
+      <span class="announce-title">Service announcements</span>
+      <span class="announce-sub">Latest from Sillan's Facebook page · tap to expand</span>
+      <svg class="announce-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+    </summary>
+    <div class="announce-body">
+      <div class="fb-wrap">
+        <!--
+          Facebook Page Plugin. Official, no API key, no login required on our side.
+          Only the iframe is loaded when the bar is opened (see script) so the page
+          doesn't hit Facebook until the user asks for it.
+        -->
+        <iframe id="fbFeed"
+          data-src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FSillanCoaches&tabs=timeline&width=500&height=520&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=false"
+          title="Sillan Tours Ltd — latest Facebook posts"
+          scrolling="no" allow="encrypted-media" loading="lazy"></iframe>
+      </div>
+      <p class="fb-fallback">
+        Not showing? Some browsers and ad-blockers block Facebook embeds.
+        <a href="https://www.facebook.com/SillanCoaches" target="_blank" rel="noopener">Open the page on Facebook</a> instead.
+      </p>
+      <a class="whatsapp" href="https://wa.me/353867779296" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12.02 2C6.5 2 2.02 6.48 2.02 12c0 1.77.46 3.44 1.27 4.89L2 22l5.25-1.38A9.96 9.96 0 0 0 12.02 22C17.55 22 22 17.52 22 12S17.55 2 12.02 2z"/></svg>
+        Announcements are posted to WhatsApp first — join via +353 86 777 9296
+      </a>
+    </div>
+  </details>
+
+  <!-- stand-in for the existing header / timetable -->
+  <header><b>179</b><div>Rest of the infographic goes here</div></header>
+  <div class="placeholder">…</div>
+</div>
+
+<script>
+  // Only load the Facebook iframe when the bar is first opened.
+  // Keeps the page free of any Facebook requests until the user chooses.
+  (function(){
+    var box = document.getElementById('announce');
+    var frame = document.getElementById('fbFeed');
+    box.addEventListener('toggle', function(){
+      if (box.open && !frame.src) frame.src = frame.getAttribute('data-src');
+    });
+  })();
+</script>
+</body>
+</html>

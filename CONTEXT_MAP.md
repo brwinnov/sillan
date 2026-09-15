@@ -1,6 +1,6 @@
 # CONTEXT_MAP.md — Sillan (single source of truth)
 
-Last updated: 2026-09-11
+Last updated: 2026-09-15
 
 ## Operator
 - **Sillan Tours Ltd** (trading as Sillan Coaches), Kingscourt Road, Shercock, Co. Cavan
@@ -65,6 +65,20 @@ Full tables in `docs/timetable-mon-fri.md`. Summary:
 - GTFS feed version `1CFFD1CF-FCF8-4BE8-8379-7269746D5553`, valid to 10 Sept 2027; calendars for these specific trips run to 10/11 Oct 2026 and may change after.
 - **The earlier "unconfirmed recollection" (Kingscourt ~19:00 → Dublin ~20:30) is superseded** — the NTA data's Sunday To-Dublin trip has Kingscourt at 19:00 arriving Parnell Sq East 20:25, a close match. The recollection was likely accurate, but this doesn't make the NTA data any more *Sillan-confirmed* — the whole section is still provisional pending that.
 
+## Service announcements
+- Added 2026-09-15 as a collapsible dark strip (`<details class="announce">`) at the very top of `.sheet`, above `<header>` — dark pulsing-dot summary "Service announcements · tap to expand", expanding to reveal Facebook's official **Page Plugin** iframe for facebook.com/SillanCoaches (timeline tab), a fallback link, and the WhatsApp join button (+353 86 777 9296).
+- **Why the Page Plugin:** it's what sillan.ie itself uses, needs no API key or Sillan consent, and is zero-maintenance — no scraper to keep working.
+- **Limitation:** an iframe's contents can't be read from the host page (cross-origin), so a native "new post" badge/count is **not possible** with this approach — the dot only signals "there's an announcements area", not "there's something new in it".
+- **Fetch options considered and rejected for now** (would be needed for a real new-post badge):
+  - Facebook Graph API — needs Sillan's own consent/app registration; not available since Sillan isn't aware of this project.
+  - rss.app — paid, and third-party RSS bridges for Facebook are fragile.
+  - RSS-Bridge's Facebook bridge — unreliable in practice.
+  - Playwright scraping — froze repeatedly in testing and breaches Facebook's ToS.
+  - A WhatsApp Web bridge — risks getting the announcements number banned.
+- The iframe's `src` is only set on first expand (`toggle` event listener), so the page makes zero Facebook requests until a visitor opens the bar.
+- First recorded service notice (logged here for reference, not shown on the page): **15 Sept 2026** — roadworks notice, no pick-up between Russels/Kingscourt and The Cross Guns/Nobber on the 09:45 service. Sillan's usual pattern: post to WhatsApp first, then mirror to Facebook as an image the afternoon before.
+- Reference POC: `docs/source-data/announcements-bar-poc.html` (owner-supplied; integrated into `src/index.html` with project CSS variables/fonts instead of its standalone tokens).
+
 ## Known discrepancies / open questions
 1. Bank Holidays: owner wants "same as Sundays"; Sillan FAQ says reduced service on Bank Holiday **Sundays and Mondays**; the NTA feed has no Bank Holiday calendar exceptions registered for this route at all. Unresolved.
 2. bustimes.org (NTA GTFS) lists a 15:20 Shercock departure not on any Sillan poster. Unverified.
@@ -98,3 +112,4 @@ Full tables in `docs/timetable-mon-fri.md`. Summary:
 - 2026-09-11 · Stop-location descriptions never show Plus Codes on the page — they're reference-only for building `mapsUrl` (owner correction; an earlier version displayed them). Description text is minimal (venue name + TFI stop # if known) rather than technical location metadata.
 - 2026-09-11 · All 9 "To Dublin" / "To UCD" stops now have location data: Navan is confirmed as Navan Shopping Centre (TFI 189521; earlier uncertainty resolved); Garlow Cross has a Maps link and TFI stop 101821 (official Route 179 stop — no "nearby" hedge in its description); Ross Cross has TFI stop 101861 but no venue description yet. Shercock's TFI stop was corrected to 110111. Only UCD, Nassau Street, Hilton Garden (the "From Dublin" return stops) still need data — see `docs/stop-locations.md`.
 - 2026-09-11 · Populated the Saturday/Sunday section with real (provisional) data from the NTA GTFS feed, replacing the single-row TBC placeholder with two real To-Dublin/From-Dublin tables — same layout pattern as the weekday section. Added two new run categories (`sat`/`sun`, orange/vermillion, double-border/dotted shapes) since these are single specific days, not day-ranges. Added a `note` field to the stop-row data model (e.g. "set down only", "pick up only", "R147") that displays without breaking the `STOP_INFO`/`data-stop` linkage. Full per-stop trip detail (Navan sub-stops, Dublin set-down stops) lives in `docs/timetable-sat-sun.md` and `docs/source-data/179-sat-sun-gtfs.json` — only stops shared with the weekday table are shown in the infographic itself.
+- 2026-09-15 · Added a collapsible "Service announcements" bar at the top of the page using Facebook's Page Plugin (see "Service announcements" section above for the full reasoning and rejected alternatives). Styled it with `var(--board)`/`var(--board-amber)` rather than the reference POC's own standalone colour tokens, so the bar's shade genuinely tracks the light/dark toggle through the same variable the rest of the page already redefines under `body.dark` — no bespoke dark-mode override needed. Kept the POC's lazy-load pattern (iframe `src` set only on first `<details>` expand) unchanged.
