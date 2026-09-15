@@ -13,9 +13,18 @@ The owner (Barry) was the original consultant who created Sillan's brand and web
 stepped back from that concierge work for five years. He's now restarting freelance
 design/hosting services and may re-approach Sillan professionally. This project is
 deliberately kept **independent and unofficial** — it promotes Sillan's service but isn't
-tied to or presented as Sillan's own output, and Sillan hasn't been told about it. This
-positioning is intentional (owner's explicit call, 2026-09-11), not an oversight — keep the
-"unofficial" framing in the help modal accurate if this project's status ever changes.
+tied to or presented as Sillan's own output. This positioning is intentional (owner's
+explicit call, 2026-09-11), not an oversight — keep the "unofficial" framing in the help
+modal accurate if this project's status ever changes.
+
+**Update 2026-09-15:** Sillan Tours Ltd is now aware this project exists — a reply linking/
+mentioning it appeared on both the owner's personal Facebook and as a reply under one of
+Sillan's own Facebook posts. The "undisclosed" part of the above is no longer accurate; the
+"independent/unofficial" framing itself hasn't been revoked and stays as-is unless the owner
+says otherwise. The owner also personally knows the operator of the Sillan business — not
+acted on yet, but noted as a real option for anything that would otherwise need Sillan's
+formal cooperation (e.g. Facebook Page admin access — see the deferred "Ask AI" feature note
+in `TODO_AI.md`'s IDEA section).
 
 ## Route 179
 Cootehill → Shercock → Kingscourt → Nobber → Wilkinstown → Navan → Garlow Cross → Ross Cross → Dunshaughlin → (M3) → Dublin → UCD, and return.
