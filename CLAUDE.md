@@ -24,6 +24,7 @@ Single-file HTML infographic (`src/index.html`) presenting Sillan Coaches route 
 - Append actions to `audit-logs/actions.log` as one JSON object per line: `{"ts":"…","actor":"claude-code","action":"…","files":[…],"note":"…"}`.
 - Code conventions for `index.html` are in `PATTERNS.md`.
 - Update `CONTEXT_MAP.md` whenever a data source, decision, or constraint changes. Update `TODO_AI.md` as items complete.
+- **Every deploy that changes `src/index.html` bumps the footer's `vNN` version link and adds an entry to `CHANGELOG.md`.** No build step stamps this automatically — it's a manual step, see `PATTERNS.md`.
 
 ## Working style (owner's preferences)
 - Direct and concise. Numbered steps for anything procedural, with exact versions.

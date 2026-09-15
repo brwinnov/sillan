@@ -107,6 +107,16 @@ itself, only for the lazy Facebook load:
   access. See `CONTEXT_MAP.md`'s "Service announcements" section for what a real badge would
   require and why it isn't implemented.
 
+## Version number (since 2026-09-15)
+The footer has a small `vNN` link next to Privacy, pointing at `CHANGELOG.md` on GitHub.
+Since this is a single-file, no-build site, there's no automated way to stamp this — it's a
+manual step on **every** deploy that changes `src/index.html`:
+1. Add a new entry to the top of `CHANGELOG.md` (`## vNN — YYYY-MM-DD`, one line describing
+   the change, linking to the commit once it exists).
+2. Bump the footer's `vNN` text in `src/index.html` to match.
+3. Deploy, then commit both files together.
+Plain incrementing integer, not date-based — avoids collisions on multi-deploy days.
+
 ## Notes
 - `.note` (amber) for informational; `.note.rose` for warnings/exceptions. First child is a `.mark` glyph: `i`, `!`, `+`, `–`.
 
