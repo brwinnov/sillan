@@ -76,8 +76,10 @@ title strip, a red header band, and an alternating-row body, all one seamless ro
 - To attach a section's heading directly to its table as one card (no gap, rounded corners
   meeting in the middle): add `board-head` to that `.section-head` and `board-wrap-attached`
   to the `.board-wrap` right after it. Only works when the table is the *very next* element
-  after the heading — a `.section-sub` in between (as "From Dublin" and the Sat/Sun/UCD/DCU
-  sections have) breaks the flush look, so those keep a plain heading instead.
+  after the heading — remove any `.section-sub` in between first (move its content into the
+  `.notes` block below if it's non-obvious info, drop it if it's generic filler). All four
+  Default-tab tables (To Dublin, From Dublin, and both Sat/Sun tables) use this now; UCD and
+  DCU still have a plain heading + `.section-sub`, not yet converted.
 
 ## Stop location modals (since 2026-09-11)
 A stop is clickable ("where is this stop?") only if it has an entry in the `STOP_INFO`

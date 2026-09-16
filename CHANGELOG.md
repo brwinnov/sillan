@@ -3,6 +3,12 @@
 Every deploy to the live site bumps the version number shown in the page footer.
 Newest first. Full detail for any entry is in the linked commit.
 
+## v33 — 2026-09-16
+Extended the same poster-style card to both Saturday & Sunday tables — each of "To Dublin" and "From Dublin" under Saturday & Sunday now gets its own dark-strip heading tagged "Saturday & Sunday" (previously small plain text labels). Moved the "weekend return trips start from Cumberland Street N" detail into the notes block below the tables so it wasn't lost when its old subtitle line was removed.
+
+## v32 — 2026-09-16
+Extended the poster-style card (dark title strip + red header + alternating rows) to "From Dublin", matching "To Dublin". Removed its "8 departures a day, calling at UCD, Nassau Street, then Hilton Garden" subtitle in the process.
+
 ## v31 — 2026-09-16
 Removed the white pill background behind each run-header's day-range tag ("MON-FRI"/"MON-THU"/etc.) — now bold white text directly on the red band, no box. Since every category already shared the same white-on-red text, the per-category tag colours were retired too (only the placeholder "TBC" tag keeps a distinguishing dashed underline).
 

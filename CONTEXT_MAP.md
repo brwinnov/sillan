@@ -60,19 +60,19 @@ The whole page now matches Sillan's own posters (owner supplied the actual poste
 `docs/source-data/` — as the target look), replacing the earlier Okabe-Ito colour+shape chip
 system entirely (that system, and a "Colour-blind" toggle that briefly existed alongside it,
 were both tried on 2026-09-16 and then removed the same day — see Decisions log):
-- **Board card:** each main table (`.section-head.board-head` + the `.board-wrap` right after
-  it) forms one seamless rounded card — a dark title strip (page name + day-range, e.g. "To
-  Dublin" / "Monday – Friday service"), a solid red "DEPARTS FROM" + run-number header band,
+- **Board card:** each main table (`.section-head.board-head` + the `.board-wrap-attached` right
+  after it) forms one seamless rounded card — a dark title strip (table name + day-range, e.g.
+  "To Dublin" / "Monday – Friday service"), a solid red "DEPARTS FROM" + run-number header band,
   and a body of alternating white/light-grey rows (`tr:nth-child(even) .time-cell` gets
-  `--panel-alt`). Currently only the Default tab's "To Dublin" table uses `.board-head` +
-  `.board-wrap-attached` — "From Dublin" and the other tabs keep a plain heading since they
-  have a sub-paragraph between the heading and their table, breaking the flush-card technique.
+  `--panel-alt`). All four Default-tab tables use this (To Dublin, From Dublin, and both
+  Saturday & Sunday tables, each tagged "Saturday & Sunday" instead of a day-range) — UCD and
+  DCU still keep a plain heading, not yet converted.
 - **Chips:** plain bold text (`var(--ink)`), no background box, no border — literally just the
   number, matching the posters exactly. `columns[i].tag` (`all`/`mt`/`fr`/`sat`/`sun`/`tbc`)
-  still exists in the data and still drives the header's small "Mon–Fri"/"Sat"/etc. pill label
-  (forced onto a white pill via `!important` so it stays legible against the red header band
-  regardless of theme) — that text label is the *only* thing distinguishing categories now.
-  `.chip.dash` (empty/no-service cells) shows a muted grey dash.
+  still exists in the data and still drives the header's small "Mon–Fri"/"Sat"/etc. label —
+  bold white text directly on the red band (no pill background, simplified 2026-09-16 — see
+  Decisions log) — the *only* thing distinguishing categories now. `.chip.dash` (empty/no-service
+  cells) shows a muted grey dash.
 - **Colour is theme-independent** for the red header and dark title strip — same red/near-black
   regardless of the light/dark toggle, matching how the page's own top `<header>` already
   behaved. Row backgrounds and text still follow `--panel`/`--ink`/`--line` as normal, so they
@@ -156,3 +156,4 @@ Full tables in `docs/timetable-mon-fri.md`. Summary:
 - 2026-09-15 · Re-fetched the UCD timetable (owner supplied an updated sillan.ie/ucd poster image) and moved its status from Provisional to Complete: added the promised 7th "To UCD" run (09:15 Navan-starting, Mon–Thu only — reuses the same data already in the Default tab's 8th column) and fixed a pre-existing gap where "Depart UCD" was missing its 13:00 run (it was already correctly present in the Default tab's "From Dublin" table, just never carried over). Removed the "shown for 7–11 Sept only" caveat banner and the UCD mention from the help modal's Provisional-sections list, since it's now current data like the Default tab.
 - 2026-09-15 · Added a collapsible "Service announcements" bar at the top of the page using Facebook's Page Plugin (see "Service announcements" section above for the full reasoning and rejected alternatives). Styled it with `var(--board)`/`var(--board-amber)` rather than the reference POC's own standalone colour tokens, so the bar's shade genuinely tracks the light/dark toggle through the same variable the rest of the page already redefines under `body.dark` — no bespoke dark-mode override needed. Kept the POC's lazy-load pattern (iframe `src` set only on first `<details>` expand) unchanged.
 - 2026-09-16 · Added the header background photo, removed the header wordmark text, and simplified the route line (see "Header" section above). Also removed the white pill background behind each run-header's day-range tag — plain bold white text directly on the red band instead — and retired the per-category tag text colours (`#6E5A00` etc.) since every tag now shares the same white-on-red treatment; only `.tag-tbc` keeps a distinguishing dashed underline. Caught and fixed a Cloudflare asset-path case-sensitivity gotcha along the way: the `src/IMAGES/` folder is genuinely uppercase on disk (Windows doesn't care, Cloudflare's asset server does) — the CSS `url()` had to match exactly.
+- 2026-09-16 · Extended the poster-style board card to "From Dublin" (removing its "8 departures a day, calling at UCD..." subtitle) and to both Saturday & Sunday tables (each of "To Dublin"/"From Dublin" there now gets its own card heading tagged "Saturday & Sunday" instead of a small plain-text label). The "weekend return trips start from Cumberland Street N, not UCD/Nassau Street/Hilton Garden" detail that used to be the Sat/Sun From-Dublin subtitle was moved into the notes block below the tables rather than dropped, since — unlike the generic subtitles removed from the Default tab — it's specific, non-obvious information. UCD and DCU tabs weren't touched; still plain headings.
