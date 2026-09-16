@@ -3,6 +3,11 @@
 Priority: P1 = do next · P2 = soon · P3 = nice to have · IDEA = unscoped
 
 ## P1 — Must do
+- [ ] **Stats dashboard (in progress, 2026-09-16) — waiting on owner to supply a Cloudflare API token + Zone ID.** Plan agreed: a small bar-chart icon (footer, bottom-left) opens a modal showing visit counts for `sillan.brwinnov.app` specifically (not the whole `brwinnov.app` zone), sourced from Cloudflare's GraphQL Analytics API (`httpRequestsAdaptiveGroups` dataset, filtered by `clientRequestHTTPHost`) — no separate Web Analytics beacon needed, Cloudflare already logs this for any proxied zone. Requires:
+  1. Owner creates a Cloudflare API token (dashboard → My Profile → API Tokens → Create Token), scoped to **Zone → Analytics → Read** for the `brwinnov.app` zone (token permission is necessarily zone-wide — Cloudflare has no subdomain-scoped token — but the query itself filters to `sillan.brwinnov.app` only, so no other subdomain's data is ever fetched or shown).
+  2. Owner supplies that token + the Zone ID (visible on the zone's Cloudflare dashboard overview page).
+  3. Then: store the token via `wrangler secret put`, add a `main` Worker script alongside the existing static assets (`wrangler.jsonc` gets `"main"` + `"assets.run_worker_first": ["/api/*"]` so only that one route touches the Worker, everything else stays plain static file serving), add a `/api/stats` endpoint that calls the GraphQL API server-side and returns simplified numbers (today/this week/all-time), and build the footer icon + modal (reusing the existing modal pattern).
+  This is the project's first move away from assets-only Workers — small, scoped, and isolated to one route.
 - [ ] Find a source for the DCU timetable and populate the DCU tab. Check sillan.ie nav, Facebook (via browser), and DCU's own commuting pages. (A rider publicly asked Sillan the same question on Facebook under the UCD poster post, 2026-09-15 — no reply visible yet, so still no source, but real demand exists.)
 
 ## P2 — Should do
