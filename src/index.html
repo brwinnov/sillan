@@ -123,7 +123,10 @@
   /* ---------- HEADER ---------- */
   header{
     background:var(--rose);
-    background-image:linear-gradient(155deg,var(--rose) 0%,var(--rose-deep) 100%);
+    background-image:linear-gradient(155deg,rgba(194,46,46,0.82) 0%,rgba(142,31,31,0.88) 100%),
+                      url('IMAGES/hdr-background-01.jpg');
+    background-size:cover, cover;
+    background-position:center, center 35%;
     color:#fff;
     padding:38px 40px 84px;
     position:relative;
@@ -618,18 +621,11 @@
     margin-top:5px;
     font-size:9px;
     letter-spacing:0.4px;
-    font-weight:600;
-    padding:2px 6px;
-    border-radius:100px;
+    font-weight:800;
     text-transform:uppercase;
-    background:rgba(255,255,255,0.92) !important;
+    color:#fff;
   }
-  .tag-all{ color:#6E5A00; }
-  .tag-mt{ color:#1F5F8A; }
-  .tag-fr{ color:#8A3C6B; }
-  .tag-sat{ color:#8A5A00; }
-  .tag-sun{ color:#8A3200; }
-  .tag-tbc{ color:#8A857A; border:1px dashed #C9C2B1; }
+  .tag-tbc{ color:rgba(255,255,255,0.7); border-bottom:1px dashed rgba(255,255,255,0.5); }
 
   /* Default/poster mode: plain bold text, no box — matches Sillan's own
      posters exactly (just numbers, no per-cell chip). */
@@ -821,10 +817,6 @@
   <header>
     <div class="brand-row">
       <div class="route-num">179</div>
-      <div>
-        <div class="brand-name">SILLAN COACHES</div>
-        <div class="brand-tag">Travel in comfort</div>
-      </div>
     </div>
     <div class="header-actions">
       <button class="help-toggle" id="helpToggle" aria-haspopup="dialog" aria-controls="helpOverlay" title="About & help">?</button>
@@ -835,7 +827,7 @@
       </button>
     </div>
     <div class="route-path">
-      Cootehill / Kingscourt <span class="via">⇄</span> Dublin
+      Cootehill/Shercock <span class="via">⇄</span> Dublin
     </div>
     <div class="days-badge">Weekly timetable · effective 7 Sept 2026</div>
     <div class="view-toggle" role="tablist" aria-label="Choose timetable">
@@ -966,7 +958,7 @@
     <span>Sillan Coaches · Route 179 · Safe, reliable, comfortable</span>
     <span>
       <button class="footer-link" id="privacyToggle" aria-haspopup="dialog" aria-controls="privacyOverlay">Privacy</button>
-      · <a class="footer-link" href="https://github.com/brwinnov/sillan/blob/master/CHANGELOG.md" target="_blank" rel="noopener">v29</a>
+      · <a class="footer-link" href="https://github.com/brwinnov/sillan/blob/master/CHANGELOG.md" target="_blank" rel="noopener">v31</a>
     </span>
     <span>Times shown 24-hour</span>
   </footer>

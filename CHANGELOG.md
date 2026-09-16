@@ -3,6 +3,12 @@
 Every deploy to the live site bumps the version number shown in the page footer.
 Newest first. Full detail for any entry is in the linked commit.
 
+## v31 — 2026-09-16
+Removed the white pill background behind each run-header's day-range tag ("MON-FRI"/"MON-THU"/etc.) — now bold white text directly on the red band, no box. Since every category already shared the same white-on-red text, the per-category tag colours were retired too (only the placeholder "TBC" tag keeps a distinguishing dashed underline).
+
+## v30 — 2026-09-16
+Added a header background photo (owner-supplied Sillan Coaches bus photo, `src/IMAGES/hdr-background-01.jpg`) behind the existing red gradient, gradient opacity reduced (82%/88%) so the photo shows through while keeping white header text legible. Changed the route line to "Cootehill/Shercock ⇄ Dublin" and removed the "SILLAN COACHES"/"Travel in comfort" wordmark text from the header (the photo now carries the branding).
+
 ## v29 — 2026-09-16
 Removed the "Colour-blind" toggle added in v27/v28 entirely, per owner request — the poster style is now the only style, not a default-plus-opt-in-toggle.
 
