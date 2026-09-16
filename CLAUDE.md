@@ -16,7 +16,7 @@ Single-file HTML infographic (`src/index.html`) presenting Sillan Coaches route 
 - **No `localStorage` / `sessionStorage`.** The file is previewed inside Claude.ai where these fail.
 - **Ireland English spelling** in all UI text, comments, and docs: colours, customise, organise, centre.
 - **Never invent timetable data.** Every time in the file traces to a source listed in `CONTEXT_MAP.md`. Placeholders use the `tag-tbc` / `chip dash` pattern with literal "TBC".
-- **Colour is never the only signal.** Each run category has a colour *and* a shape. Keep that when adding categories.
+- **Colour is never the only signal.** Every run category is always identifiable by text (its column header spells out "Mon–Fri"/"Mon–Thu"/"Fri"/"Sat"/"Sun"). Colour+shape coding on the chips themselves is an **opt-in enhancement** via the "Colour-blind" toggle (off by default, 2026-09-16 — the default view matches Sillan's own black/white posters) — keep both the plain default style and the toggle-on colour+shape style working when adding categories.
 
 ## Conventions
 - Folder structure: `src / docs / ai-memory / audit-logs / config`.

@@ -44,7 +44,13 @@ Per-stop location data (for the "where is this stop" tap modal) lives in
 | DCU | **Placeholder** | none | No source found |
 | Sat / Sun | **Provisional** | NTA GTFS feed (Small Operators), published 10 Sept 2026 — see `docs/timetable-sat-sun.md` | Not published anywhere on sillan.ie; per-NTA-data only, not Sillan-confirmed. Neither day serves UCD. |
 
-## Run categories (colour + shape, never colour alone)
+## Run categories (colour + shape, opt-in since 2026-09-16)
+Default light theme now matches Sillan's own black/white posters (owner supplied the actual
+poster images as the target look) — chips are plain, no per-category colour or shape. Every
+category is still always identifiable via the text label in its column header ("Mon–Fri",
+"Sat", etc.), so nothing is colour-dependent by default. A "Colour-blind" slide toggle next to
+the theme switch (off by default, no persistence) re-applies the table below to both the chips
+and the Legend's swatches, for anyone who wants the extra per-cell visual distinction:
 
 | Category | Data tag (`columns[i].tag`) | CSS class | Colour (Okabe–Ito) | Shape | Header tag |
 |---|---|---|---|---|---|
@@ -114,6 +120,7 @@ Full tables in `docs/timetable-mon-fri.md`. Summary:
 - 2026-09-16 · Centred the "Stop" column header (was left-aligned) across all timetables, and removed the "8 departures a day · journey time roughly 2 hours from Cootehill" subtitle from the To Dublin section only (From Dublin keeps its own).
 - 2026-09-16 · Legend now line-breaks after the third item (Friday only), so Saturday/Sunday sit on their own row — via a `.legend-break` flex-basis:100% spacer div, not a media query, so it applies at all widths. Removed the horizontal rule directly under the legend (`.weekday-divider`'s own top border) since it duplicated the legend's own bottom border immediately above it.
 - 2026-09-16 · Legend is now collapsed by default behind a "Legend ⌄" toggle, using the same `<details>`/`<summary>` pattern as the service-announcements bar (no new JS needed).
+- 2026-09-16 · Reworked the default light theme to match Sillan's own posters (owner supplied the actual poster images as the target): chips are now plain black/white by default, no per-category colour or shape — that coding moved behind a new "Colour-blind" slide toggle next to the theme switch, off by default. Reverses the previous always-on interpretation of the "colour is never the only signal" constraint in `CLAUDE.md` — updated its wording to "always identifiable by text; colour+shape is an opt-in enhancement," since every category was already spelled out in its column header regardless. Also updated the Legend to explain the toggle, since its swatches only show distinct colours once it's on.
 - 2026-09-16 · Run headers show a plain number (`1`, `2`…) instead of `Run N` — shorter, same 1-indexed-from-column-position meaning as before (see `PATTERNS.md`).
 - 2026-09-11 · Single-file HTML, no build step — keeps it trivially shareable and previewable.
 - 2026-09-11 · Deployed to Cloudflare Workers (assets-only, `wrangler.jsonc` at repo root, `assets.directory: ./src`) with a Custom Domain binding, live at https://sillan.brwinnov.app on the owner's existing `brwinnov.app` zone. Repo is public on GitHub (`brwinnov/sillan`) but Cloudflare deploy is a separate step — pushing to GitHub does not auto-deploy; re-run `npx wrangler deploy` after edits to `src/index.html`.

@@ -3,6 +3,9 @@
 Every deploy to the live site bumps the version number shown in the page footer.
 Newest first. Full detail for any entry is in the linked commit.
 
+## v27 — 2026-09-16
+Default light theme now matches Sillan's own posters — plain black/white chips, no per-category colour or shape. Added a "Colour-blind" slide toggle next to the theme switch (off by default) that restores the previous Okabe-Ito colour+shape coding on both the chips and the Legend's swatches.
+
 ## v26 — 2026-09-16
 Legend is now collapsed by default behind a "Legend" toggle, matching the same `<details>`/`<summary>` pattern as the service-announcements bar — no new JS.
 

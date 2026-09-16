@@ -54,6 +54,13 @@ toDublin: {
 - Stops in geographic route order, top to bottom, in the direction of travel.
 - Chip class names (`chip all/mt/fr/dash`) are semantic, not colour names — see `CONTEXT_MAP.md`
   for the category→colour/shape table.
+- **Colour-blind mode (since 2026-09-16, off by default):** `.chip`/`.swatch` base rules set a
+  single plain colour (`--board-plain`, near-white on the dark `--board` background) matching
+  Sillan's own posters. The per-category Okabe-Ito colour+shape rules (`.chip.all`, `.chip.mt`…
+  and their `.swatch` equivalents) only apply under `body.cb-mode`, toggled by the `#cbToggle`
+  slide switch next to the theme toggle (`src/index.html`'s header-actions). No persistence
+  (matches the no-`localStorage` rule) — always starts off. Every category stays identifiable
+  without it via the always-visible text label in each column's header pill.
 - To add a new table: add an entry to `TIMETABLES`, add its `<div class="board-wrap" id="tbl-KEY">`
   mount point in the markup, done — no `<table>` markup to hand-write.
 - The mobile scroll-fade (right-edge gradient + `›` chevron, hidden once scrolled to the end

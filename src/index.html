@@ -16,7 +16,10 @@
     --rose:#C22E2E;
     --rose-deep:#8E1F1F;
     --board:#15171B;
-    /* Colour-blind-safe palette (Okabe–Ito), tuned for a dark chip background */
+    --board-plain:#F4F1EA;   /* default chip text — matches Sillan's own black/white posters */
+    /* Colour-blind-safe palette (Okabe–Ito), tuned for a dark chip background.
+       Only applied when body.cb-mode is on (off by default) — see the
+       colour-blind toggle next to the theme switch. */
     --board-amber:#F0E442;   /* every weekday — yellow */
     --board-teal:#56B4E9;    /* Mon–Thu only — sky blue */
     --board-pink:#CC79A7;    /* Fri only — reddish purple */
@@ -332,10 +335,48 @@
   .theme-toggle .icon-moon{ display:block; }
   body.dark .theme-toggle .icon-sun{ display:block; }
   body.dark .theme-toggle .icon-moon{ display:none; }
+  .cb-toggle{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.3);
+    border-radius:100px;
+    padding:6px 12px 6px 10px;
+    color:#fff;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:12px;
+    font-weight:600;
+    cursor:pointer;
+    transition:background 0.15s ease;
+  }
+  .cb-toggle:hover{ background:rgba(255,255,255,0.2); }
+  .cb-switch{
+    position:relative;
+    display:inline-block;
+    width:26px;
+    height:14px;
+    flex:none;
+    background:rgba(255,255,255,0.35);
+    border-radius:100px;
+    transition:background 0.15s ease;
+  }
+  .cb-switch-thumb{
+    position:absolute;
+    top:2px; left:2px;
+    width:10px; height:10px;
+    border-radius:50%;
+    background:#fff;
+    transition:transform 0.15s ease;
+  }
+  .cb-toggle[aria-pressed="true"] .cb-switch{ background:#3FE388; }
+  .cb-toggle[aria-pressed="true"] .cb-switch-thumb{ transform:translateX(12px); }
   @media (max-width:600px){
     .header-actions{ top:14px; right:20px; }
     .theme-toggle .theme-label{ display:none; }
     .theme-toggle{ padding:7px 9px; }
+    .cb-toggle .cb-toggle-label{ display:none; }
+    .cb-toggle{ padding:7px 9px; }
   }
 
   /* ---------- HELP MODAL ---------- */
@@ -504,6 +545,12 @@
     flex-basis:100%;
     height:0;
   }
+  .legend-hint{
+    flex-basis:100%;
+    margin:0;
+    font-size:12px;
+    color:var(--slate);
+  }
   .legend-item{
     display:flex;
     align-items:center;
@@ -516,17 +563,19 @@
     padding:2px 5px;
     border-radius:4px;
     background:var(--board);
+    color:var(--board-plain);
     font-family:'IBM Plex Mono',monospace;
     font-size:9.5px;
     font-weight:600;
     text-align:center;
     border:1.5px solid transparent;
   }
-  .swatch.all{ color:var(--board-amber); }
-  .swatch.mt{ color:var(--board-teal); border-radius:100px; }
-  .swatch.fr{ color:var(--board-pink); border:1.5px dashed var(--board-pink); }
-  .swatch.sat{ color:var(--board-orange); border:3px double var(--board-orange); }
-  .swatch.sun{ color:var(--board-vermillion); border:1.5px dotted var(--board-vermillion); }
+  /* Colour-blind mode: gives each swatch its own colour + shape, matching the chips */
+  body.cb-mode .swatch.all{ color:var(--board-amber); }
+  body.cb-mode .swatch.mt{ color:var(--board-teal); border-radius:100px; }
+  body.cb-mode .swatch.fr{ color:var(--board-pink); border:1.5px dashed var(--board-pink); }
+  body.cb-mode .swatch.sat{ color:var(--board-orange); border:3px double var(--board-orange); }
+  body.cb-mode .swatch.sun{ color:var(--board-vermillion); border:1.5px dotted var(--board-vermillion); }
 
   .weekday-divider{
     margin:28px 40px 0;
@@ -681,22 +730,26 @@
     padding:4px 2px;
     border-radius:5px;
     background:var(--board);
+    color:var(--board-plain);
     font-family:'IBM Plex Mono',monospace;
     font-size:12.5px;
     font-weight:600;
     letter-spacing:0.3px;
     border:1.5px solid transparent;
   }
+  /* Colour-blind mode (off by default — toggle next to the theme switch):
+     each run category gets its own colour AND shape cue instead of the
+     plain black/white chip that matches Sillan's own posters. */
   /* Every weekday — yellow, plain rounded rectangle */
-  .chip.all{ color:var(--board-amber); }
+  body.cb-mode .chip.all{ color:var(--board-amber); }
   /* Mon–Thu only — sky blue, pill shape (shape cue, not just colour) */
-  .chip.mt{ color:var(--board-teal); border-radius:100px; }
+  body.cb-mode .chip.mt{ color:var(--board-teal); border-radius:100px; }
   /* Fri only — reddish purple, dashed outline (shape cue, not just colour) */
-  .chip.fr{ color:var(--board-pink); border:1.5px dashed var(--board-pink); }
+  body.cb-mode .chip.fr{ color:var(--board-pink); border:1.5px dashed var(--board-pink); }
   /* Saturday only — orange, double border (shape cue, not just colour) */
-  .chip.sat{ color:var(--board-orange); border:3px double var(--board-orange); }
+  body.cb-mode .chip.sat{ color:var(--board-orange); border:3px double var(--board-orange); }
   /* Sunday only — vermillion, dotted outline (shape cue, not just colour) */
-  .chip.sun{ color:var(--board-vermillion); border:1.5px dotted var(--board-vermillion); }
+  body.cb-mode .chip.sun{ color:var(--board-vermillion); border:1.5px dotted var(--board-vermillion); }
   .chip.dash{
     background:transparent;
     color:var(--line);
@@ -886,6 +939,10 @@
         <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
         <span class="theme-label">Dark</span>
       </button>
+      <button class="cb-toggle" id="cbToggle" aria-pressed="false" aria-label="Turn on colour-blind friendly chip colours" title="Colour-blind friendly colours">
+        <span class="cb-switch" aria-hidden="true"><span class="cb-switch-thumb"></span></span>
+        <span class="cb-toggle-label">Colour-blind</span>
+      </button>
     </div>
     <div class="route-path">
       Cootehill / Kingscourt <span class="via">⇄</span> Dublin
@@ -908,6 +965,7 @@
       <svg class="legend-chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
     </summary>
     <div class="legend">
+      <p class="legend-hint">Each column's day-range is always labelled above its times. Turn on <b>Colour-blind mode</b> (top right) to also give each category its own colour and shape below.</p>
       <div class="legend-item"><span class="swatch all">6.30</span> Runs every weekday (Mon–Fri)</div>
       <div class="legend-item"><span class="swatch mt">6.30</span> Monday–Thursday only</div>
       <div class="legend-item"><span class="swatch fr">6.30</span> Friday only</div>
@@ -1035,7 +1093,7 @@
     <span>Sillan Coaches · Route 179 · Safe, reliable, comfortable</span>
     <span>
       <button class="footer-link" id="privacyToggle" aria-haspopup="dialog" aria-controls="privacyOverlay">Privacy</button>
-      · <a class="footer-link" href="https://github.com/brwinnov/sillan/blob/master/CHANGELOG.md" target="_blank" rel="noopener">v26</a>
+      · <a class="footer-link" href="https://github.com/brwinnov/sillan/blob/master/CHANGELOG.md" target="_blank" rel="noopener">v27</a>
     </span>
     <span>Times shown 24-hour</span>
   </footer>
@@ -1435,6 +1493,19 @@
 
     btn.addEventListener('click', function(){
       applyTheme(!document.body.classList.contains('dark'));
+    });
+  })();
+
+  // ---- Colour-blind mode toggle (off by default) ----
+  // Off: chips are plain black/white, matching Sillan's own posters.
+  // On: each run category gets its own Okabe-Ito colour + shape cue.
+  (function(){
+    var btn = document.getElementById('cbToggle');
+
+    btn.addEventListener('click', function(){
+      var on = !document.body.classList.contains('cb-mode');
+      document.body.classList.toggle('cb-mode', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
   })();
 </script>
