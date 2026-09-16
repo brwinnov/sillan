@@ -35,21 +35,33 @@ Return stops on the Default timetable: UCD → Nassau Street → Hilton Garden.
 Per-stop location data (for the "where is this stop" tap modal) lives in
 `docs/stop-locations.md` — source of truth for what's known vs still needed.
 
-## Header (as of 2026-09-16)
-The header is a two-cell flex row (`.header-row` → `.header-content` + `.header-photo`), not a
-background-image wash — text lives in one cell, the owner-supplied Sillan Coaches bus photo
-(`src/IMAGES/hdr-background-01.jpg`) lives in the other, `cover`-fit with rounded corners. This
-was the third attempt at showing the photo without it overlapping the header text: a background
-wash behind a semi-transparent red gradient (v30) overlapped the days-badge text at the site's
-normal 960px desktop width; downscaling the image further (v35) was a percentage-tuning
-band-aid; splitting into two real flex cells (v36) fixes it structurally — text and photo
-literally cannot occupy the same space regardless of viewport width or text length. Stacks to
-photo-on-top-full-width on mobile. Note: `src/IMAGES/` is genuinely uppercase on disk;
-Cloudflare's asset serving is case-sensitive even though Windows isn't, so the CSS `url()`
-reference must match exactly or it 404s (caught once already, worth remembering).
-The "SILLAN COACHES"/"Travel in comfort" wordmark text was removed from the header (the photo
-carries the branding now), and the route line reads "Cootehill/Shercock ⇄ Dublin" (was
-"Cootehill / Kingscourt ⇄ Dublin").
+## Header (as of 2026-09-16, settled after several iterations same day)
+The header's `background-image` has two layers: a semi-transparent red gradient
+(`rgba(194,46,46,0.82)` → `rgba(142,31,31,0.88)`) over the owner-supplied Sillan Coaches bus
+photo (`src/IMAGES/hdr-background-01.jpg`). The photo is sized `auto 100%` (full height always
+visible, no vertical cropping) and centred horizontally. Everything else — route number, route
+text, days badge, help/theme toggle, view toggle, WhatsApp badge — sits on top of this as a
+plain background, via ordinary stacking; nothing competes for box space with it.
+
+This took a few iterations the same day to land on, worth knowing if touching it again:
+1. (v30) Background wash, right-anchored, `cover`-sized — cropped top/bottom and the
+   days-badge text overlapped it at the site's normal 960px desktop width.
+2. (v34–35) Switched to `auto 100%` height (no cropping), tried right-anchored then a further
+   downscale — still a percentage-tuning band-aid, overlap persisted.
+3. (v36) Split into a real two-cell flex layout (text cell + separate opaque photo cell) —
+   solved the text overlap structurally, but then the photo (now its own box positioned via
+   flex, not a background) visually competed with the absolutely-positioned header buttons and
+   WhatsApp badge, which sit at fixed offsets from the header's own edges independent of the
+   flex cells.
+4. (v37–38) Reverted to a background-image approach (not a separate box) so buttons/WhatsApp/
+   text all sit above it via normal stacking again, kept the `auto 100%` no-crop sizing and the
+   red gradient tint, landed on centred positioning. This is the current, working state.
+
+`src/IMAGES/` is genuinely uppercase on disk; Cloudflare's asset serving is case-sensitive even
+though Windows isn't, so the CSS `url()` reference must match exactly or it 404s (caught once
+already, worth remembering). The "SILLAN COACHES"/"Travel in comfort" wordmark text was removed
+from the header (the photo carries the branding now), and the route line reads
+"Cootehill/Shercock ⇄ Dublin" (was "Cootehill / Kingscourt ⇄ Dublin").
 
 ## Timetable variants in `src/index.html`
 
@@ -163,4 +175,5 @@ Full tables in `docs/timetable-mon-fri.md`. Summary:
 - 2026-09-16 · Added the header background photo, removed the header wordmark text, and simplified the route line (see "Header" section above). Also removed the white pill background behind each run-header's day-range tag — plain bold white text directly on the red band instead — and retired the per-category tag text colours (`#6E5A00` etc.) since every tag now shares the same white-on-red treatment; only `.tag-tbc` keeps a distinguishing dashed underline. Caught and fixed a Cloudflare asset-path case-sensitivity gotcha along the way: the `src/IMAGES/` folder is genuinely uppercase on disk (Windows doesn't care, Cloudflare's asset server does) — the CSS `url()` had to match exactly.
 - 2026-09-16 · Header photo changed from `background-size:cover` (which cropped its top/bottom to fill the fixed header height across the full width) to `background-size:auto 100%` (full image height always visible, no vertical cropping), anchored to the right via `background-position:right center`. Trade-off: the photo no longer spans the header's full width — at header height it's narrower than the header, so it now shows the whole photo (including its own baked-in "Sillan Coaches" logo text) at a smaller scale in a right-anchored band, with the gradient/plain red showing on the left where the image doesn't reach.
 - 2026-09-16 · Extended the poster-style board card to "From Dublin" (removing its "8 departures a day, calling at UCD..." subtitle) and to both Saturday & Sunday tables (each of "To Dublin"/"From Dublin" there now gets its own card heading tagged "Saturday & Sunday" instead of a small plain-text label). The "weekend return trips start from Cumberland Street N, not UCD/Nassau Street/Hilton Garden" detail that used to be the Sat/Sun From-Dublin subtitle was moved into the notes block below the tables rather than dropped, since — unlike the generic subtitles removed from the Default tab — it's specific, non-obvious information. UCD and DCU tabs weren't touched; still plain headings.
-- 2026-09-16 · **Header rebuilt as a two-cell flex layout** (`.header-row` → `.header-content` + `.header-photo`), replacing the background-image-behind-text approach entirely — see "Header" section above for why (two earlier attempts at avoiding text/photo overlap via gradient opacity and image downscaling both turned out to be percentage-tuning band-aids rather than real fixes; a structural two-cell split fixes the whole problem class at once). Verified at the site's normal 960px desktop width and at 390px mobile via Playwright — no overlap in either case, photo stacks full-width on top on mobile.
+- 2026-09-16 · **Header rebuilt as a two-cell flex layout** (`.header-row` → `.header-content` + `.header-photo`), replacing the background-image-behind-text approach — fixed the earlier text/photo overlap structurally, but introduced a new problem: the photo, now its own positioned box rather than a background, visually competed with the absolutely-positioned header buttons and WhatsApp badge. **Reverted the same day** back to a background-image approach (see next entry) — the two-cell idea traded one overlap problem for another rather than eliminating overlap entirely.
+- 2026-09-16 · Reverted to a `background-image` header (two layers: semi-transparent red gradient over the bus photo, `auto 100%` height, centred) — see "Header" section above for the full iteration history. This is the settled state: buttons/WhatsApp/text all sit above the photo via normal stacking (nothing competes for box space with a background), the photo shows at full height with no cropping, and legibility holds because the white header text has enough weight/contrast against the tinted photo (confirmed visually at each step).

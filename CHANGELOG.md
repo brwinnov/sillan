@@ -3,6 +3,12 @@
 Every deploy to the live site bumps the version number shown in the page footer.
 Newest first. Full detail for any entry is in the linked commit.
 
+## v38 — 2026-09-16
+Centred the header background photo (was left-anchored in v37).
+
+## v37 — 2026-09-16
+Reverted the v36 two-cell header layout back to a single background-image treatment (photo + semi-transparent red gradient, full height visible via `auto 100%`) — the two-cell version put the photo in its own opaque box that competed for space with the header buttons and WhatsApp badge instead of sitting behind them. As a plain background, everything else just sits naturally on top of it again.
+
 ## v36 — 2026-09-16
 Rebuilt the header as a real two-cell flex layout instead of a background-image wash — text lives in `.header-content`, the photo lives in its own `.header-photo` box on the right, so they structurally can't overlap regardless of viewport width or text length. Photo now shows at full clarity (no red overlay needed since it no longer sits behind text) with rounded corners, `cover`-fit within its own box. Stacks to full-width-on-top on mobile. Supersedes the `cover`/`auto height`/downscaled-opacity background-image experiments in v30/v34/v35.
 

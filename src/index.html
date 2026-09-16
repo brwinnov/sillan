@@ -123,38 +123,24 @@
   /* ---------- HEADER ---------- */
   header{
     background:var(--rose);
-    background-image:linear-gradient(155deg,var(--rose) 0%,var(--rose-deep) 100%);
+    /* Photo sits behind everything as a plain CSS background (z-index 0,
+       same stacking context as the header itself) — buttons, WhatsApp
+       badge, and text all sit above it naturally via normal stacking,
+       nothing competes for box space with it. Full height always visible
+       (no vertical cropping), left-anchored, tinted by the gradient on top. */
+    background-image:linear-gradient(155deg,rgba(194,46,46,0.82) 0%,rgba(142,31,31,0.88) 100%),
+                      url('IMAGES/hdr-background-01.jpg');
+    background-size:cover, auto 100%;
+    background-position:center, center center;
+    background-repeat:no-repeat, no-repeat;
     color:#fff;
     padding:38px 40px 84px;
     position:relative;
     overflow:hidden;
   }
-  /* Text and photo live in separate flex cells so the photo can never
-     overlap the text, regardless of viewport width or text length. */
   .header-row{
-    display:flex;
-    align-items:stretch;
-    gap:24px;
     position:relative;
     z-index:1;
-  }
-  .header-content{
-    flex:1 1 auto;
-    min-width:0;
-  }
-  .header-photo{
-    flex:0 0 auto;
-    width:34%;
-    max-width:380px;
-    min-width:140px;
-    border-radius:10px;
-    background-image:url('IMAGES/hdr-background-01.jpg');
-    background-size:cover;
-    background-position:center 40%;
-  }
-  @media (max-width:600px){
-    .header-row{ flex-direction:column; }
-    .header-photo{ width:100%; max-width:none; height:140px; order:-1; }
   }
   header::after{
     content:"";
@@ -849,16 +835,13 @@
       </button>
     </div>
     <div class="header-row">
-      <div class="header-content">
-        <div class="brand-row">
-          <div class="route-num">179</div>
-        </div>
-        <div class="route-path">
-          Cootehill/Shercock <span class="via">⇄</span> Dublin
-        </div>
-        <div class="days-badge">Weekly timetable · effective 7 Sept 2026</div>
+      <div class="brand-row">
+        <div class="route-num">179</div>
       </div>
-      <div class="header-photo" aria-hidden="true"></div>
+      <div class="route-path">
+        Cootehill/Shercock <span class="via">⇄</span> Dublin
+      </div>
+      <div class="days-badge">Weekly timetable · effective 7 Sept 2026</div>
     </div>
     <div class="view-toggle" role="tablist" aria-label="Choose timetable">
       <button class="toggle-btn active" data-view="default" role="tab" aria-selected="true">Default</button>
@@ -994,7 +977,7 @@
     <span>Sillan Coaches · Route 179 · Safe, reliable, comfortable</span>
     <span>
       <button class="footer-link" id="privacyToggle" aria-haspopup="dialog" aria-controls="privacyOverlay">Privacy</button>
-      · <a class="footer-link" href="https://github.com/brwinnov/sillan/blob/master/CHANGELOG.md" target="_blank" rel="noopener">v36</a>
+      · <a class="footer-link" href="https://github.com/brwinnov/sillan/blob/master/CHANGELOG.md" target="_blank" rel="noopener">v38</a>
     </span>
     <span>Times shown 24-hour</span>
   </footer>
