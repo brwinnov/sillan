@@ -44,25 +44,28 @@ Per-stop location data (for the "where is this stop" tap modal) lives in
 | DCU | **Placeholder** | none | No source found |
 | Sat / Sun | **Provisional** | NTA GTFS feed (Small Operators), published 10 Sept 2026 — see `docs/timetable-sat-sun.md` | Not published anywhere on sillan.ie; per-NTA-data only, not Sillan-confirmed. Neither day serves UCD. |
 
-## Run categories (colour + shape, opt-in since 2026-09-16)
-Default light theme now matches Sillan's own black/white posters (owner supplied the actual
-poster images as the target look) — chips are plain, no per-category colour or shape. Every
-category is still always identifiable via the text label in its column header ("Mon–Fri",
-"Sat", etc.), so nothing is colour-dependent by default. A "Colour-blind" slide toggle next to
-the theme switch (off by default, no persistence) re-applies the table below to both the chips
-and the Legend's swatches, for anyone who wants the extra per-cell visual distinction:
-
-| Category | Data tag (`columns[i].tag`) | CSS class | Colour (Okabe–Ito) | Shape | Header tag |
-|---|---|---|---|---|---|
-| Every weekday Mon–Fri | `all` | `.chip.all` | Yellow `#F0E442` | rounded rectangle | `.tag-all` |
-| Mon–Thu only | `mt` | `.chip.mt` | Sky blue `#56B4E9` | pill (radius 100px) | `.tag-mt` |
-| Fri only | `fr` | `.chip.fr` | Reddish purple `#CC79A7` | dashed outline | `.tag-fr` |
-| Saturday only | `sat` | `.chip.sat` | Orange `#E69F00` | double border | `.tag-sat` |
-| Sunday only | `sun` | `.chip.sun` | Vermillion `#D55E00` | dotted outline | `.tag-sun` |
-| Placeholder / no data | `tbc` | `.chip.dash` | line grey | no fill | `.tag-tbc` |
-
-Class names are semantic (renamed from the legacy `amber/teal/pink` on 2026-09-11, alongside
-the JSON data-extraction refactor — see `PATTERNS.md` for the `TIMETABLES` data shape).
+## Run categories and visual style (as of 2026-09-16)
+The whole page now matches Sillan's own posters (owner supplied the actual poster images —
+`docs/source-data/` — as the target look), replacing the earlier Okabe-Ito colour+shape chip
+system entirely (that system, and a "Colour-blind" toggle that briefly existed alongside it,
+were both tried on 2026-09-16 and then removed the same day — see Decisions log):
+- **Board card:** each main table (`.section-head.board-head` + the `.board-wrap` right after
+  it) forms one seamless rounded card — a dark title strip (page name + day-range, e.g. "To
+  Dublin" / "Monday – Friday service"), a solid red "DEPARTS FROM" + run-number header band,
+  and a body of alternating white/light-grey rows (`tr:nth-child(even) .time-cell` gets
+  `--panel-alt`). Currently only the Default tab's "To Dublin" table uses `.board-head` +
+  `.board-wrap-attached` — "From Dublin" and the other tabs keep a plain heading since they
+  have a sub-paragraph between the heading and their table, breaking the flush-card technique.
+- **Chips:** plain bold text (`var(--ink)`), no background box, no border — literally just the
+  number, matching the posters exactly. `columns[i].tag` (`all`/`mt`/`fr`/`sat`/`sun`/`tbc`)
+  still exists in the data and still drives the header's small "Mon–Fri"/"Sat"/etc. pill label
+  (forced onto a white pill via `!important` so it stays legible against the red header band
+  regardless of theme) — that text label is the *only* thing distinguishing categories now.
+  `.chip.dash` (empty/no-service cells) shows a muted grey dash.
+- **Colour is theme-independent** for the red header and dark title strip — same red/near-black
+  regardless of the light/dark toggle, matching how the page's own top `<header>` already
+  behaved. Row backgrounds and text still follow `--panel`/`--ink`/`--line` as normal, so they
+  do adapt with dark mode.
 
 ## Default timetable — reconciled Mon–Fri data
 Full tables in `docs/timetable-mon-fri.md`. Summary:
@@ -114,14 +117,14 @@ Full tables in `docs/timetable-mon-fri.md`. Summary:
 - 2026-09-11 · Column headers labelled "Run N" rather than origin clock time — the latter duplicated the first stop's cell and confused the owner.
 - 2026-09-11 · Single Mon–Fri table with day-type tags instead of two separate tables — most runs are identical across days.
 - 2026-09-11 · Sat/Sun shown as TBC placeholder, not "no service" — owner's call; nothing official either way.
-- 2026-09-11 · Okabe–Ito palette + shape cues for accessibility.
+- 2026-09-11 · Okabe–Ito palette + shape cues for accessibility. **Superseded 2026-09-16** — replaced by the poster-matching plain-chip style; see the entry below.
 - 2026-09-11 · Dark mode follows `prefers-color-scheme`, no persistence (no browser storage allowed). **Superseded 2026-09-16** — now always starts in light mode regardless of device setting (owner's call); still no persistence, the toggle still works, it just no longer auto-detects on load.
 - 2026-09-16 · Moved "M3 = does not call at this stop" from the footer to directly under the To Dublin table, next to where M3 cells actually appear — the footer was a long way from the thing it was explaining.
 - 2026-09-16 · Centred the "Stop" column header (was left-aligned) across all timetables, and removed the "8 departures a day · journey time roughly 2 hours from Cootehill" subtitle from the To Dublin section only (From Dublin keeps its own).
-- 2026-09-16 · Legend now line-breaks after the third item (Friday only), so Saturday/Sunday sit on their own row — via a `.legend-break` flex-basis:100% spacer div, not a media query, so it applies at all widths. Removed the horizontal rule directly under the legend (`.weekday-divider`'s own top border) since it duplicated the legend's own bottom border immediately above it.
-- 2026-09-16 · Legend is now collapsed by default behind a "Legend ⌄" toggle, using the same `<details>`/`<summary>` pattern as the service-announcements bar (no new JS needed).
-- 2026-09-16 · Reworked the default light theme to match Sillan's own posters (owner supplied the actual poster images as the target): chips are now plain black/white by default, no per-category colour or shape — that coding moved behind a new "Colour-blind" slide toggle next to the theme switch, off by default. Reverses the previous always-on interpretation of the "colour is never the only signal" constraint in `CLAUDE.md` — updated its wording to "always identifiable by text; colour+shape is an opt-in enhancement," since every category was already spelled out in its column header regardless. Also updated the Legend to explain the toggle, since its swatches only show distinct colours once it's on.
+- 2026-09-16 · Legend section (colour-swatch key, initially made collapsible behind a "Legend" toggle earlier the same day) **removed entirely** — no longer needed once chips stopped carrying per-category colour/shape at all.
+- 2026-09-16 · Reworked the whole page to match Sillan's own posters (owner supplied the actual poster images as the target): dark title strip + red header band + alternating light rows + plain-text chips (see "Run categories and visual style" above for the full breakdown). A "Colour-blind" toggle restoring the old Okabe-Ito colour+shape system was built, tested working, then **removed the same day** at the owner's request — the poster style is now the only style, not a default with an opt-in alternative. Updated the "colour is never the only signal" constraint in `CLAUDE.md` accordingly: every category is identifiable by its column header's text label alone, permanently.
 - 2026-09-16 · Run headers show a plain number (`1`, `2`…) instead of `Run N` — shorter, same 1-indexed-from-column-position meaning as before (see `PATTERNS.md`).
+- 2026-09-16 · Moved "Monday – Friday service" from its own standalone divider line above the To Dublin/From Dublin sections onto the same line as the "To Dublin" heading itself, same size, right-aligned — matches the poster's "TO DUBLIN / MONDAY TO THURSDAY ONLY" banner layout. Only applied to "To Dublin" (not "From Dublin", which wasn't part of what was shown) — flagged as a scope choice, not confirmed symmetric treatment.
 - 2026-09-11 · Single-file HTML, no build step — keeps it trivially shareable and previewable.
 - 2026-09-11 · Deployed to Cloudflare Workers (assets-only, `wrangler.jsonc` at repo root, `assets.directory: ./src`) with a Custom Domain binding, live at https://sillan.brwinnov.app on the owner's existing `brwinnov.app` zone. Repo is public on GitHub (`brwinnov/sillan`) but Cloudflare deploy is a separate step — pushing to GitHub does not auto-deploy; re-run `npx wrangler deploy` after edits to `src/index.html`.
 - 2026-09-11 · First real-browser visual QA pass done (Playwright, against the live Cloudflare URL) — desktop (1280px) and mobile (390px) × light/dark × all three tabs. Screenshots saved to `docs/screenshots/`. Confirmed: Okabe–Ito palette + shape cues (rounded rect / pill / dashed outline) render as visually distinct in both themes; dark mode has good contrast throughout; UCD/DCU placeholder banners display correctly. Found: mobile tables scroll horizontally correctly (`.board-wrap`, `overflow-x:auto`) but have no visible scroll affordance — added to `TODO_AI.md` P2. Also found `favicon.ico` 404s (harmless, added to backlog).

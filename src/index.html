@@ -16,16 +16,9 @@
     --rose:#C22E2E;
     --rose-deep:#8E1F1F;
     --board:#15171B;
-    --board-plain:#F4F1EA;   /* default chip text — matches Sillan's own black/white posters */
-    /* Colour-blind-safe palette (Okabe–Ito), tuned for a dark chip background.
-       Only applied when body.cb-mode is on (off by default) — see the
-       colour-blind toggle next to the theme switch. */
-    --board-amber:#F0E442;   /* every weekday — yellow */
-    --board-teal:#56B4E9;    /* Mon–Thu only — sky blue */
-    --board-pink:#CC79A7;    /* Fri only — reddish purple */
-    --board-orange:#E69F00;  /* Saturday only — orange */
-    --board-vermillion:#D55E00; /* Sunday only — vermillion */
-    --board-dim:#4A4E56;
+    --board-plain:#F4F1EA;   /* light text on a dark board — the title strip, was also the chip box */
+    --panel-alt:#F4F1EA;     /* alternating row shade for time columns, matches the posters */
+    --board-amber:#F0E442;   /* used by the announcements bar's accent colour */
   }
   *{box-sizing:border-box;}
   body{
@@ -335,48 +328,10 @@
   .theme-toggle .icon-moon{ display:block; }
   body.dark .theme-toggle .icon-sun{ display:block; }
   body.dark .theme-toggle .icon-moon{ display:none; }
-  .cb-toggle{
-    display:inline-flex;
-    align-items:center;
-    gap:7px;
-    background:rgba(255,255,255,0.12);
-    border:1px solid rgba(255,255,255,0.3);
-    border-radius:100px;
-    padding:6px 12px 6px 10px;
-    color:#fff;
-    font-family:'Space Grotesk',sans-serif;
-    font-size:12px;
-    font-weight:600;
-    cursor:pointer;
-    transition:background 0.15s ease;
-  }
-  .cb-toggle:hover{ background:rgba(255,255,255,0.2); }
-  .cb-switch{
-    position:relative;
-    display:inline-block;
-    width:26px;
-    height:14px;
-    flex:none;
-    background:rgba(255,255,255,0.35);
-    border-radius:100px;
-    transition:background 0.15s ease;
-  }
-  .cb-switch-thumb{
-    position:absolute;
-    top:2px; left:2px;
-    width:10px; height:10px;
-    border-radius:50%;
-    background:#fff;
-    transition:transform 0.15s ease;
-  }
-  .cb-toggle[aria-pressed="true"] .cb-switch{ background:#3FE388; }
-  .cb-toggle[aria-pressed="true"] .cb-switch-thumb{ transform:translateX(12px); }
   @media (max-width:600px){
     .header-actions{ top:14px; right:20px; }
     .theme-toggle .theme-label{ display:none; }
     .theme-toggle{ padding:7px 9px; }
-    .cb-toggle .cb-toggle-label{ display:none; }
-    .cb-toggle{ padding:7px 9px; }
   }
 
   /* ---------- HELP MODAL ---------- */
@@ -455,16 +410,13 @@
     --slate:#A6ABB3;
     --line:#2C3038;
     --board:#252A32;
+    --panel-alt:#20242B;
   }
   body.dark .sheet{ background:var(--paper); }
-  body.dark .tag-all{ background:#3D3810; color:#F0E442; }
-  body.dark .tag-mt{ background:#12324A; color:#8ACBF2; }
-  body.dark .tag-fr{ background:#3E2033; color:#E3A3C9; }
-  body.dark .tag-sat{ background:#3D2C10; color:#F2C078; }
-  body.dark .tag-sun{ background:#3D1C10; color:#F29878; }
-  body.dark .tag-tbc{ background:#23262C; color:#A6ABB3; border-color:#3A3E46; }
-  body.dark .chip.dash{ color:#3A3E46; }
-  body.dark .m3{ color:#7E838B; }
+  /* Header tag pills always sit on a forced-white background (see .run-head
+     .run-tag) regardless of theme, so their text colour doesn't need a
+     separate dark-mode variant — the light-theme colours already read fine
+     on white in both themes. */
   body.dark .note{ background:#2A2416; border-color:#4A3E1E; color:#E6D7A8; }
   body.dark .note.rose{ background:#301A1A; border-color:#5A2A2A; color:#F0B4B4; }
   body.dark .day-pill.off{ background:#23262C; color:#A6ABB3; }
@@ -474,7 +426,6 @@
   body.dark .summary p{ color:#B8BDC5; }
   body.dark .summary .col + .col{ border-color:rgba(255,255,255,0.1); }
   body.dark .no-service{ background:#23262C; border-color:#3A3E46; }
-  body.dark .weekday-divider{ border-color:var(--line); }
   body.dark .run-head .run-time{ color:var(--ink); }
 
   /* ---------- WEEK STRIP ---------- */
@@ -511,83 +462,6 @@
     border:1px dashed #E3C88C;
   }
 
-  /* ---------- LEGEND ---------- */
-  .legend-details{
-    border-bottom:1px solid var(--line);
-  }
-  .legend-toggle{
-    display:flex;
-    align-items:center;
-    gap:6px;
-    padding:16px 40px;
-    cursor:pointer;
-    -webkit-user-select:none;
-    user-select:none;
-    font-family:'Space Grotesk',sans-serif;
-    font-size:13px;
-    font-weight:600;
-    color:var(--slate);
-  }
-  .legend-toggle:hover{ color:var(--ink); }
-  .legend-toggle .legend-chev{
-    flex:none;
-    transition:transform 0.2s ease;
-  }
-  .legend-details[open] .legend-toggle .legend-chev{ transform:rotate(180deg); }
-  .legend{
-    display:flex;
-    gap:22px;
-    flex-wrap:wrap;
-    padding:0 40px 20px;
-    font-size:13px;
-  }
-  .legend-break{
-    flex-basis:100%;
-    height:0;
-  }
-  .legend-hint{
-    flex-basis:100%;
-    margin:0;
-    font-size:12px;
-    color:var(--slate);
-  }
-  .legend-item{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    color:var(--slate);
-  }
-  .swatch{
-    display:inline-block;
-    min-width:34px;
-    padding:2px 5px;
-    border-radius:4px;
-    background:var(--board);
-    color:var(--board-plain);
-    font-family:'IBM Plex Mono',monospace;
-    font-size:9.5px;
-    font-weight:600;
-    text-align:center;
-    border:1.5px solid transparent;
-  }
-  /* Colour-blind mode: gives each swatch its own colour + shape, matching the chips */
-  body.cb-mode .swatch.all{ color:var(--board-amber); }
-  body.cb-mode .swatch.mt{ color:var(--board-teal); border-radius:100px; }
-  body.cb-mode .swatch.fr{ color:var(--board-pink); border:1.5px dashed var(--board-pink); }
-  body.cb-mode .swatch.sat{ color:var(--board-orange); border:3px double var(--board-orange); }
-  body.cb-mode .swatch.sun{ color:var(--board-vermillion); border:1.5px dotted var(--board-vermillion); }
-
-  .weekday-divider{
-    margin:28px 40px 0;
-    padding-top:8px;
-    font-family:'Space Grotesk',sans-serif;
-    font-size:12.5px;
-    font-weight:700;
-    letter-spacing:0.6px;
-    text-transform:uppercase;
-    color:var(--rose);
-  }
-
   /* ---------- SECTION HEADS ---------- */
   .section{
     padding:34px 40px 6px;
@@ -595,6 +469,7 @@
   .section-head{
     display:flex;
     align-items:baseline;
+    flex-wrap:wrap;
     gap:12px;
     margin-bottom:4px;
   }
@@ -603,6 +478,29 @@
     font-size:24px;
     font-weight:700;
     margin:0;
+  }
+  .section-days{
+    margin-left:auto;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:24px;
+    font-weight:700;
+    color:var(--rose);
+  }
+  /* Dark title strip attached directly to the board card below it —
+     matches the "TO DUBLIN / MONDAY TO THURSDAY ONLY" banner on Sillan's
+     own posters. Colour is constant (not dark/light-theme-dependent),
+     same as the page's own red <header>. */
+  .board-head{
+    background:var(--board);
+    padding:14px 20px;
+    border-radius:10px 10px 0 0;
+    margin-bottom:0;
+  }
+  .board-head h2{ color:var(--board-plain); }
+  .board-head .section-days{ color:var(--rose); }
+  .board-wrap-attached{
+    border-radius:0 0 10px 10px;
+    border-top:none;
   }
   .section-head .dir-icon{
     width:26px;height:26px;
@@ -663,17 +561,20 @@
     white-space:nowrap;
     position:relative;
   }
+  /* Header band matches Sillan's own posters — solid brand red, always
+     (not gated by dark/light theme, same as the page's own <header>). */
   .stop-col-head{
-    color:var(--slate);
-    font-weight:600;
+    background:var(--rose);
+    color:#fff;
+    font-weight:700;
     font-size:11.5px;
     text-transform:uppercase;
     letter-spacing:0.6px;
     text-align:center;
-    padding-bottom:8px;
-    border-bottom:1px solid var(--line);
   }
   .stop-cell{
+    background:var(--panel);
+    color:var(--ink);
     border-bottom:1px solid var(--line);
   }
   .stop-cell .dot{
@@ -690,21 +591,26 @@
   .time-cell{
     text-align:center;
     padding:7px 1px;
+    background:var(--panel);
+    color:var(--ink);
     border-bottom:1px solid var(--line);
     border-left:1px solid var(--line);
   }
+  /* Alternating row shading for the time columns only (not the stop-name
+     column) — matches the subtle banding on Sillan's own posters. */
+  tr:nth-child(even) .time-cell{ background:var(--panel-alt); }
   .run-head{
     text-align:center;
-    border-bottom:1px solid var(--line);
-    border-left:1px solid var(--line);
+    background:var(--rose);
+    border-left:1px solid rgba(255,255,255,0.25);
     padding:8px 1px 7px;
     vertical-align:bottom;
   }
   .run-head .run-time{
     font-family:'IBM Plex Mono',monospace;
     font-size:11.5px;
-    font-weight:600;
-    color:var(--ink);
+    font-weight:700;
+    color:#fff;
     display:block;
   }
   .run-head .run-tag{
@@ -716,40 +622,31 @@
     padding:2px 6px;
     border-radius:100px;
     text-transform:uppercase;
+    background:rgba(255,255,255,0.92) !important;
   }
-  .tag-all{ background:#FBF6CF; color:#6E5A00; }
-  .tag-mt{ background:#DCEEFA; color:#1F5F8A; }
-  .tag-fr{ background:#F3DFEB; color:#8A3C6B; }
-  .tag-sat{ background:#FBE8CC; color:#8A5A00; }
-  .tag-sun{ background:#FADACC; color:#8A3200; }
-  .tag-tbc{ background:#F1EDE4; color:#8A857A; border:1px dashed #C9C2B1; }
+  .tag-all{ color:#6E5A00; }
+  .tag-mt{ color:#1F5F8A; }
+  .tag-fr{ color:#8A3C6B; }
+  .tag-sat{ color:#8A5A00; }
+  .tag-sun{ color:#8A3200; }
+  .tag-tbc{ color:#8A857A; border:1px dashed #C9C2B1; }
 
+  /* Default/poster mode: plain bold text, no box — matches Sillan's own
+     posters exactly (just numbers, no per-cell chip). */
+  /* Plain bold text, no box — matches Sillan's own posters exactly. */
   .chip{
     display:inline-block;
     min-width:44px;
     padding:4px 2px;
     border-radius:5px;
-    background:var(--board);
-    color:var(--board-plain);
+    background:transparent;
+    color:var(--ink);
     font-family:'IBM Plex Mono',monospace;
     font-size:12.5px;
     font-weight:600;
     letter-spacing:0.3px;
     border:1.5px solid transparent;
   }
-  /* Colour-blind mode (off by default — toggle next to the theme switch):
-     each run category gets its own colour AND shape cue instead of the
-     plain black/white chip that matches Sillan's own posters. */
-  /* Every weekday — yellow, plain rounded rectangle */
-  body.cb-mode .chip.all{ color:var(--board-amber); }
-  /* Mon–Thu only — sky blue, pill shape (shape cue, not just colour) */
-  body.cb-mode .chip.mt{ color:var(--board-teal); border-radius:100px; }
-  /* Fri only — reddish purple, dashed outline (shape cue, not just colour) */
-  body.cb-mode .chip.fr{ color:var(--board-pink); border:1.5px dashed var(--board-pink); }
-  /* Saturday only — orange, double border (shape cue, not just colour) */
-  body.cb-mode .chip.sat{ color:var(--board-orange); border:3px double var(--board-orange); }
-  /* Sunday only — vermillion, dotted outline (shape cue, not just colour) */
-  body.cb-mode .chip.sun{ color:var(--board-vermillion); border:1.5px dotted var(--board-vermillion); }
   .chip.dash{
     background:transparent;
     color:var(--line);
@@ -883,13 +780,10 @@
     header .whatsapp-badge{position:static;margin-top:18px;max-width:none;}
     .route-num{font-size:70px;}
     .section{padding:26px 20px 6px;}
-    .weekday-divider{margin:24px 20px 0;}
     .week-strip{padding:18px 20px 0;}
     .summary{margin:28px 20px 0; grid-template-columns:1fr; padding:20px;}
     .summary .col + .col{border-left:none;border-top:1px solid rgba(255,255,255,0.12);padding-left:0;padding-top:16px;}
     footer{margin:22px 20px 0;}
-    .legend-toggle{padding:14px 20px;}
-    .legend{padding:0 20px 16px;}
   }
 </style>
 </head>
@@ -939,10 +833,6 @@
         <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
         <span class="theme-label">Dark</span>
       </button>
-      <button class="cb-toggle" id="cbToggle" aria-pressed="false" aria-label="Turn on colour-blind friendly chip colours" title="Colour-blind friendly colours">
-        <span class="cb-switch" aria-hidden="true"><span class="cb-switch-thumb"></span></span>
-        <span class="cb-toggle-label">Colour-blind</span>
-      </button>
     </div>
     <div class="route-path">
       Cootehill / Kingscourt <span class="via">⇄</span> Dublin
@@ -959,22 +849,6 @@
     </div>
   </header>
 
-  <details class="legend-details">
-    <summary class="legend-toggle">
-      Legend
-      <svg class="legend-chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-    </summary>
-    <div class="legend">
-      <p class="legend-hint">Each column's day-range is always labelled above its times. Turn on <b>Colour-blind mode</b> (top right) to also give each category its own colour and shape below.</p>
-      <div class="legend-item"><span class="swatch all">6.30</span> Runs every weekday (Mon–Fri)</div>
-      <div class="legend-item"><span class="swatch mt">6.30</span> Monday–Thursday only</div>
-      <div class="legend-item"><span class="swatch fr">6.30</span> Friday only</div>
-      <div class="legend-break"></div>
-      <div class="legend-item"><span class="swatch sat">9.00</span> Saturday only</div>
-      <div class="legend-item"><span class="swatch sun">18.20</span> Sunday only</div>
-    </div>
-  </details>
-
   <div id="view-default" class="view">
 
   <!-- Week strip disabled 2026-09-11 (owner request) — redundant with the
@@ -990,14 +864,13 @@
   </div>
   -->
 
-  <div class="weekday-divider">Monday – Friday service</div>
-
   <!-- ================= TO DUBLIN ================= -->
   <div class="section">
-    <div class="section-head">
+    <div class="section-head board-head">
       <h2>To Dublin</h2>
+      <span class="section-days">Monday – Friday service</span>
     </div>
-    <div class="board-wrap" id="tbl-toDublin"></div>
+    <div class="board-wrap board-wrap-attached" id="tbl-toDublin"></div>
     <p class="section-sub" style="margin-top:10px;">M3 = does not call at this stop</p>
 
     <div class="notes">
@@ -1093,7 +966,7 @@
     <span>Sillan Coaches · Route 179 · Safe, reliable, comfortable</span>
     <span>
       <button class="footer-link" id="privacyToggle" aria-haspopup="dialog" aria-controls="privacyOverlay">Privacy</button>
-      · <a class="footer-link" href="https://github.com/brwinnov/sillan/blob/master/CHANGELOG.md" target="_blank" rel="noopener">v27</a>
+      · <a class="footer-link" href="https://github.com/brwinnov/sillan/blob/master/CHANGELOG.md" target="_blank" rel="noopener">v29</a>
     </span>
     <span>Times shown 24-hour</span>
   </footer>
@@ -1105,7 +978,7 @@
     <button class="modal-close" id="helpClose" aria-label="Close">&times;</button>
     <h2 id="helpTitle">About this page</h2>
     <p>This is an <b>unofficial</b> companion page for Sillan Coaches' Route 179 timetable (Cootehill / Kingscourt ⇄ Dublin / UCD). It isn't affiliated with or endorsed by Sillan Coaches — always check <a href="https://sillan.ie" target="_blank" rel="noopener">sillan.ie</a> or call <b>+353 42 9669130</b> to confirm times before travelling.</p>
-    <p>Times are transcribed from Sillan's published posters and website. Sections marked <b>TBC</b> or <b>Provisional</b> (DCU, Saturday/Sunday) aren't confirmed — see the colour and shape legend for which days each run operates.</p>
+    <p>Times are transcribed from Sillan's published posters and website. Sections marked <b>TBC</b> or <b>Provisional</b> (DCU, Saturday/Sunday) aren't confirmed. Each column header states which days it runs (e.g. "Mon–Thu").</p>
     <p>More information will be added here over time.</p>
     <p><b>All stop extra info is best-approx. location or nearest TFI bus stop. You may need to be on the opposite side of the road from it.</b></p>
   </div>
@@ -1493,19 +1366,6 @@
 
     btn.addEventListener('click', function(){
       applyTheme(!document.body.classList.contains('dark'));
-    });
-  })();
-
-  // ---- Colour-blind mode toggle (off by default) ----
-  // Off: chips are plain black/white, matching Sillan's own posters.
-  // On: each run category gets its own Okabe-Ito colour + shape cue.
-  (function(){
-    var btn = document.getElementById('cbToggle');
-
-    btn.addEventListener('click', function(){
-      var on = !document.body.classList.contains('cb-mode');
-      document.body.classList.toggle('cb-mode', on);
-      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
   })();
 </script>

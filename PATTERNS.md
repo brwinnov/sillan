@@ -5,10 +5,9 @@
 2. `<div class="sheet">` — page wrapper, max-width 960px
 3. `<details class="announce">` — collapsible service-announcements bar, first element inside `.sheet`, above `<header>` (see "Announcements bar" below)
 4. `<header>` — red gradient band: route number, brand, route path, date badge, theme toggle (top-right), view toggle (lower-left), WhatsApp badge (lower-right)
-5. `.legend` — global, outside the view blocks so it shows on every tab
-6. `#view-default`, `#view-ucd`, `#view-dcu` — one `<div class="view">` each; only one un-`hidden` at a time
-7. `<footer>`
-8. Single `<script>` block — timetable data + render function, then view toggle, then theme toggle, then the announcements-bar lazy-load, then modals, then dark mode
+5. `#view-default`, `#view-ucd`, `#view-dcu` — one `<div class="view">` each; only one un-`hidden` at a time
+6. `<footer>`
+7. Single `<script>` block — timetable data + render function, then view toggle, then modals, then dark mode
 
 ## CSS
 - All colours via CSS custom properties on `:root`; dark mode overrides them on `body.dark`. Add new colours as variables, not literals.
@@ -37,10 +36,10 @@ toDublin: {
 }
 ```
 - `columns[i].tag` is one of `all` (every weekday), `mt` (Mon–Thu only), `fr` (Fri only),
-  `sat` (Saturday only), `sun` (Sunday only), or `tbc` (not yet published). It drives
-  **both** the header's `run-tag` label/colour *and* that column's chip colour+shape — a
-  stop's chip always inherits its column's tag, so they can never disagree (the old
-  hand-written markup could, and had to be kept in sync manually).
+  `sat` (Saturday only), `sun` (Sunday only), or `tbc` (not yet published). It drives the
+  header's small `run-tag` pill label (e.g. "Mon–Thu") — the *only* thing that distinguishes
+  categories since 2026-09-16 (see below). A stop's chip always inherits its column's tag for
+  this purpose, so the label can never disagree with the data.
 - A cell value is a time string (`"6.30"`), `"M3"` (bus skips this stop — rendered as plain
   text, no chip), `"TBC"`, or `null` (service doesn't run in that column → rendered as a
   dashed chip `–`).
@@ -52,20 +51,33 @@ toDublin: {
   a clock time (see decisions log). Was `Run N` until 2026-09-16, shortened to just the number.
 - Time values use `H.MM` with a dot (matches Sillan's posters). Notes use `HH:MM`.
 - Stops in geographic route order, top to bottom, in the direction of travel.
-- Chip class names (`chip all/mt/fr/dash`) are semantic, not colour names — see `CONTEXT_MAP.md`
-  for the category→colour/shape table.
-- **Colour-blind mode (since 2026-09-16, off by default):** `.chip`/`.swatch` base rules set a
-  single plain colour (`--board-plain`, near-white on the dark `--board` background) matching
-  Sillan's own posters. The per-category Okabe-Ito colour+shape rules (`.chip.all`, `.chip.mt`…
-  and their `.swatch` equivalents) only apply under `body.cb-mode`, toggled by the `#cbToggle`
-  slide switch next to the theme toggle (`src/index.html`'s header-actions). No persistence
-  (matches the no-`localStorage` rule) — always starts off. Every category stays identifiable
-  without it via the always-visible text label in each column's header pill.
+- Chip class names (`chip all/mt/fr/dash`) still exist in the markup for this purpose, but
+  carry **no colour or shape of their own** since 2026-09-16 — chips are plain bold text
+  (`var(--ink)`), matching Sillan's own posters exactly (owner supplied the poster images as
+  the target look). An Okabe-Ito colour+shape system and a "Colour-blind mode" toggle to
+  switch it on were both built and tried the same day, then removed at the owner's request —
+  don't reintroduce either without being asked again.
 - To add a new table: add an entry to `TIMETABLES`, add its `<div class="board-wrap" id="tbl-KEY">`
   mount point in the markup, done — no `<table>` markup to hand-write.
 - The mobile scroll-fade (right-edge gradient + `›` chevron, hidden once scrolled to the end
   or when the table already fits) is wired automatically by `renderBoard()` for every table;
   don't add it manually.
+
+## Poster-card table style (since 2026-09-16)
+Matches Sillan's own posters (owner-supplied images, not a general redesign choice): a dark
+title strip, a red header band, and an alternating-row body, all one seamless rounded card.
+- Header band (`.stop-col-head`, `.run-head`): solid `var(--rose)` background, white text,
+  constant regardless of the light/dark theme toggle — same as the page's own `<header>`.
+  `.run-head .run-tag`'s background is forced to a near-white pill via `!important` (it needs
+  to beat both the light- and dark-theme `.tag-*` rules) so its text stays legible against red.
+- Body (`.stop-cell`, `.time-cell`): normal `var(--panel)`/`var(--ink)`, so it still follows
+  the light/dark toggle. `tr:nth-child(even) .time-cell` gets `var(--panel-alt)` for the
+  alternating shade — stop names don't alternate, only the time columns.
+- To attach a section's heading directly to its table as one card (no gap, rounded corners
+  meeting in the middle): add `board-head` to that `.section-head` and `board-wrap-attached`
+  to the `.board-wrap` right after it. Only works when the table is the *very next* element
+  after the heading — a `.section-sub` in between (as "From Dublin" and the Sat/Sun/UCD/DCU
+  sections have) breaks the flush look, so those keep a plain heading instead.
 
 ## Stop location modals (since 2026-09-11)
 A stop is clickable ("where is this stop?") only if it has an entry in the `STOP_INFO`

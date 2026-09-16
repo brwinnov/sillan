@@ -3,8 +3,14 @@
 Every deploy to the live site bumps the version number shown in the page footer.
 Newest first. Full detail for any entry is in the linked commit.
 
+## v29 — 2026-09-16
+Removed the "Colour-blind" toggle added in v27/v28 entirely, per owner request — the poster style is now the only style, not a default-plus-opt-in-toggle.
+
+## v28 — 2026-09-16
+Matched the timetable card itself to Sillan's own posters: dark title strip merged onto the "To Dublin" heading line (with "Monday – Friday service" alongside it), red "DEPARTS FROM"/run-number header band, alternating white/light-grey row shading. Removed the Legend section entirely (no longer needed once chips lost their per-category colour/shape).
+
 ## v27 — 2026-09-16
-Default light theme now matches Sillan's own posters — plain black/white chips, no per-category colour or shape. Added a "Colour-blind" slide toggle next to the theme switch (off by default) that restores the previous Okabe-Ito colour+shape coding on both the chips and the Legend's swatches.
+Default light theme now matches Sillan's own posters — plain black/white chips, no per-category colour or shape. Added a "Colour-blind" slide toggle next to the theme switch (off by default) that restored the previous Okabe-Ito colour+shape coding on both the chips and the Legend's swatches. (Superseded in v29 — see above.)
 
 ## v26 — 2026-09-16
 Legend is now collapsed by default behind a "Legend" toggle, matching the same `<details>`/`<summary>` pattern as the service-announcements bar — no new JS.
