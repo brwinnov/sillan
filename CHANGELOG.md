@@ -3,6 +3,15 @@
 Every deploy to the live site bumps the version number shown in the page footer.
 Newest first. Full detail for any entry is in the linked commit.
 
+## v25 — 2026-09-16
+Legend now wraps after the third item, so Saturday/Sunday drop to their own line. Removed the redundant horizontal rule directly under the legend (the "Monday – Friday service" divider's own top border, right below the legend's own bottom border). Run headers now show a plain number instead of "Run N".
+
+## v24 — 2026-09-16
+Centred the "Stop" column header across all timetables. Removed the "8 departures a day · journey time roughly 2 hours from Cootehill" subtitle from the To Dublin section (From Dublin's own subtitle is unaffected).
+
+## v23 — 2026-09-16
+Moved "M3 = does not call at this stop" from the footer to just under the To Dublin timetable, where the M3 cells actually appear. Site now always loads in light mode instead of following the device's light/dark setting.
+
 ## v22 — 2026-09-15
 Add a version number + this changelog, linked from the footer.
 

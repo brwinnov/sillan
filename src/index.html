@@ -479,6 +479,10 @@
     border-bottom:1px solid var(--line);
     font-size:13px;
   }
+  .legend-break{
+    flex-basis:100%;
+    height:0;
+  }
   .legend-item{
     display:flex;
     align-items:center;
@@ -506,7 +510,6 @@
   .weekday-divider{
     margin:28px 40px 0;
     padding-top:8px;
-    border-top:1px solid var(--line);
     font-family:'Space Grotesk',sans-serif;
     font-size:12.5px;
     font-weight:700;
@@ -596,6 +599,7 @@
     font-size:11.5px;
     text-transform:uppercase;
     letter-spacing:0.6px;
+    text-align:center;
     padding-bottom:8px;
     border-bottom:1px solid var(--line);
   }
@@ -880,6 +884,7 @@
     <div class="legend-item"><span class="swatch all">6.30</span> Runs every weekday (Mon–Fri)</div>
     <div class="legend-item"><span class="swatch mt">6.30</span> Monday–Thursday only</div>
     <div class="legend-item"><span class="swatch fr">6.30</span> Friday only</div>
+    <div class="legend-break"></div>
     <div class="legend-item"><span class="swatch sat">9.00</span> Saturday only</div>
     <div class="legend-item"><span class="swatch sun">18.20</span> Sunday only</div>
   </div>
@@ -906,9 +911,8 @@
     <div class="section-head">
       <h2>To Dublin</h2>
     </div>
-    <p class="section-sub">8 departures a day · journey time roughly 2 hours from Cootehill</p>
-
     <div class="board-wrap" id="tbl-toDublin"></div>
+    <p class="section-sub" style="margin-top:10px;">M3 = does not call at this stop</p>
 
     <div class="notes">
       <div class="note rose"><span class="mark">!</span><div>The <b>05:30 Shercock</b> departure does <b>not</b> serve UCD — any day of the week.</div></div>
@@ -1003,9 +1007,9 @@
     <span>Sillan Coaches · Route 179 · Safe, reliable, comfortable</span>
     <span>
       <button class="footer-link" id="privacyToggle" aria-haspopup="dialog" aria-controls="privacyOverlay">Privacy</button>
-      · <a class="footer-link" href="https://github.com/brwinnov/sillan/blob/master/CHANGELOG.md" target="_blank" rel="noopener">v22</a>
+      · <a class="footer-link" href="https://github.com/brwinnov/sillan/blob/master/CHANGELOG.md" target="_blank" rel="noopener">v25</a>
     </span>
-    <span>Times shown 24-hour · M3 = does not call at this stop</span>
+    <span>Times shown 24-hour</span>
   </footer>
 
 </div>
@@ -1231,7 +1235,7 @@
     if (!mount) return;
 
     var headCells = data.columns.map(function(col, i){
-      return '<th class="run-head"><span class="run-time">Run ' + (i + 1) + '</span>' +
+      return '<th class="run-head"><span class="run-time">' + (i + 1) + '</span>' +
              '<span class="run-tag tag-' + col.tag + '">' + TAG_LABEL[col.tag] + '</span></th>';
     }).join('');
 
@@ -1397,9 +1401,9 @@
       label.textContent = dark ? 'Light' : 'Dark';
     }
 
-    // Start by following the device's own light/dark setting
-    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    applyTheme(prefersDark);
+    // Always start in light mode (owner's call, 2026-09-16) — no longer follows
+    // the device's prefers-color-scheme setting.
+    applyTheme(false);
 
     btn.addEventListener('click', function(){
       applyTheme(!document.body.classList.contains('dark'));

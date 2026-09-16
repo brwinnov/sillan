@@ -48,8 +48,8 @@ toDublin: {
   small italic text after the stop name, without affecting the `data-stop` attribute used
   for `STOP_INFO` lookup (so an annotated stop like `{name:'Cootehill', note:'set down only'}`
   still links to the same modal as plain `'Cootehill'` elsewhere).
-- Run headers are `Run N` (1-indexed from the column's position) — never a clock time (see
-  decisions log).
+- Run headers are a plain 1-indexed number (`1`, `2`, `3`…) from the column's position — never
+  a clock time (see decisions log). Was `Run N` until 2026-09-16, shortened to just the number.
 - Time values use `H.MM` with a dot (matches Sillan's posters). Notes use `HH:MM`.
 - Stops in geographic route order, top to bottom, in the direction of travel.
 - Chip class names (`chip all/mt/fr/dash`) are semantic, not colour names — see `CONTEXT_MAP.md`
