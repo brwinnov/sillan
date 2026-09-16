@@ -3,6 +3,15 @@
 Every deploy to the live site bumps the version number shown in the page footer.
 Newest first. Full detail for any entry is in the linked commit.
 
+## v36 — 2026-09-16
+Rebuilt the header as a real two-cell flex layout instead of a background-image wash — text lives in `.header-content`, the photo lives in its own `.header-photo` box on the right, so they structurally can't overlap regardless of viewport width or text length. Photo now shows at full clarity (no red overlay needed since it no longer sits behind text) with rounded corners, `cover`-fit within its own box. Stacks to full-width-on-top on mobile. Supersedes the `cover`/`auto height`/downscaled-opacity background-image experiments in v30/v34/v35.
+
+## v35 — 2026-09-16
+Attempted fix for header text overlapping the background photo by downscaling the image further (`auto 74%` height). Superseded within the hour by v36's proper two-cell layout, which fixes it structurally instead of by percentage-tuning.
+
+## v34 — 2026-09-16
+Header background photo no longer crops top/bottom — sized to the header's full height instead of `cover`, so the whole image is visible (at a smaller scale, anchored to the right) rather than a wide horizontal slice of it.
+
 ## v33 — 2026-09-16
 Extended the same poster-style card to both Saturday & Sunday tables — each of "To Dublin" and "From Dublin" under Saturday & Sunday now gets its own dark-strip heading tagged "Saturday & Sunday" (previously small plain text labels). Moved the "weekend return trips start from Cumberland Street N" detail into the notes block below the tables so it wasn't lost when its old subtitle line was removed.
 
