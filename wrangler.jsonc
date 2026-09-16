@@ -16,6 +16,21 @@
     // The actual API token is stored separately via `wrangler secret put`.
     "CF_ZONE_ID": "84028d2cf15122b1385abdb9f2a064f2"
   },
+  "kv_namespaces": [
+    {
+      // Permanent daily visit-count ledger — see worker/index.js. Written
+      // once a day by the scheduled() handler; read by /api/stats. Exists
+      // because Cloudflare's own GraphQL Analytics retention on this plan
+      // tops out at ~31 days — this is how "all-time" stays real past that.
+      "binding": "SILLAN_STATS",
+      "id": "518486962bbc4659830ac4af7513f99f"
+    }
+  ],
+  "triggers": {
+    // Once daily, well after midnight UTC so the previous day's traffic is
+    // fully ingested by Cloudflare's analytics pipeline before we read it.
+    "crons": ["15 1 * * *"]
+  },
   "routes": [
     { "pattern": "sillan.brwinnov.app", "custom_domain": true }
   ]

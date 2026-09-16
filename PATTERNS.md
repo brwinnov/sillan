@@ -157,6 +157,18 @@ one endpoint without turning the project into a real backend app.
   the pattern (a fixed cache key, `ctx.waitUntil(cache.put(...))`, a `Cache-Control` header on
   the response). Reuse this pattern for any future `/api/*` route that calls a rate-limited or
   slow upstream.
+- **`scheduled()` handler + KV**: a Cron Trigger (`wrangler.jsonc`'s `triggers.crons`) writes
+  one permanent KV entry per day (namespace `SILLAN_STATS`, binding of the same name) — the
+  visit count lives in the key's **metadata**, not just its value, specifically so reads can
+  use one `list()` call to sum the whole history instead of one `get()` per day. `/api/stats`
+  only ever asks the live GraphQL API for *today*; every earlier day comes from KV. This is
+  the pattern for "data with a retention/rate ceiling upstream, but we want it permanently" —
+  cron writes a durable copy once, reads lean on that copy instead of re-querying upstream.
+- `docs/stats-log.md` is a **manual, on-request export** of the KV ledger — not auto-updated,
+  and deliberately so (see `CONTEXT_MAP.md`'s decisions log, 2026-09-16, for why an autonomous
+  daily commit to the repo was considered and rejected). Regenerate it by reading KV
+  (`wrangler kv key list --namespace-id <id> --remote`) and rewriting the table, same as any
+  other doc — only when asked, never automatically.
 
 ## Notes
 - `.note` (amber) for informational; `.note.rose` for warnings/exceptions. First child is a `.mark` glyph: `i`, `!`, `+`, `–`.

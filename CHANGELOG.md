@@ -6,6 +6,8 @@ Newest first. Full detail for any entry is in the linked commit.
 ## v39 — 2026-09-16
 Added a site-visit stats dashboard — bar-chart icon fixed bottom-left, opens a modal showing today/last-7-days/all-time visit counts for sillan.brwinnov.app specifically. First backend route on the site (`worker/index.js`, scoped to `/api/*` only via `assets.run_worker_first`) — everything else is still served as a plain static file, unchanged. Data comes from Cloudflare's own GraphQL Analytics API, no separate tracking script added.
 
+**Same-day follow-up (no version bump — `worker/index.js` and `wrangler.jsonc` only, `src/index.html` unchanged):** added permanent storage for the daily counts. A Cron Trigger now writes yesterday's total into Workers KV every night, so "all-time" keeps growing past Cloudflare's ~31-day analytics retention ceiling instead of losing history to it — stayed on the free Cloudflare plan rather than upgrading, KV/Cron Trigger free-tier limits are comfortably sufficient at this volume. Backfilled 11–15 Sept from the still-available live data before the feature existed.
+
 ## v38 — 2026-09-16
 Centred the header background photo (was left-anchored in v37).
 

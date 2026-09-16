@@ -129,18 +129,36 @@ every other request is still served directly as a static file, untouched, same a
   it's an identifier, not a credential.
 - **Real constraints hit while building this** (worth knowing before touching it again):
   `httpRequestsAdaptiveGroups` only accepts a single day's span per query on this account's
-  plan — "today"/"this week"/"all-time" are built from one GraphQL request per day, combined
-  via aliases into a single HTTP call, summed in `worker/index.js`. The coarser
-  `httpRequests1dGroups` dataset allows a wider date range but has **no hostname filter at
-  all** (zone-wide only), so it can't be used here. Retention on this plan tops out at ~31 days
-  back — currently that covers the site's whole lifetime (launched 2026-09-11), so "all-time"
-  is genuinely all-time for now; once the site is older than the retention window, "all-time"
-  will silently become "oldest available day" instead (see the comment in `worker/index.js`).
+  plan. The coarser `httpRequests1dGroups` dataset allows a wider date range but has **no
+  hostname filter at all** (zone-wide only), so it can't be used here. Retention on this plan
+  tops out at ~31 days back — checked directly against the account's own GraphQL `settings`
+  node (`notOlderThan: 2678400` seconds = 31 days exactly), not guessed. Cloudflare's docs say
+  paid plans get "broader historical intervals" for this but publish no exact numbers, and even
+  paid tiers likely don't offer literal unlimited retention for a granular dataset like this —
+  so upgrading the plan was considered and explicitly **not** taken; permanent storage (below)
+  was chosen instead, and it's free regardless of plan.
+- **Permanent storage — the actual fix for the 31-day ceiling:** a daily Cron Trigger
+  (`worker/index.js`'s `scheduled()` handler, `15 1 * * *` UTC) fetches *yesterday's* total (a
+  single-day query, well within the span limit) and writes it permanently into Workers KV
+  (namespace `SILLAN_STATS`) — one key per date, the visit count stored as metadata so
+  `/api/stats` can sum the whole history with a single `list()` call rather than one read per
+  day. `/api/stats` only ever asks the live GraphQL API for **today** (still in progress, not
+  in KV yet); everything before today comes from KV, so "all-time" keeps growing past the
+  31-day window instead of losing history to it. KV's free-tier limits (1,000 writes/day,
+  100,000 reads/day, 1GB storage) are wildly more than this needs (1 write/day, a handful of
+  reads). A one-time backfill (11–15 Sept, the days before this feature existed but still
+  within the live API's retention at the time) seeded KV via `wrangler kv key put`.
+- **Considered and explicitly rejected: auto-committing a stats log to this git repo.** Would
+  fit the project's existing docs-as-source-of-truth convention, but means an unattended
+  process pushing to the public GitHub repo daily forever — a bigger authorization than
+  anything else in this project, and ~365+ bot commits/year of noise. Landed on: KV is the
+  real store; `docs/stats-log.md` is a **manual, on-request export** (ask, and it gets
+  regenerated from KV and committed like any other doc change) — not automated.
 - **UI:** a small bar-chart icon, fixed bottom-left of the viewport (`.stats-toggle`), opens a
   modal (`#statsOverlay`) showing today/last-7-days/all-time as three stat tiles. Numbers are
-  fetched fresh each time the modal opens (not preloaded on page load), and cached server-side
-  for 10 minutes (Cache API in `worker/index.js`) so a burst of visitors doesn't hammer the
-  GraphQL API on every single request.
+  fetched fresh each time the modal opens (not preloaded on page load), and cached both
+  server-side and (via the same `Cache-Control` header) in the visitor's own browser for 10
+  minutes, so a burst of visitors doesn't hammer the GraphQL API or KV on every single request.
 
 ## Service announcements
 - Added 2026-09-15 as a collapsible dark strip (`<details class="announce">`) at the very top of `.sheet`, above `<header>` — dark pulsing-dot summary "Service announcements · tap to expand", expanding to reveal Facebook's official **Page Plugin** iframe for facebook.com/SillanCoaches (timeline tab), a fallback link, and the WhatsApp join button (+353 86 777 9296).
@@ -209,3 +227,4 @@ every other request is still served directly as a static file, untouched, same a
 - 2026-09-16 · **Header rebuilt as a two-cell flex layout** (`.header-row` → `.header-content` + `.header-photo`), replacing the background-image-behind-text approach — fixed the earlier text/photo overlap structurally, but introduced a new problem: the photo, now its own positioned box rather than a background, visually competed with the absolutely-positioned header buttons and WhatsApp badge. **Reverted the same day** back to a background-image approach (see next entry) — the two-cell idea traded one overlap problem for another rather than eliminating overlap entirely.
 - 2026-09-16 · Reverted to a `background-image` header (two layers: semi-transparent red gradient over the bus photo, `auto 100%` height, centred) — see "Header" section above for the full iteration history. This is the settled state: buttons/WhatsApp/text all sit above the photo via normal stacking (nothing competes for box space with a background), the photo shows at full height with no cropping, and legibility holds because the white header text has enough weight/contrast against the tinted photo (confirmed visually at each step).
 - 2026-09-16 · Added a site-visit stats dashboard (footer bar-chart icon → modal) — see "Site visit stats" section above for the full architecture, data source, and the real API constraints hit while building it (1-day query span limit, no-hostname-filter on the wider-range dataset, ~31-day retention). This is the project's first move away from strictly-static assets-only hosting — a single `/api/*`-scoped Worker route, everything else unchanged. Verified the endpoint returns real numbers and the rest of the site still serves normally, both via curl and Playwright.
+- 2026-09-16 · Owner asked to stay on the free Cloudflare plan and instead store stats data permanently going forward, to sidestep the 31-day retention ceiling. Checked Cloudflare's own account settings directly (GraphQL `settings` node) rather than guessing at plan-tier numbers, then checked Free-tier limits for Workers KV and Cron Triggers before building anything (both comfortably sufficient at this volume — see "Site visit stats" section above). Explicitly considered and rejected auto-committing a stats log to this git repo (an unattended daily push is a much bigger authorization than anything else done in this project) in favour of KV as the real store, with `docs/stats-log.md` as a manual on-request export instead.
