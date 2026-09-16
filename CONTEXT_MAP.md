@@ -1,6 +1,6 @@
 # CONTEXT_MAP.md — Sillan (single source of truth)
 
-Last updated: 2026-09-15 (UCD re-fetch)
+Last updated: 2026-09-16 (site-visit stats)
 
 ## Operator
 - **Sillan Tours Ltd** (trading as Sillan Coaches), Kingscourt Road, Shercock, Co. Cavan
@@ -111,6 +111,37 @@ Full tables in `docs/timetable-mon-fri.md`. Summary:
 - GTFS feed version `1CFFD1CF-FCF8-4BE8-8379-7269746D5553`, valid to 10 Sept 2027; calendars for these specific trips run to 10/11 Oct 2026 and may change after.
 - **The earlier "unconfirmed recollection" (Kingscourt ~19:00 → Dublin ~20:30) is superseded** — the NTA data's Sunday To-Dublin trip has Kingscourt at 19:00 arriving Parnell Sq East 20:25, a close match. The recollection was likely accurate, but this doesn't make the NTA data any more *Sillan-confirmed* — the whole section is still provisional pending that.
 
+## Site visit stats (since 2026-09-16)
+The site is no longer strictly assets-only — `wrangler.jsonc` now has a `main` Worker script
+(`worker/index.js`), scoped so it only runs for `/api/*` (`assets.run_worker_first: ["/api/*"]`);
+every other request is still served directly as a static file, untouched, same as before.
+
+- **Data source:** Cloudflare's GraphQL Analytics API, `httpRequestsAdaptiveGroups` dataset —
+  the only one that can filter by hostname (`clientRequestHTTPHost`). Filtered to
+  `sillan.brwinnov.app` specifically, never the rest of the `brwinnov.app` zone.
+- **Why not Web Analytics (RUM)?** Not needed — Cloudflare already logs this for any proxied
+  zone, no separate beacon/script/dashboard setup required.
+- **Auth:** a Cloudflare API token scoped to **Zone → Analytics → Read** for the whole
+  `brwinnov.app` zone (Cloudflare has no subdomain-scoped token — the zone-wide permission is
+  unavoidable, but the query itself only ever asks for and returns `sillan.brwinnov.app` data).
+  Stored via `wrangler secret put CF_ANALYTICS_TOKEN` — never in any file, never in git. The
+  Zone ID (`84028d2cf15122b1385abdb9f2a064f2`) is a plain `vars` entry in `wrangler.jsonc` since
+  it's an identifier, not a credential.
+- **Real constraints hit while building this** (worth knowing before touching it again):
+  `httpRequestsAdaptiveGroups` only accepts a single day's span per query on this account's
+  plan — "today"/"this week"/"all-time" are built from one GraphQL request per day, combined
+  via aliases into a single HTTP call, summed in `worker/index.js`. The coarser
+  `httpRequests1dGroups` dataset allows a wider date range but has **no hostname filter at
+  all** (zone-wide only), so it can't be used here. Retention on this plan tops out at ~31 days
+  back — currently that covers the site's whole lifetime (launched 2026-09-11), so "all-time"
+  is genuinely all-time for now; once the site is older than the retention window, "all-time"
+  will silently become "oldest available day" instead (see the comment in `worker/index.js`).
+- **UI:** a small bar-chart icon, fixed bottom-left of the viewport (`.stats-toggle`), opens a
+  modal (`#statsOverlay`) showing today/last-7-days/all-time as three stat tiles. Numbers are
+  fetched fresh each time the modal opens (not preloaded on page load), and cached server-side
+  for 10 minutes (Cache API in `worker/index.js`) so a burst of visitors doesn't hammer the
+  GraphQL API on every single request.
+
 ## Service announcements
 - Added 2026-09-15 as a collapsible dark strip (`<details class="announce">`) at the very top of `.sheet`, above `<header>` — dark pulsing-dot summary "Service announcements · tap to expand", expanding to reveal Facebook's official **Page Plugin** iframe for facebook.com/SillanCoaches (timeline tab), a fallback link, and the WhatsApp join button (+353 86 777 9296).
 - **Why the Page Plugin:** it's what sillan.ie itself uses, needs no API key or Sillan consent, and is zero-maintenance — no scraper to keep working.
@@ -177,3 +208,4 @@ Full tables in `docs/timetable-mon-fri.md`. Summary:
 - 2026-09-16 · Extended the poster-style board card to "From Dublin" (removing its "8 departures a day, calling at UCD..." subtitle) and to both Saturday & Sunday tables (each of "To Dublin"/"From Dublin" there now gets its own card heading tagged "Saturday & Sunday" instead of a small plain-text label). The "weekend return trips start from Cumberland Street N, not UCD/Nassau Street/Hilton Garden" detail that used to be the Sat/Sun From-Dublin subtitle was moved into the notes block below the tables rather than dropped, since — unlike the generic subtitles removed from the Default tab — it's specific, non-obvious information. UCD and DCU tabs weren't touched; still plain headings.
 - 2026-09-16 · **Header rebuilt as a two-cell flex layout** (`.header-row` → `.header-content` + `.header-photo`), replacing the background-image-behind-text approach — fixed the earlier text/photo overlap structurally, but introduced a new problem: the photo, now its own positioned box rather than a background, visually competed with the absolutely-positioned header buttons and WhatsApp badge. **Reverted the same day** back to a background-image approach (see next entry) — the two-cell idea traded one overlap problem for another rather than eliminating overlap entirely.
 - 2026-09-16 · Reverted to a `background-image` header (two layers: semi-transparent red gradient over the bus photo, `auto 100%` height, centred) — see "Header" section above for the full iteration history. This is the settled state: buttons/WhatsApp/text all sit above the photo via normal stacking (nothing competes for box space with a background), the photo shows at full height with no cropping, and legibility holds because the white header text has enough weight/contrast against the tinted photo (confirmed visually at each step).
+- 2026-09-16 · Added a site-visit stats dashboard (footer bar-chart icon → modal) — see "Site visit stats" section above for the full architecture, data source, and the real API constraints hit while building it (1-day query span limit, no-hostname-filter on the wider-range dataset, ~31-day retention). This is the project's first move away from strictly-static assets-only hosting — a single `/api/*`-scoped Worker route, everything else unchanged. Verified the endpoint returns real numbers and the rest of the site still serves normally, both via curl and Playwright.

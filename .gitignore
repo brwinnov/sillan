@@ -17,6 +17,8 @@ dist/
 # Env / secrets
 .env
 .env.*
+.dev.vars
+.dev.vars.*
 *.pem
 
 # Scratch

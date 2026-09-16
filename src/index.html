@@ -763,6 +763,51 @@
   }
   .footer-link:hover{ color:var(--ink); }
 
+  .stats-toggle{
+    position:fixed;
+    left:16px;
+    bottom:16px;
+    z-index:5;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:34px;
+    height:34px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:8px;
+    color:var(--slate);
+    cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,0.12);
+    transition:background 0.15s ease, color 0.15s ease;
+  }
+  .stats-toggle:hover{ color:var(--rose); border-color:var(--rose); }
+  .stats-summary{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin:0 0 14px;
+  }
+  .stats-summary .stat{
+    text-align:center;
+    padding:14px 8px;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:8px;
+  }
+  .stats-summary .stat b{
+    display:block;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:22px;
+    color:var(--ink);
+  }
+  .stats-summary .stat span{
+    font-size:11px;
+    color:var(--slate);
+    text-transform:uppercase;
+    letter-spacing:0.4px;
+  }
+
   .stop-name-link{
     background:none;
     border:none;
@@ -977,12 +1022,16 @@
     <span>Sillan Coaches · Route 179 · Safe, reliable, comfortable</span>
     <span>
       <button class="footer-link" id="privacyToggle" aria-haspopup="dialog" aria-controls="privacyOverlay">Privacy</button>
-      · <a class="footer-link" href="https://github.com/brwinnov/sillan/blob/master/CHANGELOG.md" target="_blank" rel="noopener">v38</a>
+      · <a class="footer-link" href="https://github.com/brwinnov/sillan/blob/master/CHANGELOG.md" target="_blank" rel="noopener">v39</a>
     </span>
     <span>Times shown 24-hour</span>
   </footer>
 
 </div>
+
+<button class="stats-toggle" id="statsToggle" aria-haspopup="dialog" aria-controls="statsOverlay" title="Site visit stats" aria-label="Site visit stats">
+  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>
+</button>
 
 <div class="modal-overlay" id="helpOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="helpTitle">
   <div class="modal">
@@ -1014,6 +1063,24 @@
     <p><a id="stopMapsLink" href="#" target="_blank" rel="noopener">Open in Google Maps →</a></p>
     <p id="stopTfiRow" hidden><a id="stopTfiLink" href="#" target="_blank" rel="noopener">Live TFI departures for this stop →</a></p>
     <div id="stopExtra" hidden></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="statsOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="statsTitle">
+  <div class="modal">
+    <button class="modal-close" id="statsClose" aria-label="Close">&times;</button>
+    <h2 id="statsTitle">Site visits</h2>
+    <div id="statsBody">
+      <p id="statsLoading">Loading…</p>
+      <div class="stats-summary" id="statsSummary" hidden>
+        <div class="stat"><b id="statsToday">–</b><span>Today</span></div>
+        <div class="stat"><b id="statsWeek">–</b><span>Last 7 days</span></div>
+        <div class="stat"><b id="statsAllTime">–</b><span>All time</span></div>
+      </div>
+      <p id="statsSince" hidden></p>
+      <p id="statsError" hidden>Couldn't load stats right now — try again shortly.</p>
+    </div>
+    <p><small>Counted from Cloudflare's own request logs for this site (sillan.brwinnov.app only) — no cookies, no personal data.</small></p>
   </div>
 </div>
 
@@ -1294,6 +1361,46 @@
   }
   initModal('helpOverlay', 'helpToggle', 'helpClose');
   initModal('privacyOverlay', 'privacyToggle', 'privacyClose');
+  initModal('statsOverlay', 'statsToggle', 'statsClose');
+
+  // ---- Site visit stats ----
+  // Fetched fresh (well, server-cached 10 min — see worker/index.js) each
+  // time the modal opens, not preloaded on page load.
+  (function(){
+    var btn = document.getElementById('statsToggle');
+    var loading = document.getElementById('statsLoading');
+    var summary = document.getElementById('statsSummary');
+    var since = document.getElementById('statsSince');
+    var error = document.getElementById('statsError');
+
+    function formatDate(iso){
+      var d = new Date(iso + 'T00:00:00Z');
+      return d.toLocaleDateString('en-IE', { day:'numeric', month:'short', year:'numeric', timeZone:'UTC' });
+    }
+
+    btn.addEventListener('click', function(){
+      loading.hidden = false;
+      summary.hidden = true;
+      since.hidden = true;
+      error.hidden = true;
+
+      fetch('/api/stats').then(function(res){
+        if (!res.ok) throw new Error('bad response');
+        return res.json();
+      }).then(function(data){
+        document.getElementById('statsToday').textContent = data.today;
+        document.getElementById('statsWeek').textContent = data.last7Days;
+        document.getElementById('statsAllTime').textContent = data.allTime;
+        since.textContent = 'Counting since ' + formatDate(data.since) + '.';
+        loading.hidden = true;
+        summary.hidden = false;
+        since.hidden = false;
+      }).catch(function(){
+        loading.hidden = true;
+        error.hidden = false;
+      });
+    });
+  })();
 
   // ---- Stop location modal ----
   // Stop names are rendered dynamically by renderBoard(), so this listens

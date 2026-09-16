@@ -1,9 +1,20 @@
 {
   "name": "sillan-timetable",
   "compatibility_date": "2026-09-11",
+  "main": "worker/index.js",
   "assets": {
     "directory": "./src",
-    "not_found_handling": "none"
+    "binding": "ASSETS",
+    "not_found_handling": "none",
+    // Only /api/* is handled by the Worker script; every other request is
+    // served directly as a static file without invoking worker/index.js at
+    // all — the site stays effectively assets-only except for this one route.
+    "run_worker_first": ["/api/*"]
+  },
+  "vars": {
+    // Not secret — a zone ID is just an identifier, not a credential.
+    // The actual API token is stored separately via `wrangler secret put`.
+    "CF_ZONE_ID": "84028d2cf15122b1385abdb9f2a064f2"
   },
   "routes": [
     { "pattern": "sillan.brwinnov.app", "custom_domain": true }

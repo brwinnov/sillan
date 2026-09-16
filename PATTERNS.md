@@ -1,4 +1,4 @@
-# PATTERNS.md — code conventions for `src/index.html`
+# PATTERNS.md — code conventions for `src/index.html` (+ `worker/index.js`, since 2026-09-16)
 
 ## File structure (top to bottom)
 1. `<head>` — Google Fonts link, single `<style>` block
@@ -7,7 +7,8 @@
 4. `<header>` — red gradient band: route number, brand, route path, date badge, theme toggle (top-right), view toggle (lower-left), WhatsApp badge (lower-right)
 5. `#view-default`, `#view-ucd`, `#view-dcu` — one `<div class="view">` each; only one un-`hidden` at a time
 6. `<footer>`
-7. Single `<script>` block — timetable data + render function, then view toggle, then modals, then dark mode
+7. `<button class="stats-toggle">` — fixed bottom-left, outside `.sheet` (see "Site visit stats" below)
+8. Single `<script>` block — timetable data + render function, then view toggle, then modals, then dark mode, then stats fetch
 
 ## CSS
 - All colours via CSS custom properties on `:root`; dark mode overrides them on `body.dark`. Add new colours as variables, not literals.
@@ -137,6 +138,25 @@ manual step on **every** deploy that changes `src/index.html`:
 2. Bump the footer's `vNN` text in `src/index.html` to match.
 3. Deploy, then commit both files together.
 Plain incrementing integer, not date-based — avoids collisions on multi-deploy days.
+
+## Backend (`worker/index.js`, since 2026-09-16)
+The site is still almost entirely static — `worker/index.js` only runs for `/api/*`
+(`wrangler.jsonc`'s `assets.run_worker_first: ["/api/*"]`); every other path is served straight
+from `src/` as before, untouched. Don't widen that scope casually — the whole point was to add
+one endpoint without turning the project into a real backend app.
+- Currently one route: `/api/stats`, serving site-visit counts — see `CONTEXT_MAP.md`'s "Site
+  visit stats" section for the data source, auth, and the real API constraints hit building it.
+- Secrets go through `wrangler secret put NAME` — never in `wrangler.jsonc`, never in any
+  committed file. Non-secret config (like the Zone ID) goes in `wrangler.jsonc`'s `vars` block
+  instead, since it's an identifier, not a credential.
+- `env.ASSETS.fetch(request)` is the fallback for any other path the Worker somehow receives —
+  shouldn't normally be reached given `run_worker_first` is scoped to `/api/*`, but keeps the
+  Worker correct as a standalone fetch handler regardless.
+- Server-side response caching (Cache API, `caches.default`) is used to avoid hammering
+  Cloudflare's own GraphQL Analytics API on every page load — see the `/api/stats` handler for
+  the pattern (a fixed cache key, `ctx.waitUntil(cache.put(...))`, a `Cache-Control` header on
+  the response). Reuse this pattern for any future `/api/*` route that calls a rate-limited or
+  slow upstream.
 
 ## Notes
 - `.note` (amber) for informational; `.note.rose` for warnings/exceptions. First child is a `.mark` glyph: `i`, `!`, `+`, `–`.

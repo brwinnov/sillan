@@ -3,6 +3,9 @@
 Every deploy to the live site bumps the version number shown in the page footer.
 Newest first. Full detail for any entry is in the linked commit.
 
+## v39 — 2026-09-16
+Added a site-visit stats dashboard — bar-chart icon fixed bottom-left, opens a modal showing today/last-7-days/all-time visit counts for sillan.brwinnov.app specifically. First backend route on the site (`worker/index.js`, scoped to `/api/*` only via `assets.run_worker_first`) — everything else is still served as a plain static file, unchanged. Data comes from Cloudflare's own GraphQL Analytics API, no separate tracking script added.
+
 ## v38 — 2026-09-16
 Centred the header background photo (was left-anchored in v37).
 
