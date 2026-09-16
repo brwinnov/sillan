@@ -3,6 +3,9 @@
 Every deploy to the live site bumps the version number shown in the page footer.
 Newest first. Full detail for any entry is in the linked commit.
 
+## v26 — 2026-09-16
+Legend is now collapsed by default behind a "Legend" toggle, matching the same `<details>`/`<summary>` pattern as the service-announcements bar — no new JS.
+
 ## v25 — 2026-09-16
 Legend now wraps after the third item, so Saturday/Sunday drop to their own line. Removed the redundant horizontal rule directly under the legend (the "Monday – Friday service" divider's own top border, right below the legend's own bottom border). Run headers now show a plain number instead of "Run N".
 

@@ -471,12 +471,33 @@
   }
 
   /* ---------- LEGEND ---------- */
+  .legend-details{
+    border-bottom:1px solid var(--line);
+  }
+  .legend-toggle{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:16px 40px;
+    cursor:pointer;
+    -webkit-user-select:none;
+    user-select:none;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:13px;
+    font-weight:600;
+    color:var(--slate);
+  }
+  .legend-toggle:hover{ color:var(--ink); }
+  .legend-toggle .legend-chev{
+    flex:none;
+    transition:transform 0.2s ease;
+  }
+  .legend-details[open] .legend-toggle .legend-chev{ transform:rotate(180deg); }
   .legend{
     display:flex;
     gap:22px;
     flex-wrap:wrap;
-    padding:22px 40px;
-    border-bottom:1px solid var(--line);
+    padding:0 40px 20px;
     font-size:13px;
   }
   .legend-break{
@@ -814,7 +835,8 @@
     .summary{margin:28px 20px 0; grid-template-columns:1fr; padding:20px;}
     .summary .col + .col{border-left:none;border-top:1px solid rgba(255,255,255,0.12);padding-left:0;padding-top:16px;}
     footer{margin:22px 20px 0;}
-    .legend{padding:18px 20px;}
+    .legend-toggle{padding:14px 20px;}
+    .legend{padding:0 20px 16px;}
   }
 </style>
 </head>
@@ -880,14 +902,20 @@
     </div>
   </header>
 
-  <div class="legend">
-    <div class="legend-item"><span class="swatch all">6.30</span> Runs every weekday (Mon–Fri)</div>
-    <div class="legend-item"><span class="swatch mt">6.30</span> Monday–Thursday only</div>
-    <div class="legend-item"><span class="swatch fr">6.30</span> Friday only</div>
-    <div class="legend-break"></div>
-    <div class="legend-item"><span class="swatch sat">9.00</span> Saturday only</div>
-    <div class="legend-item"><span class="swatch sun">18.20</span> Sunday only</div>
-  </div>
+  <details class="legend-details">
+    <summary class="legend-toggle">
+      Legend
+      <svg class="legend-chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+    </summary>
+    <div class="legend">
+      <div class="legend-item"><span class="swatch all">6.30</span> Runs every weekday (Mon–Fri)</div>
+      <div class="legend-item"><span class="swatch mt">6.30</span> Monday–Thursday only</div>
+      <div class="legend-item"><span class="swatch fr">6.30</span> Friday only</div>
+      <div class="legend-break"></div>
+      <div class="legend-item"><span class="swatch sat">9.00</span> Saturday only</div>
+      <div class="legend-item"><span class="swatch sun">18.20</span> Sunday only</div>
+    </div>
+  </details>
 
   <div id="view-default" class="view">
 
@@ -1007,7 +1035,7 @@
     <span>Sillan Coaches · Route 179 · Safe, reliable, comfortable</span>
     <span>
       <button class="footer-link" id="privacyToggle" aria-haspopup="dialog" aria-controls="privacyOverlay">Privacy</button>
-      · <a class="footer-link" href="https://github.com/brwinnov/sillan/blob/master/CHANGELOG.md" target="_blank" rel="noopener">v25</a>
+      · <a class="footer-link" href="https://github.com/brwinnov/sillan/blob/master/CHANGELOG.md" target="_blank" rel="noopener">v26</a>
     </span>
     <span>Times shown 24-hour</span>
   </footer>
