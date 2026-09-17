@@ -112,6 +112,17 @@ Full tables in `docs/timetable-mon-fri.md`. Summary:
   transcription correction. The old NTA data is kept in `docs/timetable-sat-sun.md`, clearly
   marked superseded, for reference (mainly useful for the Navan sub-stops / Dublin set-down
   detail the new poster doesn't itemise).
+- **Why the NTA data was wrong, not just old**: the NTA's "Small Operators" GTFS feed
+  publishes the *registered* timetable of licensed commercial bus operators — Sillan operates
+  Route 179 under a route licence (a "commercial bus service" licence) issued by the NTA under
+  the Public Transport Regulation Act 2009. It isn't a live source of truth; it's a regulatory
+  record the NTA republishes after an operator files a licence/timetable amendment. The most
+  likely explanation for the mismatch: Sillan changed their Sat/Sun schedule and told riders
+  directly (poster, Facebook) without also filing the corresponding update with the NTA — or
+  filed it and it simply hasn't been processed into the feed yet. Worth remembering if any
+  other route detail on this site is ever found to disagree with NTA/bustimes.org data again:
+  treat the operator's own current material as authoritative, the NTA feed as a lagging
+  regulatory record, not the other way round.
 - One round trip each day. **To Dublin:** Cootehill through Dunshaughlin, Sat 09:00–10:30, Sun
   17:30–18:45 (all times ~35–50 min earlier than the old NTA-sourced Sunday data — a genuine
   change, not the same trip restated). **Sunday only** continues past Dunshaughlin into Dublin
