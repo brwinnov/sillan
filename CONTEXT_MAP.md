@@ -1,6 +1,6 @@
 # CONTEXT_MAP.md — Sillan (single source of truth)
 
-Last updated: 2026-09-16 (site-visit stats)
+Last updated: 2026-09-17 (official Sat/Sun timetable)
 
 ## Operator
 - **Sillan Tours Ltd** (trading as Sillan Coaches), Kingscourt Road, Shercock, Co. Cavan
@@ -70,7 +70,7 @@ from the header (the photo carries the branding now), and the route line reads
 | Default | **Complete** | Two Sillan posters (in `docs/source-data/`), effective 7 Sept 2026 | Mon–Thu + Friday reconciled into one Mon–Fri table with day-type tags |
 | UCD | **Complete** | https://sillan.ie/ucd/, re-fetched 2026-09-15 (owner supplied an updated poster image) | Now includes the 7th "To UCD" run (09:15 Navan-starting, Mon–Thu only) and the previously-missing 13:00 "Depart UCD" run — the site's promised 14 Sept additions are live. |
 | DCU | **Placeholder** | none | No source found |
-| Sat / Sun | **Provisional** | NTA GTFS feed (Small Operators), published 10 Sept 2026 — see `docs/timetable-sat-sun.md` | Not published anywhere on sillan.ie; per-NTA-data only, not Sillan-confirmed. Neither day serves UCD. |
+| Sat / Sun | **Complete** | Sillan's own official Facebook poster, posted 2026-09-17 — see `docs/timetable-sat-sun.md` | Supersedes the earlier NTA-GTFS-provisional data entirely (different times, different Dublin return point). Sunday serves UCD; Saturday's Dublin-end routing isn't detailed. |
 
 ## Run categories and visual style (as of 2026-09-16)
 The whole page now matches Sillan's own posters (owner supplied the actual poster images —
@@ -105,11 +105,31 @@ Full tables in `docs/timetable-mon-fri.md`. Summary:
 - Depart UCD: 13:00, 15:40, 16:15, 16:50, 17:30 (all Mon–Fri), 18:10 (Mon–Thu only). Last Friday UCD departure 17:30. **Correction:** the previous version of this table was missing the 13:00 run entirely (present in the Default tab's "From Dublin" data all along, just never carried over to the UCD-specific table) — caught when the owner supplied an updated sillan.ie/ucd poster image for comparison.
 - The site's earlier note ("Further services will be added on Monday 14th September 2026") has now been fulfilled — this is treated as the current, complete schedule, not provisional.
 
-## Sat/Sun timetable (per NTA GTFS, provisional — see docs/timetable-sat-sun.md)
-- One round trip each day. Saturday: 09:00 Cootehill → National Gallery (arr. 11:10); 18:00 Cumberland Street N → Cootehill (arr. 19:50). Sunday: 18:20 Cootehill → Parnell Square East (arr. 20:25); 20:30 Cumberland Street N → Cootehill (arr. 22:20). No Sunday morning service.
-- Neither day serves UCD. Weekend Dublin-end stops (Blanchardstown, Connolly Hospital, Ashtown, Rosecourt, Phibsborough, Mater Hospital, then National Gallery/Parnell Sq East) are all set-down only outbound; return starts pick-up-only from Cumberland Street N, not UCD/Nassau Street/Hilton Garden.
-- GTFS feed version `1CFFD1CF-FCF8-4BE8-8379-7269746D5553`, valid to 10 Sept 2027; calendars for these specific trips run to 10/11 Oct 2026 and may change after.
-- **The earlier "unconfirmed recollection" (Kingscourt ~19:00 → Dublin ~20:30) is superseded** — the NTA data's Sunday To-Dublin trip has Kingscourt at 19:00 arriving Parnell Sq East 20:25, a close match. The recollection was likely accurate, but this doesn't make the NTA data any more *Sillan-confirmed* — the whole section is still provisional pending that.
+## Sat/Sun timetable (official, since 2026-09-17 — see docs/timetable-sat-sun.md)
+- **Source changed 2026-09-17**: Sillan posted an official Saturday & Sunday poster to
+  Facebook, replacing the NTA-GTFS-provisional data used since 2026-09-11. Several figures
+  differ materially, not just formatting — this is a real schedule difference, not a
+  transcription correction. The old NTA data is kept in `docs/timetable-sat-sun.md`, clearly
+  marked superseded, for reference (mainly useful for the Navan sub-stops / Dublin set-down
+  detail the new poster doesn't itemise).
+- One round trip each day. **To Dublin:** Cootehill through Dunshaughlin, Sat 09:00–10:30, Sun
+  17:30–18:45 (all times ~35–50 min earlier than the old NTA-sourced Sunday data — a genuine
+  change, not the same trip restated). **Sunday only** continues past Dunshaughlin into Dublin
+  city — O'Connell Street → Nassau Street → St Stephen's Green → **UCD** (no times published)
+  — so Sunday *does* serve UCD, contradicting the old data's "neither day serves UCD".
+  Saturday's onward Dublin-end routing isn't detailed on the new poster at all.
+- **From Dublin:** departure point changed entirely — **Nassau Street** (18.00 Sat / 20.30
+  Sun) and **Hilton Garden, IFSC** (18.05 Sat / 20.35 Sun), not Cumberland Street N. Sillan's
+  poster doesn't publish individual times for the remaining stops back to Cootehill — shown as
+  **TBC** in the infographic, not omitted, since the bus does call at them.
+- **Bank Holidays — resolved**: the poster states directly "Bank holiday Sunday no service.
+  Bank holiday Monday, Sunday timetable." This is the actual answer to the item that was open
+  since project start (Sillan's FAQ said "reduced service" without specifics; the NTA feed had
+  no Bank Holiday exceptions registered at all).
+- The pre-2026-09-17 "unconfirmed recollection" note (Kingscourt ~19:00 → Dublin ~20:30) and
+  its "close match to NTA data" resolution are both now moot — the official Sunday Kingscourt
+  time is 18:00, about an hour earlier than either. See `docs/timetable-sat-sun.md` for the
+  full history if this ever needs untangling again.
 
 ## Site visit stats (since 2026-09-16)
 The site is no longer strictly assets-only — `wrangler.jsonc` now has a `main` Worker script
@@ -175,7 +195,7 @@ every other request is still served directly as a static file, untouched, same a
 - Reference POC: `docs/source-data/announcements-bar-poc.html` (owner-supplied; integrated into `src/index.html` with project CSS variables/fonts instead of its standalone tokens).
 
 ## Known discrepancies / open questions
-1. Bank Holidays: owner wants "same as Sundays"; Sillan FAQ says reduced service on Bank Holiday **Sundays and Mondays**; the NTA feed has no Bank Holiday calendar exceptions registered for this route at all. Unresolved. Re-confirmed 2026-09-15 by reading the live FAQ page directly: verbatim wording is *"We have a reduced service on Bank Holiday Sundays and Mondays. These are listed on our timetable page."* — but the actual `/bus-timetables/` page (checked same day) has no Bank Holiday exceptions or notes anywhere on it, so the FAQ's own claim that they're "listed" doesn't hold up. Still nothing to add to the infographic.
+1. ~~Bank Holidays~~ — **resolved 2026-09-17**: Sillan's official Sat/Sun poster states directly "Bank holiday Sunday no service. Bank holiday Monday, Sunday timetable." This supersedes both the FAQ's vaguer "reduced service" wording and the NTA feed's total silence on the matter. Added to the infographic's Sat/Sun notes. (History: FAQ verbatim wording re-confirmed 2026-09-15 as *"We have a reduced service on Bank Holiday Sundays and Mondays. These are listed on our timetable page"* — but `/bus-timetables/` had nothing listed, so the FAQ's own claim didn't hold up. The poster is the real answer.)
 2. bustimes.org (NTA GTFS) lists a 15:20 Shercock departure not on any Sillan poster. Unverified.
 3. bustimes.org lists intermediate Dublin set-down stops (Blanchardstown, Phibsborough, Parnell Sq, etc.) that Sillan's own posters omit. Not shown in the infographic — decide whether to add.
 4. ~~Owner recalls a Sunday evening Kingscourt departure~~ — **resolved 2026-09-11**: superseded by real NTA GTFS data showing a near-identical Sunday Kingscourt 19:00 departure. See "Sat/Sun timetable" section above.
@@ -229,3 +249,4 @@ every other request is still served directly as a static file, untouched, same a
 - 2026-09-16 · Added a site-visit stats dashboard (footer bar-chart icon → modal) — see "Site visit stats" section above for the full architecture, data source, and the real API constraints hit while building it (1-day query span limit, no-hostname-filter on the wider-range dataset, ~31-day retention). This is the project's first move away from strictly-static assets-only hosting — a single `/api/*`-scoped Worker route, everything else unchanged. Verified the endpoint returns real numbers and the rest of the site still serves normally, both via curl and Playwright.
 - 2026-09-16 · Owner asked to stay on the free Cloudflare plan and instead store stats data permanently going forward, to sidestep the 31-day retention ceiling. Checked Cloudflare's own account settings directly (GraphQL `settings` node) rather than guessing at plan-tier numbers, then checked Free-tier limits for Workers KV and Cron Triggers before building anything (both comfortably sufficient at this volume — see "Site visit stats" section above). Explicitly considered and rejected auto-committing a stats log to this git repo (an unattended daily push is a much bigger authorization than anything else done in this project) in favour of KV as the real store, with `docs/stats-log.md` as a manual on-request export instead.
 - 2026-09-16 · Fixed the Sat/Sun notes referencing a bare `docs/timetable-sat-sun.md` repo path as if a visitor could open it — this is a static site, `docs/` isn't served, and even if it were, a plain filesystem path isn't a link. Owner caught this by asking "why does this exist on the page, since visitors won't be able to see that file". Now a proper link to the file's GitHub-hosted view, same pattern already used for the footer's changelog link. Worth checking for elsewhere if more `docs/*.md` mentions get added to visitor-facing text in future — a JS *comment* referencing a doc path is fine (developers read those), a rendered `<div>`/`<p>` is not.
+- 2026-09-17 · Replaced the provisional NTA-GTFS Sat/Sun data with Sillan's own official Facebook poster — see "Sat/Sun timetable" section above for the full breakdown of what changed (times, Dublin return point, Sunday now serving UCD, Bank Holiday rule resolved). Moved Sat/Sun status from Provisional to Complete; removed the rose "Provisional" warning banner from the page entirely. Kept the old NTA per-stop/set-down detail in `docs/timetable-sat-sun.md`, clearly marked superseded, rather than deleting it — it's still the only source for the Navan sub-stops and Dublin set-down stops the new poster doesn't itemise. Return-leg stops beyond the two published Dublin departure points are shown as literal `TBC` cells (not omitted, not guessed) since the bus is confirmed to call at them, just without a published time — reusing the existing `renderCell()` behaviour for a `'TBC'` string value, no code change needed.

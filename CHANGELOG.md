@@ -3,6 +3,9 @@
 Every deploy to the live site bumps the version number shown in the page footer.
 Newest first. Full detail for any entry is in the linked commit.
 
+## v41 — 2026-09-17
+Replaced the provisional NTA-GTFS Saturday & Sunday data with Sillan's own official Facebook poster — new times throughout, the return trip's Dublin departure point changed to Nassau Street/Hilton Garden (was Cumberland Street N), Sunday now confirmed to serve UCD, and the Bank Holiday question is finally resolved (no service on a Bank Holiday Sunday, Sunday timetable on a Bank Holiday Monday). Removed the "Provisional" warning — status is now Complete. Return-leg stops without a published time show as TBC rather than being guessed or omitted.
+
 ## v40 — 2026-09-16
 Fixed the Saturday & Sunday notes referencing a bare `docs/timetable-sat-sun.md` repo path — visitors have no way to open a file path on a static site. Now a real link to the file's GitHub-hosted view (same pattern as the footer's changelog link).
 

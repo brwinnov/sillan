@@ -1,23 +1,81 @@
 # Route 179 — Saturday & Sunday timetable
 
-**Source:** National Transport Authority GTFS feed (Small Operators), version `1CFFD1CF-FCF8-4BE8-8379-7269746D5553`, published 10 September 2026, valid to 10 September 2027. Licence CC BY 4.0.
-**Extracted:** 2026-09-11 with `docs/source-data/extract-gtfs-179.py`.
+**Source:** Sillan's own official "179 Timetable — Saturday & Sunday Services" poster, posted
+to Facebook 2026-09-17. This is now the **confirmed, official** source, replacing the
+provisional NTA GTFS data this project used from 2026-09-11 to 2026-09-17 (kept below,
+clearly marked superseded, for reference).
 
-> ⚠ **Provisional.** These trips are in the NTA's registered timetable but are **not published anywhere on sillan.ie** (which only shows Mon–Thu and Friday posters). Treat as "per NTA data — confirm with operator" until Sillan confirms. Service calendars in the feed run to **10/11 October 2026** and may be extended or changed after that.
-
-Two trips each day: one towards Dublin, one back. No morning service on Sunday. Weekend return trips start from **Cumberland Street N** (stop 13618, near Parnell Square) — not UCD, and not Nassau Street / Hilton Garden.
-
-Times are 24-hour. "Set down only" = drop-off only, no boarding. "Pick up only" = boarding only, no alighting.
+Times are 24-hour. "Set down only" = drop-off only, no boarding. "Pick up only" = boarding
+only, no alighting. **TBC** = the bus does call at this stop, but Sillan's poster doesn't
+publish an individual time for it.
 
 ---
 
-## SATURDAY
-Calendar: `.....S.` · valid 12 Sept – 10 Oct 2026
+## Condensed view — used in the infographic
 
-## To Dublin
+### To Dublin
 
-### 09:00 Cootehill → National Gallery
-Arrives 11:10 · 22 stops · GTFS trip `5640_9`
+| Stop | Sat (every Saturday) | Sun (every Sunday except Bank Holiday) |
+|---|---|---|
+| Cootehill | 9.00 | 17.30 |
+| Shercock | 9.20 | 17.45 |
+| Kingscourt | 9.35 | 18.00 |
+| Nobber | 9.45 | 18.10 |
+| Wilkinstown | 9.55 | 18.20 |
+| Navan | 10.10 | 18.30 |
+| Garlow Cross | 10.15 | 18.35 |
+| Ross Cross | 10.20 | 18.40 |
+| Dunshaughlin | 10.30 | 18.45 |
+
+- **Saturday:** the poster doesn't detail the route past Dunshaughlin into Dublin.
+- **Sunday:** continues past Dunshaughlin, dropping off at **O'Connell Street → Nassau
+  Street → St Stephen's Green → UCD** — no times published for these. This means Sunday
+  **does** serve UCD, contradicting the old NTA-sourced data's "neither day serves UCD" —
+  the NTA data is superseded here.
+
+### From Dublin
+
+| Stop | Sat | Sun |
+|---|---|---|
+| Nassau Street *(pick up only)* | 18.00 | 20.30 |
+| Hilton Garden, IFSC *(pick up only)* | 18.05 | 20.35 |
+| Dunshaughlin | TBC | TBC |
+| Ross Cross | TBC | TBC |
+| Garlow Cross | TBC | TBC |
+| Navan | TBC | TBC |
+| Wilkinstown | TBC | TBC |
+| Nobber | TBC | TBC |
+| Kingscourt | TBC | TBC |
+| Shercock | TBC | TBC |
+| Cootehill *(set down only)* | TBC | TBC |
+
+The poster only publishes the two Dublin departure times/points; it states the return calls
+at "all stops to Cootehill" without giving individual times for them. The stop order above
+assumes the reverse of the outbound route (matching the weekday table's pattern) — not itself
+stated on the poster, but the only reasonable reading of "all stops."
+
+## Bank Holidays — now resolved
+
+Sillan's poster states directly: **"Bank holiday Sunday no service. Bank holiday Monday,
+Sunday timetable."** This resolves the long-open question in `CONTEXT_MAP.md` — the NTA feed
+had no Bank Holiday exceptions registered, and Sillan's FAQ page separately claimed "reduced
+service" without specifics; this poster is the actual answer, more specific than either.
+
+---
+
+## Superseded: NTA GTFS provisional data (used 2026-09-11 to 2026-09-17)
+
+Kept for reference only — **do not use for current times**, several figures differ materially
+from the official poster above (different times throughout, and the return trip's Dublin
+departure point/stop entirely changed from Cumberland Street N to Nassau Street/Hilton
+Garden). Useful only as a rough guide to which named sub-stops and Dublin set-down points the
+full route physically passes through, since the new official poster doesn't itemise those.
+
+**Source:** National Transport Authority GTFS feed (Small Operators), version
+`1CFFD1CF-FCF8-4BE8-8379-7269746D5553`, published 10 September 2026. Licence CC BY 4.0.
+Extracted 2026-09-11 with `docs/source-data/extract-gtfs-179.py`.
+
+### Saturday — 09:00 Cootehill → National Gallery (arr. 11:10, GTFS trip `5640_9`)
 
 | Time | Stop | TFI stop no. | Note |
 |---|---|---|---|
@@ -44,10 +102,7 @@ Arrives 11:10 · 22 stops · GTFS trip `5640_9`
 | 11:05 | Parnell Square East | 265 | Set down only |
 | 11:10 | National Gallery | 7585 | Set down only |
 
-## From Dublin
-
-### 18:00 Cumberland Street N → Cootehill
-Arrives 19:50 · 15 stops · GTFS trip `5640_19`
+### Saturday — 18:00 Cumberland Street N → Cootehill (arr. 19:50, GTFS trip `5640_19`)
 
 | Time | Stop | TFI stop no. | Note |
 |---|---|---|---|
@@ -67,15 +122,7 @@ Arrives 19:50 · 15 stops · GTFS trip `5640_19`
 | 19:35 | Shercock | 107531 |  |
 | 19:50 | Cootehill | 15094 | Set down only |
 
----
-
-## SUNDAY
-Calendar: `......S` · valid 13 Sept – 11 Oct 2026
-
-## To Dublin
-
-### 18:20 Cootehill → Parnell Square East
-Arrives 20:25 · 21 stops · GTFS trip `5640_11`
+### Sunday — 18:20 Cootehill → Parnell Square East (arr. 20:25, GTFS trip `5640_11`)
 
 | Time | Stop | TFI stop no. | Note |
 |---|---|---|---|
@@ -101,10 +148,7 @@ Arrives 20:25 · 21 stops · GTFS trip `5640_11`
 | 20:20 | Mater Hospital | 817 | Set down only |
 | 20:25 | Parnell Square East | 265 | Set down only |
 
-## From Dublin
-
-### 20:30 Cumberland Street N → Cootehill
-Arrives 22:20 · 15 stops · GTFS trip `5640_22`
+### Sunday — 20:30 Cumberland Street N → Cootehill (arr. 22:20, GTFS trip `5640_22`)
 
 | Time | Stop | TFI stop no. | Note |
 |---|---|---|---|
@@ -124,67 +168,16 @@ Arrives 22:20 · 15 stops · GTFS trip `5640_22`
 | 22:05 | Shercock | 107531 |  |
 | 22:20 | Cootehill | 15094 | Set down only |
 
----
+## Note on the earlier "unconfirmed recollection" (superseded context)
 
-## Condensed view — used in the infographic
+The owner recalled (before any Sat/Sun data existed) a Sunday evening run of roughly
+"Kingscourt 7pm, arrive Dublin ~8:30pm". The NTA data's Sunday To-Dublin trip had Kingscourt
+at 19:00, arriving Parnell Square East at 20:25 — a close match, suggesting the recollection
+was accurate. The official poster now has Sunday Kingscourt at **18:00** instead — about an
+hour earlier than both the recollection and the NTA data. Worth knowing if the recollection
+or the NTA data ever needs referencing again: neither matches the current official time.
 
-Only the stops that appear on Sillan's posters, so it slots into the existing table layout.
-Use the full lists above for the Navan sub-stops or Dublin set-down stops (not currently
-shown in `src/index.html` — see `docs/stop-locations.md` for how Navan's `extra` field
-handles that kind of route detail for the weekday table).
+## Tags used in `index.html` (implemented 2026-09-11)
 
-### To Dublin
-
-| Stop | Sat | Sun |
-|---|---|---|
-| Cootehill | 9.00 | 18.20 |
-| Shercock | 9.20 | 18.45 |
-| Kingscourt | 9.35 | 19.00 |
-| Nobber | 9.45 | 19.10 |
-| Wilkinstown | 9.55 | 19.20 |
-| Navan (R147) | 10.10 | 19.35 |
-| Garlow Cross | 10.15 | 19.40 |
-| Ross Cross | 10.20 | 19.45 |
-| Dunshaughlin | 10.30 | 19.50 |
-| Parnell Square East *(set down only)* | 11.05 | 20.25 |
-| National Gallery *(set down only)* | 11.10 | — |
-
-Saturday terminates at National Gallery; Sunday terminates at Parnell Square East. **Neither
-weekend trip serves UCD.** (The infographic omits the UCD row entirely since it's blank in
-both columns — kept here only as a reminder that it was checked, not missed.)
-
-### From Dublin
-
-| Stop | Sat | Sun |
-|---|---|---|
-| Cumberland Street N *(pick up only)* | 18.00 | 20.30 |
-| Dunshaughlin | 18.35 | 21.05 |
-| Ross Cross | 18.40 | 21.10 |
-| Garlow Cross | 18.45 | 21.15 |
-| Navan (Flower Hill) | 18.50 | 21.20 |
-| Wilkinstown | 19.05 | 21.35 |
-| Nobber | 19.15 | 21.45 |
-| Kingscourt | 19.25 | 21.55 |
-| Shercock | 19.35 | 22.05 |
-| Cootehill *(set down only)* | 19.50 | 22.20 |
-
----
-
-## Bank Holidays
-
-The feed has **no** `calendar_dates.txt` exceptions for route 179, so the NTA data says nothing about Bank Holiday running. Sillan's FAQ states "reduced service on Bank Holiday Sundays and Mondays." Unresolved — see `CONTEXT_MAP.md`.
-
-## Note on the earlier "unconfirmed recollection"
-
-The owner recalled (before this data existed) a Sunday evening run of roughly "Kingscourt 7pm,
-arrive Dublin ~8:30pm". The NTA data's Sunday To-Dublin trip has Kingscourt at **19:00**,
-arriving Parnell Square East at **20:25** — a close match. This doesn't make the NTA data any
-more *confirmed by Sillan*, but it does mean the recollection was likely accurate. The old
-"unconfirmed recollection" caveat note was removed from the page in favour of this sourced data
-plus the general NTA-provisional banner.
-
-## Suggested tags for `index.html` (implemented 2026-09-11)
-
-Two new run categories alongside the existing three: **Sat only** and **Sun only**.
-Okabe–Ito colours: Sat = orange `#E69F00`, Sun = vermillion `#D55E00`. Shape cues:
-Sat = double border, Sun = dotted border (distinct from Fri's dashed border).
+Two run categories: **Sat only** (`sat`) and **Sun only** (`sun`) — column-header text label
+only since 2026-09-16, no per-category colour or shape (see `CONTEXT_MAP.md`).

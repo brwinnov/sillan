@@ -947,10 +947,7 @@
     <div class="section-head">
       <h2>Saturday &amp; Sunday</h2>
     </div>
-    <p class="section-sub">Per NTA data — not yet confirmed by Sillan</p>
-    <div class="notes">
-      <div class="note rose"><span class="mark">!</span><div><b>Provisional.</b> These times come from the National Transport Authority's registered GTFS timetable, not from sillan.ie (which only publishes Mon–Thu and Friday posters). Treat as "per NTA data" until Sillan confirms. Neither day serves UCD; Saturday's Dublin service continues past Dunshaughlin to Blanchardstown/Phibsborough and terminates at the National Gallery, Sunday's terminates at Parnell Square East — see the notes below the tables.</div></div>
-    </div>
+    <p class="section-sub">One return trip each day</p>
 
     <div class="section-head board-head" style="margin-top:18px;">
       <h2>To Dublin</h2>
@@ -965,9 +962,10 @@
     <div class="board-wrap board-wrap-attached" id="tbl-satSunFromDublin"></div>
 
     <div class="notes">
-      <div class="note"><span class="mark">i</span><div>Weekend return trips start from <b>Cumberland Street N</b>, not UCD/Nassau Street/Hilton Garden.</div></div>
-      <div class="note"><span class="mark">i</span><div>Only the stops shared with the weekday table are shown here. The full trips also call at several Navan sub-stops and, on the Dublin end, Blanchardstown N3, Connolly Hospital, Ashtown Roundabout, Rosecourt, Phibsborough Church, and Mater Hospital (set down only) — see the <a href="https://github.com/brwinnov/sillan/blob/master/docs/timetable-sat-sun.md" target="_blank" rel="noopener">full stop list</a>.</div></div>
-      <div class="note"><span class="mark">i</span><div><b>Bank Holidays:</b> Sillan's FAQ says reduced service on Bank Holiday Sundays and Mondays, but the NTA data has no Bank Holiday exceptions registered for this route. Unresolved.</div></div>
+      <div class="note"><span class="mark">i</span><div>Weekend return trips start from <b>Nassau Street</b> and <b>Hilton Garden (IFSC)</b>, not UCD — the only two return times Sillan publishes. The bus does call at every other stop on the way back to Cootehill, but individual times for them aren't published, so they're shown as <b>TBC</b>.</div></div>
+      <div class="note"><span class="mark">i</span><div>On <b>Sundays</b>, the Dublin-bound service continues past Dunshaughlin into the city, dropping off at O'Connell Street, Nassau Street, St Stephen's Green, and UCD (no times published for these). Saturday's onward routing past Dunshaughlin isn't detailed on Sillan's timetable.</div></div>
+      <div class="note"><span class="mark">+</span><div><b>Bank Holidays:</b> no Sunday service on a Bank Holiday Sunday. On a Bank Holiday Monday, the Sunday timetable runs instead.</div></div>
+      <div class="note"><span class="mark">i</span><div>See the <a href="https://github.com/brwinnov/sillan/blob/master/docs/timetable-sat-sun.md" target="_blank" rel="noopener">full source detail</a>, including the earlier NTA-sourced data this replaces.</div></div>
     </div>
   </div>
 
@@ -1022,7 +1020,7 @@
     <span>Sillan Coaches · Route 179 · Safe, reliable, comfortable</span>
     <span>
       <button class="footer-link" id="privacyToggle" aria-haspopup="dialog" aria-controls="privacyOverlay">Privacy</button>
-      · <a class="footer-link" href="https://github.com/brwinnov/sillan/blob/master/CHANGELOG.md" target="_blank" rel="noopener">v40</a>
+      · <a class="footer-link" href="https://github.com/brwinnov/sillan/blob/master/CHANGELOG.md" target="_blank" rel="noopener">v41</a>
     </span>
     <span>Times shown 24-hour</span>
   </footer>
@@ -1038,7 +1036,7 @@
     <button class="modal-close" id="helpClose" aria-label="Close">&times;</button>
     <h2 id="helpTitle">About this page</h2>
     <p>This is an <b>unofficial</b> companion page for Sillan Coaches' Route 179 timetable (Cootehill / Kingscourt ⇄ Dublin / UCD). It isn't affiliated with or endorsed by Sillan Coaches — always check <a href="https://sillan.ie" target="_blank" rel="noopener">sillan.ie</a> or call <b>+353 42 9669130</b> to confirm times before travelling.</p>
-    <p>Times are transcribed from Sillan's published posters and website. Sections marked <b>TBC</b> or <b>Provisional</b> (DCU, Saturday/Sunday) aren't confirmed. Each column header states which days it runs (e.g. "Mon–Thu").</p>
+    <p>Times are transcribed from Sillan's published posters and website. Sections marked <b>TBC</b> (DCU) aren't confirmed yet. Each column header states which days it runs (e.g. "Mon–Thu").</p>
     <p>More information will be added here over time.</p>
     <p><b>All stop extra info is best-approx. location or nearest TFI bus stop. You may need to be on the opposite side of the road from it.</b></p>
   </div>
@@ -1194,40 +1192,40 @@
         {name:'Hilton Garden',  cells:['13.20','16.05','16.40','17.15','17.55','18.35','19.05','19.20']}
       ]
     },
-    // Sat/Sun data: per NTA GTFS feed (Small Operators, published 10 Sept 2026),
-    // NOT published anywhere on sillan.ie — provisional until Sillan confirms.
-    // See docs/timetable-sat-sun.md for the full per-stop trip detail (Navan
-    // sub-stops, Dublin set-down stops) — only the stops shared with the
-    // weekday table are shown here to fit the existing layout.
+    // Sat/Sun data: Sillan's own official Saturday & Sunday poster (posted to
+    // Facebook, 2026-09-17) — supersedes the earlier NTA-GTFS-sourced
+    // provisional data entirely (different times, a different Dublin
+    // departure point for the return trip). See docs/timetable-sat-sun.md —
+    // the old NTA data is kept there for reference, clearly marked
+    // superseded, not deleted.
     satSunToDublin: {
       columns: [{tag:'sat'},{tag:'sun'}],
       stops: [
-        {name:'Cootehill',      cells:['9.00','18.20']},
-        {name:'Shercock',       cells:['9.20','18.45']},
-        {name:'Kingscourt',     cells:['9.35','19.00']},
-        {name:'Nobber',         cells:['9.45','19.10']},
-        {name:'Wilkinstown',    cells:['9.55','19.20']},
-        {name:'Navan',          cells:['10.10','19.35'], note:'R147'},
-        {name:'Garlow Cross',   cells:['10.15','19.40']},
-        {name:'Ross Cross',     cells:['10.20','19.45']},
-        {name:'Dunshaughlin',   cells:['10.30','19.50']},
-        {name:'Parnell Square East', cells:['11.05','20.25'], note:'set down only'},
-        {name:'National Gallery',    cells:['11.10',null],    note:'set down only'}
+        {name:'Cootehill',      cells:['9.00','17.30']},
+        {name:'Shercock',       cells:['9.20','17.45']},
+        {name:'Kingscourt',     cells:['9.35','18.00']},
+        {name:'Nobber',         cells:['9.45','18.10']},
+        {name:'Wilkinstown',    cells:['9.55','18.20']},
+        {name:'Navan',          cells:['10.10','18.30']},
+        {name:'Garlow Cross',   cells:['10.15','18.35']},
+        {name:'Ross Cross',     cells:['10.20','18.40']},
+        {name:'Dunshaughlin',   cells:['10.30','18.45']}
       ]
     },
     satSunFromDublin: {
       columns: [{tag:'sat'},{tag:'sun'}],
       stops: [
-        {name:'Cumberland Street N',  cells:['18.00','20.30'], note:'pick up only'},
-        {name:'Dunshaughlin',         cells:['18.35','21.05']},
-        {name:'Ross Cross',           cells:['18.40','21.10']},
-        {name:'Garlow Cross',         cells:['18.45','21.15']},
-        {name:'Navan',                cells:['18.50','21.20'], note:'Flower Hill'},
-        {name:'Wilkinstown',          cells:['19.05','21.35']},
-        {name:'Nobber',               cells:['19.15','21.45']},
-        {name:'Kingscourt',           cells:['19.25','21.55']},
-        {name:'Shercock',             cells:['19.35','22.05']},
-        {name:'Cootehill',            cells:['19.50','22.20'], note:'set down only'}
+        {name:'Nassau Street',  cells:['18.00','20.30'], note:'pick up only'},
+        {name:'Hilton Garden',  cells:['18.05','20.35'], note:'IFSC, pick up only'},
+        {name:'Dunshaughlin',   cells:['TBC','TBC']},
+        {name:'Ross Cross',     cells:['TBC','TBC']},
+        {name:'Garlow Cross',   cells:['TBC','TBC']},
+        {name:'Navan',          cells:['TBC','TBC']},
+        {name:'Wilkinstown',    cells:['TBC','TBC']},
+        {name:'Nobber',         cells:['TBC','TBC']},
+        {name:'Kingscourt',     cells:['TBC','TBC']},
+        {name:'Shercock',       cells:['TBC','TBC']},
+        {name:'Cootehill',      cells:['TBC','TBC'], note:'set down only'}
       ]
     },
     ucdToUCD: {
