@@ -121,11 +121,20 @@ Full tables in `docs/timetable-mon-fri.md`. Summary:
 - **From Dublin:** departure point changed entirely — **Nassau Street** (18.00 Sat / 20.30
   Sun) and **Hilton Garden, IFSC** (18.05 Sat / 20.35 Sun), not Cumberland Street N. Sillan's
   poster doesn't publish individual times for the remaining stops back to Cootehill — shown as
-  **TBC** in the infographic, not omitted, since the bus does call at them.
-- **Bank Holidays — resolved**: the poster states directly "Bank holiday Sunday no service.
-  Bank holiday Monday, Sunday timetable." This is the actual answer to the item that was open
-  since project start (Sillan's FAQ said "reduced service" without specifics; the NTA feed had
-  no Bank Holiday exceptions registered at all).
+  a **"Set Down"** chip (dark grey, `.chip.set-down`) rather than a generic TBC, since we do
+  know something concrete about them (drop-off only), just not the exact time.
+- **Sunday's Dublin-end drop-off stops** (O'Connell Street, Nassau Street, St Stephen's Green,
+  UCD) are shown as their own rows in the "To Dublin" table — Saturday shows a dash (doesn't
+  serve them at all), Sunday shows "Set Down" (serves them, no published time).
+- **Bank Holidays — resolved, and shown directly in both tables**: the poster states plainly
+  "Bank holiday Sunday no service. Bank holiday Monday, Sunday timetable." Both Sat/Sun tables
+  have two extra columns for this: **"Bank Holiday Sunday"** (every row "No Service") and
+  **"Bank Holiday Monday"** (every row a straight copy of that row's Sunday value) — makes the
+  rule visible at a glance rather than only in a footnote. Neither column shows a run-number
+  above its header (`renderBoard()` special-cases `col.tag === 'banksun'`/`'bankmon'` to omit
+  it — they're a status/reused-schedule column, not a numbered departure). This was the item
+  open since project start (Sillan's FAQ said "reduced service" without specifics; the NTA feed
+  had no Bank Holiday exceptions registered at all).
 - The pre-2026-09-17 "unconfirmed recollection" note (Kingscourt ~19:00 → Dublin ~20:30) and
   its "close match to NTA data" resolution are both now moot — the official Sunday Kingscourt
   time is 18:00, about an hour earlier than either. See `docs/timetable-sat-sun.md` for the
@@ -250,3 +259,4 @@ every other request is still served directly as a static file, untouched, same a
 - 2026-09-16 · Owner asked to stay on the free Cloudflare plan and instead store stats data permanently going forward, to sidestep the 31-day retention ceiling. Checked Cloudflare's own account settings directly (GraphQL `settings` node) rather than guessing at plan-tier numbers, then checked Free-tier limits for Workers KV and Cron Triggers before building anything (both comfortably sufficient at this volume — see "Site visit stats" section above). Explicitly considered and rejected auto-committing a stats log to this git repo (an unattended daily push is a much bigger authorization than anything else done in this project) in favour of KV as the real store, with `docs/stats-log.md` as a manual on-request export instead.
 - 2026-09-16 · Fixed the Sat/Sun notes referencing a bare `docs/timetable-sat-sun.md` repo path as if a visitor could open it — this is a static site, `docs/` isn't served, and even if it were, a plain filesystem path isn't a link. Owner caught this by asking "why does this exist on the page, since visitors won't be able to see that file". Now a proper link to the file's GitHub-hosted view, same pattern already used for the footer's changelog link. Worth checking for elsewhere if more `docs/*.md` mentions get added to visitor-facing text in future — a JS *comment* referencing a doc path is fine (developers read those), a rendered `<div>`/`<p>` is not.
 - 2026-09-17 · Replaced the provisional NTA-GTFS Sat/Sun data with Sillan's own official Facebook poster — see "Sat/Sun timetable" section above for the full breakdown of what changed (times, Dublin return point, Sunday now serving UCD, Bank Holiday rule resolved). Moved Sat/Sun status from Provisional to Complete; removed the rose "Provisional" warning banner from the page entirely. Kept the old NTA per-stop/set-down detail in `docs/timetable-sat-sun.md`, clearly marked superseded, rather than deleting it — it's still the only source for the Navan sub-stops and Dublin set-down stops the new poster doesn't itemise. Return-leg stops beyond the two published Dublin departure points are shown as literal `TBC` cells (not omitted, not guessed) since the bus is confirmed to call at them, just without a published time — reusing the existing `renderCell()` behaviour for a `'TBC'` string value, no code change needed.
+- 2026-09-17 · Follow-up refinements to the Sat/Sun tables, same day: added Sunday-only Dublin-end drop-off rows (O'Connell Street, Nassau Street, St Stephen's Green, UCD) to "To Dublin"; replaced the "From Dublin" table's `TBC` cells with a new `'Set Down'` cell value (dark grey `.chip.set-down`, added to `renderCell()`) since it conveys more than a generic placeholder; added a third "Bank Holiday Sunday" column to both tables showing "No Service" on every row, so the Bank Holiday rule is visible in the table itself, not just a footnote — `renderBoard()` special-cases this column's tag (`banksun`) to omit the usual run-number header, and its label uses an embedded `<br>` to read "Bank Holiday" / "Sunday" on two lines (label strings are inserted via `innerHTML`, so this works without new rendering logic). Added a fourth "Bank Holiday Monday" column right after it, each row a straight copy of that row's Sunday cell value — matches the poster's "Bank holiday Monday, Sunday timetable" rule directly rather than requiring a reader to cross-reference two columns.

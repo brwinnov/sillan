@@ -3,6 +3,15 @@
 Every deploy to the live site bumps the version number shown in the page footer.
 Newest first. Full detail for any entry is in the linked commit.
 
+## v45 — 2026-09-17
+Added a fourth "Bank Holiday Monday" column to both Sat/Sun tables, copying the Sunday column's times — matches the poster's rule that the Sunday timetable runs on a Bank Holiday Monday. Same no-run-number header treatment as the Bank Holiday Sunday column.
+
+## v44 — 2026-09-17
+Added a "Bank Holiday Sunday" column to both Sat/Sun tables, every row showing "No Service" — makes the existing Bank Holiday note visible directly in the table, not just as a footnote. No run-number shown above this column's header (it's a status, not a numbered departure); label reads "Bank Holiday" / "Sunday" on two lines.
+
+## v43 — 2026-09-17
+Added the Sunday-only Dublin-end drop-off rows to the Sat/Sun "To Dublin" table (O'Connell Street, Nassau Street, St Stephen's Green, UCD — all set down only, Saturday shows a dash since it doesn't serve them). Changed the "From Dublin" table's TBC placeholders to "Set Down" instead, styled in a dark grey — more informative than a generic TBC, since we know these are drop-off stops even without a published time.
+
 ## v41 — 2026-09-17
 Replaced the provisional NTA-GTFS Saturday & Sunday data with Sillan's own official Facebook poster — new times throughout, the return trip's Dublin departure point changed to Nassau Street/Hilton Garden (was Cumberland Street N), Sunday now confirmed to serve UCD, and the Bank Holiday question is finally resolved (no service on a Bank Holiday Sunday, Sunday timetable on a Bank Holiday Monday). Removed the "Provisional" warning — status is now Complete. Return-leg stops without a published time show as TBC rather than being guessed or omitted.
 

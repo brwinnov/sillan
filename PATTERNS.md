@@ -42,8 +42,20 @@ toDublin: {
   categories since 2026-09-16 (see below). A stop's chip always inherits its column's tag for
   this purpose, so the label can never disagree with the data.
 - A cell value is a time string (`"6.30"`), `"M3"` (bus skips this stop — rendered as plain
-  text, no chip), `"TBC"`, or `null` (service doesn't run in that column → rendered as a
-  dashed chip `–`).
+  text, no chip), `"TBC"`, `"Set Down"`/`"No Service"` (dark grey `.chip.set-down`, since
+  2026-09-17 — for a stop that's known/confirmed but has no published time or doesn't run,
+  more informative than a generic placeholder), or `null` (service doesn't run in that column
+  → rendered as a dashed chip `–`).
+- A column can carry a tag with no numbered run header — `renderBoard()` special-cases
+  `col.tag === 'banksun' || col.tag === 'bankmon'` (the Sat/Sun tables' "Bank Holiday
+  Sunday"/"Bank Holiday Monday" columns) to omit the usual `Run N` number, since these are
+  status/reused-schedule columns, not numbered departures. `TAG_LABEL` values are inserted via
+  `innerHTML`, so a label can embed real markup like `<br>` for a two-line header
+  (`banksun: 'Bank Holiday<br>Sunday'`) — plain text works too, that's just an example of what's
+  possible if a future tag needs it. A column that just duplicates another column's values
+  (like Bank Holiday Monday copying Sunday) is done by literally repeating the cell value in
+  the data array, not by any special rendering — simplest option, and makes the relationship
+  obvious when reading the data.
 - A stop entry can have an optional `note` (e.g. `'set down only'`, `'R147'`) — rendered as
   small italic text after the stop name, without affecting the `data-stop` attribute used
   for `STOP_INFO` lookup (so an annotated stop like `{name:'Cootehill', note:'set down only'}`

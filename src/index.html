@@ -659,6 +659,12 @@
     font-weight:500;
     border-color:transparent;
   }
+  .chip.set-down{
+    background:transparent;
+    color:var(--slate);
+    font-weight:500;
+    border-color:transparent;
+  }
   .m3{
     font-family:'IBM Plex Mono',monospace;
     font-size:11px;
@@ -962,7 +968,7 @@
     <div class="board-wrap board-wrap-attached" id="tbl-satSunFromDublin"></div>
 
     <div class="notes">
-      <div class="note"><span class="mark">i</span><div>Weekend return trips start from <b>Nassau Street</b> and <b>Hilton Garden (IFSC)</b>, not UCD — the only two return times Sillan publishes. The bus does call at every other stop on the way back to Cootehill, but individual times for them aren't published, so they're shown as <b>TBC</b>.</div></div>
+      <div class="note"><span class="mark">i</span><div>Weekend return trips start from <b>Nassau Street</b> and <b>Hilton Garden (IFSC)</b>, not UCD — the only two return times Sillan publishes. The bus does call at every other stop on the way back to Cootehill, set down only, but individual times for them aren't published.</div></div>
       <div class="note"><span class="mark">i</span><div>On <b>Sundays</b>, the Dublin-bound service continues past Dunshaughlin into the city, dropping off at O'Connell Street, Nassau Street, St Stephen's Green, and UCD (no times published for these). Saturday's onward routing past Dunshaughlin isn't detailed on Sillan's timetable.</div></div>
       <div class="note"><span class="mark">+</span><div><b>Bank Holidays:</b> no Sunday service on a Bank Holiday Sunday. On a Bank Holiday Monday, the Sunday timetable runs instead.</div></div>
       <div class="note"><span class="mark">i</span><div>See the <a href="https://github.com/brwinnov/sillan/blob/master/docs/timetable-sat-sun.md" target="_blank" rel="noopener">full source detail</a>, including the earlier NTA-sourced data this replaces.</div></div>
@@ -1020,7 +1026,7 @@
     <span>Sillan Coaches · Route 179 · Safe, reliable, comfortable</span>
     <span>
       <button class="footer-link" id="privacyToggle" aria-haspopup="dialog" aria-controls="privacyOverlay">Privacy</button>
-      · <a class="footer-link" href="https://github.com/brwinnov/sillan/blob/master/CHANGELOG.md" target="_blank" rel="noopener">v41</a>
+      · <a class="footer-link" href="https://github.com/brwinnov/sillan/blob/master/CHANGELOG.md" target="_blank" rel="noopener">v45</a>
     </span>
     <span>Times shown 24-hour</span>
   </footer>
@@ -1088,7 +1094,7 @@
   // "fr" = Fri only, "tbc" = not yet published) that drives both the header
   // tag and the chip's colour+shape. Cell values: a time string, "M3" (bus
   // skips this stop), "TBC", or null (service doesn't run this column).
-  var TAG_LABEL = { all:'Mon–Fri', mt:'Mon–Thu', fr:'Fri', sat:'Sat', sun:'Sun', tbc:'TBC' };
+  var TAG_LABEL = { all:'Mon–Fri', mt:'Mon–Thu', fr:'Fri', sat:'Sat', sun:'Sun', tbc:'TBC', banksun:'Bank Holiday<br>Sunday', bankmon:'Bank Holiday<br>Monday' };
 
   // ---- Stop locations ----
   // Only stops listed here get a clickable "where is this stop" modal.
@@ -1199,33 +1205,37 @@
     // the old NTA data is kept there for reference, clearly marked
     // superseded, not deleted.
     satSunToDublin: {
-      columns: [{tag:'sat'},{tag:'sun'}],
+      columns: [{tag:'sat'},{tag:'sun'},{tag:'banksun'},{tag:'bankmon'}],
       stops: [
-        {name:'Cootehill',      cells:['9.00','17.30']},
-        {name:'Shercock',       cells:['9.20','17.45']},
-        {name:'Kingscourt',     cells:['9.35','18.00']},
-        {name:'Nobber',         cells:['9.45','18.10']},
-        {name:'Wilkinstown',    cells:['9.55','18.20']},
-        {name:'Navan',          cells:['10.10','18.30']},
-        {name:'Garlow Cross',   cells:['10.15','18.35']},
-        {name:'Ross Cross',     cells:['10.20','18.40']},
-        {name:'Dunshaughlin',   cells:['10.30','18.45']}
+        {name:'Cootehill',      cells:['9.00','17.30','No Service','17.30']},
+        {name:'Shercock',       cells:['9.20','17.45','No Service','17.45']},
+        {name:'Kingscourt',     cells:['9.35','18.00','No Service','18.00']},
+        {name:'Nobber',         cells:['9.45','18.10','No Service','18.10']},
+        {name:'Wilkinstown',    cells:['9.55','18.20','No Service','18.20']},
+        {name:'Navan',          cells:['10.10','18.30','No Service','18.30']},
+        {name:'Garlow Cross',   cells:['10.15','18.35','No Service','18.35']},
+        {name:'Ross Cross',     cells:['10.20','18.40','No Service','18.40']},
+        {name:'Dunshaughlin',   cells:['10.30','18.45','No Service','18.45']},
+        {name:"O'Connell Street", note:'set down only', cells:[null,'Set Down','No Service','Set Down']},
+        {name:'Nassau Street',     note:'set down only', cells:[null,'Set Down','No Service','Set Down']},
+        {name:"St Stephen's Green", note:'set down only', cells:[null,'Set Down','No Service','Set Down']},
+        {name:'UCD',               note:'set down only', cells:[null,'Set Down','No Service','Set Down']}
       ]
     },
     satSunFromDublin: {
-      columns: [{tag:'sat'},{tag:'sun'}],
+      columns: [{tag:'sat'},{tag:'sun'},{tag:'banksun'},{tag:'bankmon'}],
       stops: [
-        {name:'Nassau Street',  cells:['18.00','20.30'], note:'pick up only'},
-        {name:'Hilton Garden',  cells:['18.05','20.35'], note:'IFSC, pick up only'},
-        {name:'Dunshaughlin',   cells:['TBC','TBC']},
-        {name:'Ross Cross',     cells:['TBC','TBC']},
-        {name:'Garlow Cross',   cells:['TBC','TBC']},
-        {name:'Navan',          cells:['TBC','TBC']},
-        {name:'Wilkinstown',    cells:['TBC','TBC']},
-        {name:'Nobber',         cells:['TBC','TBC']},
-        {name:'Kingscourt',     cells:['TBC','TBC']},
-        {name:'Shercock',       cells:['TBC','TBC']},
-        {name:'Cootehill',      cells:['TBC','TBC'], note:'set down only'}
+        {name:'Nassau Street',  cells:['18.00','20.30','No Service','20.30'], note:'pick up only'},
+        {name:'Hilton Garden',  cells:['18.05','20.35','No Service','20.35'], note:'IFSC, pick up only'},
+        {name:'Dunshaughlin',   cells:['Set Down','Set Down','No Service','Set Down']},
+        {name:'Ross Cross',     cells:['Set Down','Set Down','No Service','Set Down']},
+        {name:'Garlow Cross',   cells:['Set Down','Set Down','No Service','Set Down']},
+        {name:'Navan',          cells:['Set Down','Set Down','No Service','Set Down']},
+        {name:'Wilkinstown',    cells:['Set Down','Set Down','No Service','Set Down']},
+        {name:'Nobber',         cells:['Set Down','Set Down','No Service','Set Down']},
+        {name:'Kingscourt',     cells:['Set Down','Set Down','No Service','Set Down']},
+        {name:'Shercock',       cells:['Set Down','Set Down','No Service','Set Down']},
+        {name:'Cootehill',      cells:['Set Down','Set Down','No Service','Set Down'], note:'set down only'}
       ]
     },
     ucdToUCD: {
@@ -1261,6 +1271,7 @@
   function renderCell(value, columnTag){
     if (value === 'M3') return '<span class="m3">M3</span>';
     if (value == null) return '<span class="chip dash">–</span>';
+    if (value === 'Set Down' || value === 'No Service') return '<span class="chip set-down">' + value + '</span>';
     if (columnTag === 'tbc') return '<span class="chip dash">' + value + '</span>';
     return '<span class="chip ' + columnTag + '">' + value + '</span>';
   }
@@ -1270,7 +1281,10 @@
     if (!mount) return;
 
     var headCells = data.columns.map(function(col, i){
-      return '<th class="run-head"><span class="run-time">' + (i + 1) + '</span>' +
+      // No run number for the Bank Holiday columns — they're a status,
+      // not a numbered departure.
+      var runNum = (col.tag === 'banksun' || col.tag === 'bankmon') ? '' : '<span class="run-time">' + (i + 1) + '</span>';
+      return '<th class="run-head">' + runNum +
              '<span class="run-tag tag-' + col.tag + '">' + TAG_LABEL[col.tag] + '</span></th>';
     }).join('');
 
